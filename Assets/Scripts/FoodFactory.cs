@@ -51,9 +51,7 @@ public class FoodFactory {
 		FoodInfo info = _dictionary[food];
 		string prefabFilePath = _prefabDir + info.PrefabName;
 		GameObject foodObject = Object.Instantiate(
-			Resources.Load(prefabFilePath, typeof(GameObject)) as GameObject,
-			Vector3.zero,
-			Quaternion.identity) as GameObject;
+			Resources.Load(prefabFilePath, typeof(GameObject)) as GameObject) as GameObject;
 
 		FoodScript script = foodObject.GetComponent<FoodScript>();
 		if (script == null)

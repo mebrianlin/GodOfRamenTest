@@ -13,11 +13,12 @@ public class BlowFire : MonoBehaviour {
 	private float coolSpeed = 1f;
 
 	//progress bar
-	public float width = 1075f;
-	public float height = 515f;
+	public float width = 1108f;
+	public float height = 455f;
 
 	//ramen
 	private bool rawRamenReady = false;
+
 	private float ramenCoolTemperature = 10f;
 
 	private float perfectTemprature = 30f;
@@ -41,11 +42,7 @@ public class BlowFire : MonoBehaviour {
 	void Update () {
 
 		if(Input.GetKeyDown(KeyCode.V)){
-			rawRamenReady = true;
-			Debug.Log("Recieve new noodles!");
-			rawRamenCount++;
-			Ramen newRamen = new Ramen();
-			ramenToBeBoiled.Enqueue(newRamen);
+			AddNewRamen();
 		}
 
 		while(rawRamenReady){
@@ -59,9 +56,10 @@ public class BlowFire : MonoBehaviour {
 
 
 		if(useKeyBoardControl){
-
 			if(Input.GetKey(KeyCode.Space)){
-				temperature += blowSpeed*Time.deltaTime;
+				if(temperature <=50f){
+					temperature += blowSpeed*Time.deltaTime;
+				}
 			}else{
 				if(temperature>0){
 					temperature -= coolSpeed*Time.deltaTime;
@@ -77,26 +75,35 @@ public class BlowFire : MonoBehaviour {
 		if(temperature>= perfectTemprature-temperatureRange && temperature<= perfectTemprature+temperatureRange){
 			if(ramenToBeBoiled.Count>=0){
 				foreach(Ramen ramen in ramenToBeBoiled){
-					if(ramen.boilTime >= requireTime){
-					//	ramenToBeBoiled.Dequeue();
-					}else{
-						ramen.boilTime += Time.deltaTime;
-					}
+					ramen.boilTime += Time.deltaTime;
 					Debug.Log(ramen.boilTime);
 				}
 
-				while (ramenToBeBoiled.Count > 0 && ramenToBeBoiled.Peek().boilTime >= requireTime)
+				while (ramenToBeBoiled.Count > 0 && ramenToBeBoiled.Peek().boilTime >= requireTime){
 					ramenToBeBoiled.Dequeue();
+					rawRamenCount--;
+					Debug.Log("Finish noodles!");
+					Debug.Log("Ramen num: " +  ramenToBeBoiled.Count);
+				}
 			}
-			//Debug.Log(boilTime);
 		}
 
-		Debug.Log("Ramen num: " +  ramenToBeBoiled.Count);
 
 
 	}
 	void OnGUI(){
 		GUI.Box(new Rect(width, height - temperature *5f, 25f , temperature*5f), "");
+
+	}
+
+	public void AddNewRamen(){
+		rawRamenReady = true;
+		rawRamenCount++;
+		Ramen newRamen = new Ramen();
+		ramenToBeBoiled.Enqueue(newRamen);
+		Debug.Log("Get new noodles!");
+		Debug.Log("Ramen num: " +  ramenToBeBoiled.Count);
+
 	}
 
 }
