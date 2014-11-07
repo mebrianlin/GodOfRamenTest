@@ -1,0 +1,9 @@
+F:\Workspace\Unity\GodOfRamenTest\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
+F:\Workspace\Unity\GodOfRamenTest\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+F:\Workspace\Unity\GodOfRamenTest\Temp\UnityVS_bin\Debug\UnityEditor.dll
+F:\Workspace\Unity\GodOfRamenTest\Temp\UnityVS_bin\Debug\UnityEngine.dll
+F:\Workspace\Unity\GodOfRamenTest\Temp\UnityVS_bin\Debug\UnityEngine.xml
+F:\Workspace\Unity\GodOfRamenTest\Temp\UnityVS_bin\Debug\UnityEditor.xml
+F:\Workspace\Unity\GodOfRamenTest\obj\Debug\UnityVS.GodOfRamenTest.CSharp.csprojResolveAssemblyReference.cache
+F:\Workspace\Unity\GodOfRamenTest\obj\Debug\Assembly-CSharp.dll
+F:\Workspace\Unity\GodOfRamenTest\obj\Debug\Assembly-CSharp.pdb
