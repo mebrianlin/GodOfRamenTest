@@ -9,7 +9,7 @@ public class PSMoveExample : MonoBehaviour
 		public string ipAddress = "128.2.237.237";
 		public string port = "7899";
 		
-		public GameObject gem, handle;
+		public GameObject gem, handle, handle1;
 	
 		public bool isMirror = true;
 	
@@ -35,21 +35,31 @@ public class PSMoveExample : MonoBehaviour
 		void Update ()
 		{
 	
-				if (PSMoveInput.IsConnected && PSMoveInput.MoveControllers [0].Connected) {
+				if (PSMoveInput.IsConnected && PSMoveInput.MoveControllers [0].Connected && PSMoveInput.MoveControllers [1].Connected) {
 		
-						Vector3 gemPos, handlePos;
+						Vector3 gemPos, gemPos1, handlePos, handlePos1;
 						MoveData moveData = PSMoveInput.MoveControllers [0].Data;
-						gemPos = moveData.Position;
+						MoveData moveData1 = PSMoveInput.MoveControllers [1].Data;
+
+						
+						gemPos = moveData.Position;			
 						handlePos = moveData.HandlePosition;
+
+						gemPos1 = moveData1.Position;
+						handlePos1 = moveData1.HandlePosition;
 						if (isMirror) {
 								gem.transform.localPosition = gemPos;
-								handle.transform.localPosition = handlePos;
+								handle.transform.localPosition = new Vector3 (handlePos.x, handlePos.y, 0);
 								handle.transform.localRotation = Quaternion.Euler (moveData.Orientation);
+								
+				
+								handle1.transform.localPosition = new Vector3 (handlePos1.x, handlePos1.y, 0);
+								handle1.transform.localRotation = Quaternion.Euler (moveData1.Orientation);
 						} else {
 								gemPos.z = -gemPos.z + zOffset;
 								handlePos.z = -handlePos.z + zOffset;
 								gem.transform.localPosition = gemPos;
-								handle.transform.localPosition = handlePos;
+								handle.transform.localPosition = new Vector3 (handlePos.x, handlePos.y, 0);
 								handle.transform.localRotation = Quaternion.LookRotation (gemPos - handlePos);
 								handle.transform.Rotate (new Vector3 (0, 0, moveData.Orientation.z));
 	
@@ -64,6 +74,27 @@ public class PSMoveExample : MonoBehaviour
 								temp.y = -moveData.QOrientation.y;
 								handle.transform.localRotation = temp;
 			
+
+
+
+				
+								gemPos1.z = -gemPos1.z + zOffset;
+								handlePos1.z = -handlePos1.z + zOffset;
+								handle1.transform.localPosition = new Vector3 (handlePos1.x, handlePos1.y, 0);
+								handle1.transform.localRotation = Quaternion.LookRotation (gemPos1 - handlePos1);
+								handle1.transform.Rotate (new Vector3 (0, 0, moveData1.Orientation.z));
+				
+								/* using quaternion rotation directly
+			 * the rotations on the x and y axes are inverted - i.e. left shows up as right, and right shows up as left. This code fixes this in case 
+			 * the object you are using is facing away from the screen. Comment out this code if you do want an inversion along these axes
+			 * 
+			 * Add by Karthik Krishnamurthy*/
+				
+								temp = moveData1.QOrientation;
+								temp.x = -moveData1.QOrientation.x;
+								temp.y = -moveData1.QOrientation.y;
+								handle1.transform.localRotation = temp;
+
 						}
 				}
 		}
@@ -82,99 +113,99 @@ public class PSMoveExample : MonoBehaviour
 						if (GUI.Button (new Rect (300, 40, 100, 35), "Connect")) {
 								PSMoveInput.Connect (ipAddress, int.Parse (port));
 						}
-			
-				} else {
-			
-			
-						if (GUI.Button (new Rect (20, 40, 100, 35), "Disconnect")) {
-								PSMoveInput.Disconnect ();
-								Reset ();
-						}
-			
-			
-						GUI.Label (new Rect (10, 10, 150, 100), "PS Move count : " + PSMoveInput.MoveCount);
-						GUI.Label (new Rect (140, 10, 150, 100), "PS Nav count : " + PSMoveInput.NavCount);
-			
-						//camera stream on/off
-						if (GUI.Button (new Rect (5, 80, 130, 35), cameraStr)) {
-								if (cameraStr == "Camera Switch On") {
-										PSMoveInput.CameraFrameResume ();
-										cameraStr = "Camera Switch Off";
-								} else {
-										PSMoveInput.CameraFramePause ();
-										cameraStr = "Camera Switch On";
-								}
-						}
-			
-						//color and rumble for move number 0
-						if (PSMoveInput.MoveControllers [0].Connected) {
-								//Set Color and Track
-								GUI.Label (new Rect (300, 50, 200, 20), "R,G,B are floats that fall in 0 ~ 1");
-								GUI.Label (new Rect (260, 20, 20, 20), "R");
-								rStr = GUI.TextField (new Rect (280, 20, 60, 20), rStr);
-								GUI.Label (new Rect (350, 20, 20, 20), "G");
-								gStr = GUI.TextField (new Rect (370, 20, 60, 20), gStr);
-								GUI.Label (new Rect (440, 20, 20, 20), "B");
-								bStr = GUI.TextField (new Rect (460, 20, 60, 20), bStr);
-								if (GUI.Button (new Rect (550, 30, 160, 35), "SetColorAndTrack")) {
-										try {
-												float r = float.Parse (rStr);
-												float g = float.Parse (gStr);
-												float b = float.Parse (bStr);
-												PSMoveInput.MoveControllers [0].SetColorAndTrack (new Color (r, g, b));
-										} catch (Exception e) {
-												Debug.Log ("input problem");
-										}
-								}
-								//Rumble
-								rumbleStr = GUI.TextField (new Rect (805, 20, 40, 20), rumbleStr);
-								GUI.Label (new Rect (800, 50, 200, 20), "0 ~ 19");
-								if (GUI.Button (new Rect (870, 30, 100, 35), "Rumble")) {
-										try {
-												int rumbleValue = int.Parse (rumbleStr);
-												PSMoveInput.MoveControllers [0].SetRumble (rumbleValue);
-										} catch (Exception e) {
-												Debug.Log ("input problem");
-										}
-								}
-						}
-			
-						//move controller information
-						for (int i=0; i<PSMoveInput.MAX_MOVE_NUM; i++) {
-								MoveController moveController = PSMoveInput.MoveControllers [i];
-								if (moveController.Connected) {
-										MoveData moveData = moveController.Data;
-										string display = "PS Move #" + i + 
-												"\nPosition:\t\t" + moveData.Position + 
-												"\nVelocity:\t\t" + moveData.Velocity + 
-												"\nAcceleration:\t\t" + moveData.Acceleration + 
-												"\nOrientation:\t\t" + moveData.Orientation + 
-												"\nAngular Velocity:\t\t" + moveData.AngularVelocity + 
-												"\nAngular Acceleration:\t\t" + moveData.AngularAcceleration + 
-												"\nHandle Position:\t\t" + moveData.HandlePosition + 
-												"\nHandle Velocity:\t\t" + moveData.HandleVelocity + 
-												"\nHandle Acceleration:\t\t" + moveData.HandleAcceleration +
-												"\n" +
-												"\nTrigger Value:\t\t" + moveData.ValueT +
-												"\nButtons:\t\t" + moveData.Buttons +
-												"\nSphere Color:\t\t" + moveData.SphereColor +
-												"\nIs Tracking:\t\t" + moveData.IsTracking +
-												"\nTracking Hue:\t\t" + moveData.TrackingHue;
-										GUI.Label (new Rect (10 + 650 * (i / 2), 120 + 310 * (i % 2), 300, 400), display);
-								}
-						}
-						for (int j = 0; j < PSMoveInput.MAX_NAV_NUM; j++) {
-								NavController navController = PSMoveInput.NavControllers [j];
-								if (navController.Connected) {	
-										NavData navData = navController.Data;
-										string navDisplay = "PS Nav #" + j + 
-												"\nAnalog :\t\t" + navData.ValueAnalog +
-												"\nL2 Value:\t\t" + navData.ValueL2 +
-												"\nButtons:\t\t" + navData.Buttons;
-										GUI.Label (new Rect (400, 100 + 95 * j, 150, 95), navDisplay);
-								}
-						}
 				}
+//				} else {
+//			
+//			
+//						if (GUI.Button (new Rect (20, 40, 100, 35), "Disconnect")) {
+//								PSMoveInput.Disconnect ();
+//								Reset ();
+//						}
+//			
+//			
+//						GUI.Label (new Rect (10, 10, 150, 100), "PS Move count : " + PSMoveInput.MoveCount);
+//						GUI.Label (new Rect (140, 10, 150, 100), "PS Nav count : " + PSMoveInput.NavCount);
+//			
+//						//camera stream on/off
+//						if (GUI.Button (new Rect (5, 80, 130, 35), cameraStr)) {
+//								if (cameraStr == "Camera Switch On") {
+//										PSMoveInput.CameraFrameResume ();
+//										cameraStr = "Camera Switch Off";
+//								} else {
+//										PSMoveInput.CameraFramePause ();
+//										cameraStr = "Camera Switch On";
+//								}
+//						}
+//			
+//						//color and rumble for move number 0
+//						if (PSMoveInput.MoveControllers [0].Connected) {
+//								//Set Color and Track
+//								GUI.Label (new Rect (300, 50, 200, 20), "R,G,B are floats that fall in 0 ~ 1");
+//								GUI.Label (new Rect (260, 20, 20, 20), "R");
+//								rStr = GUI.TextField (new Rect (280, 20, 60, 20), rStr);
+//								GUI.Label (new Rect (350, 20, 20, 20), "G");
+//								gStr = GUI.TextField (new Rect (370, 20, 60, 20), gStr);
+//								GUI.Label (new Rect (440, 20, 20, 20), "B");
+//								bStr = GUI.TextField (new Rect (460, 20, 60, 20), bStr);
+//								if (GUI.Button (new Rect (550, 30, 160, 35), "SetColorAndTrack")) {
+//										try {
+//												float r = float.Parse (rStr);
+//												float g = float.Parse (gStr);
+//												float b = float.Parse (bStr);
+//												PSMoveInput.MoveControllers [0].SetColorAndTrack (new Color (r, g, b));
+//										} catch (Exception e) {
+//												Debug.Log ("input problem");
+//										}
+//								}
+//								//Rumble
+//								rumbleStr = GUI.TextField (new Rect (805, 20, 40, 20), rumbleStr);
+//								GUI.Label (new Rect (800, 50, 200, 20), "0 ~ 19");
+//								if (GUI.Button (new Rect (870, 30, 100, 35), "Rumble")) {
+//										try {
+//												int rumbleValue = int.Parse (rumbleStr);
+//												PSMoveInput.MoveControllers [0].SetRumble (rumbleValue);
+//										} catch (Exception e) {
+//												Debug.Log ("input problem");
+//										}
+//								}
+//						}
+//			
+//						//move controller information
+//						for (int i=0; i<PSMoveInput.MAX_MOVE_NUM; i++) {
+//								MoveController moveController = PSMoveInput.MoveControllers [i];
+//								if (moveController.Connected) {
+//										MoveData moveData = moveController.Data;
+//										string display = "PS Move #" + i + 
+//												"\nPosition:\t\t" + moveData.Position + 
+//												"\nVelocity:\t\t" + moveData.Velocity + 
+//												"\nAcceleration:\t\t" + moveData.Acceleration + 
+//												"\nOrientation:\t\t" + moveData.Orientation + 
+//												"\nAngular Velocity:\t\t" + moveData.AngularVelocity + 
+//												"\nAngular Acceleration:\t\t" + moveData.AngularAcceleration + 
+//												"\nHandle Position:\t\t" + moveData.HandlePosition + 
+//												"\nHandle Velocity:\t\t" + moveData.HandleVelocity + 
+//												"\nHandle Acceleration:\t\t" + moveData.HandleAcceleration +
+//												"\n" +
+//												"\nTrigger Value:\t\t" + moveData.ValueT +
+//												"\nButtons:\t\t" + moveData.Buttons +
+//												"\nSphere Color:\t\t" + moveData.SphereColor +
+//												"\nIs Tracking:\t\t" + moveData.IsTracking +
+//												"\nTracking Hue:\t\t" + moveData.TrackingHue;
+//										GUI.Label (new Rect (10 + 650 * (i / 2), 120 + 310 * (i % 2), 300, 400), display);
+//								}
+//						}
+//						for (int j = 0; j < PSMoveInput.MAX_NAV_NUM; j++) {
+//								NavController navController = PSMoveInput.NavControllers [j];
+//								if (navController.Connected) {	
+//										NavData navData = navController.Data;
+//										string navDisplay = "PS Nav #" + j + 
+//												"\nAnalog :\t\t" + navData.ValueAnalog +
+//												"\nL2 Value:\t\t" + navData.ValueL2 +
+//												"\nButtons:\t\t" + navData.Buttons;
+//										GUI.Label (new Rect (400, 100 + 95 * j, 150, 95), navDisplay);
+//								}
+//						}
+//				}
 		
 		
 		}
