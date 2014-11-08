@@ -7,4 +7,5 @@ public class Ramen{
 	public Ramen(){
 		boilTime = 0f;
 	}
+
 }

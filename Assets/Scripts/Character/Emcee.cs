@@ -17,20 +17,20 @@ public class Emcee : MonoBehaviour {
 	}
 
     /// <summary>
-    /// Register a team to the emcee.
+    /// Get a team's ID. If it is a new team, create a new ID for it.
     /// </summary>
     /// <param name="team"></param>
-    /// <returns>False if the team has been registered previously.</returns>
-    public bool RegisterTeam(RamenTeam team) {
+    /// <returns>The team's ID. -1 too many teams.</returns>
+    public int GetTeamId(RamenTeam team) {
         if (_teams.ContainsKey(team))
-            return false;
+            return _teams[team];
 
         int numOfTeam = _teams.Count;
         if (numOfTeam >= MAX_TEAM)
-            return false;
+            return -1;
 
         _teams.Add(team, numOfTeam);
-        return true;
+        return _teams[team];
     }
 
     public bool CompleteRamen(RamenTeam team) {

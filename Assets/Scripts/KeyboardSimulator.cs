@@ -32,7 +32,7 @@ public class KeyboardSimulator : MonoBehaviour {
         for (int i = 0; i < MAX_TEAM && i < Teams.Length; ++i)
         {
             if (Input.GetKeyDown(_addRamenCode[i]))
-                _helpers[i].AddNewRamen();
+                _helpers[i].AddNewRamen(i);
 
             if (Input.GetKey(_increaseTempCode[i]))
                 _helpers[i].IncreaseTemperature();
