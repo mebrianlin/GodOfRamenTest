@@ -16,6 +16,22 @@ public enum Food {
 	Tomato,
 };
 
+public enum FoodType
+{
+    Vegetable,
+    Meat,
+    None,
+};
+
+public struct FoodInfo
+{
+    public string PrefabName { get; set; }
+    public FoodType Type { get; set; }
+    public float Value { get; set; }
+
+    public static FoodInfo None = new FoodInfo { PrefabName = "", Type = FoodType.None, Value = 0f };
+}
+
 public class FoodFactory {
 
 	string _prefabDir = "Prefabs/Food/";
@@ -29,9 +45,8 @@ public class FoodFactory {
 		{ Food.Meat,  	 new FoodInfo { PrefabName = "Meat",  	 Type = FoodType.Meat,      Value =  5f,} },
 		{ Food.Mushroom, new FoodInfo { PrefabName = "Mushroom", Type = FoodType.Vegetable, Value = 10f,} },
 		{ Food.Pea,      new FoodInfo { PrefabName = "Pea",      Type = FoodType.Vegetable, Value =  5f,} },
-		{ Food.Shrimp,   new FoodInfo { PrefabName = "Shrimp",	 Type = FoodType.Meat,      Value = 10f,} }, 
+		{ Food.Shrimp,   new FoodInfo { PrefabName = "Shrimp",	 Type = FoodType.Meat,      Value = 10f,} },
 		{ Food.Tomato,   new FoodInfo { PrefabName = "Tomato",	 Type = FoodType.Vegetable, Value =  5f,} },
-
 	};
 
 	public GameObject CreateFood()
@@ -68,7 +83,7 @@ public class FoodFactory {
 		GameObject foodObject = Object.Instantiate(
 			Resources.Load(prefabFilePath, typeof(GameObject)) as GameObject) as GameObject;
 
-		FoodScript script = foodObject.GetComponent<FoodScript>();
+		FoodOnPlateScript script = foodObject.GetComponent<FoodOnPlateScript>();
 		if (script == null)
 			return null;
 		else {
