@@ -14,7 +14,8 @@ public class ConveyorBelt : MonoBehaviour {
     bool ChuanGeMode = false;
     bool 川哥 = false;
 
-	Vector3 _initialPos = new Vector3(0, 20, 0);
+	Vector3 _initialPos = new Vector3(-30, -5, 0);
+	Vector3 _deltaMove = new Vector3(0.2f, 0, 0);
 
 	void Start () {
         _factory = new FoodFactory();
@@ -26,10 +27,10 @@ public class ConveyorBelt : MonoBehaviour {
         _activeObject = null;
 
 		foreach (GameObject obj in _foodOnBelt) {
-			obj.transform.Translate(new Vector3(0, 0, 0.2f));
+			obj.transform.position += _deltaMove;
 
 			FoodOnPlateScript foodOnPlate = obj.GetComponent<FoodOnPlateScript>();
-            if (foodOnPlate != null && obj.transform.position.y > 0 && obj.transform.position.y < 10)
+            if (foodOnPlate != null && obj.transform.position.x > -5 && obj.transform.position.x < 5)
             {
                 foodOnPlate.InFocus = true;
                 _activeObject = obj;
@@ -38,7 +39,7 @@ public class ConveyorBelt : MonoBehaviour {
                 foodOnPlate.InFocus = false;
 
 		}
-		while (_foodOnBelt.Count > 0 && _foodOnBelt.Peek().transform.position.y < -80f)
+		while (_foodOnBelt.Count > 0 && _foodOnBelt.Peek().transform.position.x > 30)
 			Destroy(_foodOnBelt.Dequeue());
 
 	}

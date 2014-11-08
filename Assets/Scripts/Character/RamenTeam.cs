@@ -1,15 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
+using ExtensionMethods;
 
 public class RamenTeam : MonoBehaviour {
 
     int _id;
+	Vector3 _ingredientTargetPos;
     Helper _helper;
     Apprentice _apprentice;
     ConveyorBelt _conveyorBelt;
 	Emcee _emcee;
 
     int _numRamen;
+	Queue<GameObject> _ingredients = new Queue<GameObject>();
+
+	private readonly object syncLock = new object();
 
 	void Start () {
         _apprentice = GetComponentInChildren<Apprentice>();
@@ -28,20 +35,47 @@ public class RamenTeam : MonoBehaviour {
             Debug.LogError("Cannot find Apprentice.");
         if (_helper == null)
             Debug.LogError("Cannot find Helper.");
+		_apprentice.OnNoodleReady += apprentice_OnNoodleReady;
 
 		_id = _emcee.GetTeamId(this);
-        _apprentice.OnNoodleReady += apprentice_OnNoodleReady;
+		if (_id == 0)
+			_ingredientTargetPos = new Vector3(15, 0, 0);
+		else
+			_ingredientTargetPos = new Vector3(-15, 0, 0);
+
+		StartCoroutine(movingIngredients());
 	}
-
-    void Update()
-    {
-
-    }
-
-    void apprentice_OnNoodleReady()
+	
+    void FixedUpdate()
+	{
+		
+	}
+	
+	void apprentice_OnNoodleReady()
     {
 		_helper.AddNewRamen(_id);
     }
+
+	IEnumerator movingIngredients() {
+		while (true) {
+			yield return new WaitForFixedUpdate();
+			
+			GameObject top = _ingredients.Peek();
+			//while (!_ingredients.Empty() && top.transform.position == _ingredientTargetPos) {
+			if (!_ingredients.Empty()) {
+				top = _ingredients.Peek();
+
+				if (top.transform.position == _ingredientTargetPos) {
+					_ingredients.Dequeue();
+					Destroy(top);
+				}
+			}
+			//}
+				foreach (var i in _ingredients)
+					i.transform.position = Vector3.Lerp(i.transform.position, _ingredientTargetPos, 0.5f);
+
+		}
+	}
 
     public void GrabIngredient() {
         GameObject ingredient = _conveyorBelt.GrabIngredient();
@@ -50,15 +84,15 @@ public class RamenTeam : MonoBehaviour {
         if (ingredient == null)
             return;
 
-        FoodOnPlateScript script = ingredient.GetComponent<FoodOnPlateScript>();
+		FoodScript script = ingredient.GetComponent<FoodScript>();
         if (script == null)
             return;
-		
-		Destroy(ingredient);
 
         FoodInfo info = script.Info;
         FoodType type = info.Type;
         float value = info.Value;
+
+		_ingredients.Enqueue(ingredient);
 
         // TODO: xiaoxin zhao
 
