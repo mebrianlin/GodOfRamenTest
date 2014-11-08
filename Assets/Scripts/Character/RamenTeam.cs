@@ -16,8 +16,6 @@ public class RamenTeam : MonoBehaviour {
     int _numRamen;
 	Queue<GameObject> _ingredients = new Queue<GameObject>();
 
-	private readonly object syncLock = new object();
-
 	void Start () {
         _apprentice = GetComponentInChildren<Apprentice>();
         _helper = GetComponentInChildren<Helper>();
@@ -60,20 +58,21 @@ public class RamenTeam : MonoBehaviour {
 		while (true) {
 			yield return new WaitForFixedUpdate();
 			
-			GameObject top = _ingredients.Peek();
-			//while (!_ingredients.Empty() && top.transform.position == _ingredientTargetPos) {
-			if (!_ingredients.Empty()) {
-				top = _ingredients.Peek();
+            while (!_ingredients.Empty()) {
+            //if (!_ingredients.Empty()) {
+			    GameObject top = _ingredients.Peek();
 
-				if (top.transform.position == _ingredientTargetPos) {
-					_ingredients.Dequeue();
-					Destroy(top);
-				}
-			}
-			//}
-				foreach (var i in _ingredients)
-					i.transform.position = Vector3.Lerp(i.transform.position, _ingredientTargetPos, 0.5f);
-
+                if ((top.transform.position - _ingredientTargetPos).sqrMagnitude < 0.5f) {
+                    _ingredients.Dequeue();
+                    Destroy(top);
+                }
+                else
+                    break;
+            }
+			
+            Debug.Log("WHAT");
+			foreach (var i in _ingredients)
+				i.transform.position = Vector3.Lerp(i.transform.position, _ingredientTargetPos, 0.05f);
 		}
 	}
 
