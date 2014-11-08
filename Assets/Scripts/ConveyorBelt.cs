@@ -16,9 +16,15 @@ public class ConveyorBelt : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		foreach (GameObject obj in _foodOnBelt)
+		foreach (GameObject obj in _foodOnBelt) {
 			obj.transform.Translate(new Vector3(0, 0, 0.2f));
-			//obj.transform.Translate(new Vector3(0, 0.2f, 0f));
+
+			FoodScript script = obj.GetComponent<FoodScript>();
+			if (script != null) {
+				script.InFocus = obj.transform.position.y > 0 && obj.transform.position.y < 10;
+			}
+
+		}
 		while (_foodOnBelt.Count > 0 && _foodOnBelt.Peek().transform.position.y < -80f)
 			Destroy(_foodOnBelt.Dequeue());
 

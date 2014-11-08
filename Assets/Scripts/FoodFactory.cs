@@ -4,9 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 
 public enum Food {
-	Mushroom,
 	Cai,
-	Corn,
+	Carrot,
+	Chicken,
+	Eggs,
+	Fish,
+	Meat,
+	Mushroom,
+	Pea,
+	Shrimp,
+	Tomato,
 };
 
 public class FoodFactory {
@@ -14,9 +21,17 @@ public class FoodFactory {
 	string _prefabDir = "Prefabs/Food/";
 
 	static Dictionary<Food, FoodInfo> _dictionary = new Dictionary<Food, FoodInfo>() {
-		{ Food.Mushroom, new FoodInfo { PrefabName = "Mushroom", Type = FoodType.Vegetable, Value = 10f }},
-		{ Food.Cai,      new FoodInfo { PrefabName = "Cai",      Type = FoodType.Vegetable, Value =  5f }},
-		{ Food.Corn,     new FoodInfo { PrefabName = "Corn",     Type = FoodType.Vegetable, Value =  5f }},
+		{ Food.Cai,      new FoodInfo { PrefabName = "Cai",      Type = FoodType.Vegetable, Value =  5f,} },
+		{ Food.Carrot,   new FoodInfo { PrefabName = "Carrot",   Type = FoodType.Vegetable, Value =  5f,} },
+		{ Food.Chicken,  new FoodInfo { PrefabName = "Chicken",  Type = FoodType.Meat,      Value =  5f,} },
+		{ Food.Eggs,  	 new FoodInfo { PrefabName = "Eggs",  	 Type = FoodType.Meat,      Value =  5f,} },
+		{ Food.Fish,  	 new FoodInfo { PrefabName = "Fish",  	 Type = FoodType.Meat,      Value =  5f,} },
+		{ Food.Meat,  	 new FoodInfo { PrefabName = "Meat",  	 Type = FoodType.Meat,      Value =  5f,} },
+		{ Food.Mushroom, new FoodInfo { PrefabName = "Mushroom", Type = FoodType.Vegetable, Value = 10f,} },
+		{ Food.Pea,      new FoodInfo { PrefabName = "Pea",      Type = FoodType.Vegetable, Value =  5f,} },
+		{ Food.Shrimp,   new FoodInfo { PrefabName = "Shrimp",	 Type = FoodType.Meat,      Value = 10f,} }, 
+		{ Food.Tomato,   new FoodInfo { PrefabName = "Tomato",	 Type = FoodType.Vegetable, Value =  5f,} },
+
 	};
 
 	public GameObject CreateFood()
@@ -56,8 +71,10 @@ public class FoodFactory {
 		FoodScript script = foodObject.GetComponent<FoodScript>();
 		if (script == null)
 			return null;
-		else
+		else {
 			script.Info = info;
+			script.InFocus = false;
+		}
 
 		return foodObject;
 	}

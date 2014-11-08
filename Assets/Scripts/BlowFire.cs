@@ -5,6 +5,7 @@ using System.Linq;
 
 public class BlowFire : MonoBehaviour {
 
+	public GameObject kedu;
 
 	private bool useKeyBoardControl = true;
 	private float temperature = 0;
@@ -21,7 +22,7 @@ public class BlowFire : MonoBehaviour {
 
 	private float ramenCoolTemperature = 10f;
 
-	private float perfectTemprature = 30f;
+	private float perfectTemprature = 45f;
 	private float temperatureRange = 3f;
 
 	private float requireTime = 5f;
