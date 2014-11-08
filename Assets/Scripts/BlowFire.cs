@@ -5,6 +5,8 @@ using System.Linq;
 
 public class BlowFire : MonoBehaviour {
 
+    public event NoodleEventHandler OnNoodleCooked;
+
 	public GameObject kedu;
 
 	private bool useKeyBoardControl = true;
@@ -42,10 +44,6 @@ public class BlowFire : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if(Input.GetKeyDown(KeyCode.V)){
-			AddNewRamen();
-		}
-
 		while(rawRamenReady){
 			if(temperature>= ramenCoolTemperature){
 				temperature -= ramenCoolTemperature;
@@ -55,19 +53,11 @@ public class BlowFire : MonoBehaviour {
 			rawRamenReady = false;
 		}
 
+        
 
-		if(useKeyBoardControl){
-			if(Input.GetKey(KeyCode.Space)){
-				if(temperature <=50f){
-					temperature += blowSpeed*Time.deltaTime;
-				}
-			}else{
-				if(temperature>0){
-					temperature -= coolSpeed*Time.deltaTime;
-				}
-			}
+        if (temperature > 0)
+            temperature -= coolSpeed * Time.deltaTime;
 
-		}
 
 		gameObject.GetComponent<GUIText>().text = "Temperature: "+temperature.ToString("f2") + " ";
 
@@ -83,6 +73,8 @@ public class BlowFire : MonoBehaviour {
 				while (ramenToBeBoiled.Count > 0 && ramenToBeBoiled.Peek().boilTime >= requireTime){
 					ramenToBeBoiled.Dequeue();
 					rawRamenCount--;
+                    if (OnNoodleCooked != null)
+                        OnNoodleCooked();
 					Debug.Log("Finish noodles!");
 					Debug.Log("Ramen num: " +  ramenToBeBoiled.Count);
 				}
@@ -106,5 +98,13 @@ public class BlowFire : MonoBehaviour {
 		Debug.Log("Ramen num: " +  ramenToBeBoiled.Count);
 
 	}
+
+    public void IncreaseTemperature()
+    {
+        if (temperature <= 50f)
+        {
+            temperature += blowSpeed * Time.deltaTime;
+        }
+    }
 
 }

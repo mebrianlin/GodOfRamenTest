@@ -58,7 +58,7 @@ public class FoodFactory {
 	
 	public GameObject CreateFood(Food food)
 	{
-		Debug.Log("Creating food..." + food.ToString());
+		//Debug.Log("Creating food..." + food.ToString());
 
 		if (!_dictionary.ContainsKey(food))
 			return null;

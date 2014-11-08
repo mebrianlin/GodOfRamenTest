@@ -39,4 +39,9 @@ public class ConveyorBelt : MonoBehaviour {
 			_foodOnBelt.Enqueue(food);
 		}
 	}
+
+    public GameObject GrabIngredient() {
+        // TODO: Brian
+        return null;
+    }
 }
