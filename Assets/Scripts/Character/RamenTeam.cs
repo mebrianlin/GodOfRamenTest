@@ -36,7 +36,7 @@ public class RamenTeam : MonoBehaviour {
 
     void apprentice_OnNoodleReady()
     {
-        _helper.AddNewRamen();
+        _helper.AddNewRamen(_id);
     }
 
     public void GrabIngredient() {
