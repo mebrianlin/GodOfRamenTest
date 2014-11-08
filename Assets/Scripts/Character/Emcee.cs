@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Emcee : MonoBehaviour {
 
-    static int _teamId = 0;
+    const int MAX_TEAM = 2;
+    Dictionary<RamenTeam, int> _teams = new Dictionary<RamenTeam, int>();
 
 
 	void Start () {
@@ -18,9 +20,29 @@ public class Emcee : MonoBehaviour {
     /// Register a team to the emcee.
     /// </summary>
     /// <param name="team"></param>
-    /// <returns>The team's ID, which the team should should keep track of.</returns>
-    public int RegisterTeam(RamenTeam team) {
+    /// <returns>False if the team has been registered previously.</returns>
+    public bool RegisterTeam(RamenTeam team) {
+        if (_teams.ContainsKey(team))
+            return false;
 
-        return _teamId++;
+        int numOfTeam = _teams.Count;
+        if (numOfTeam >= MAX_TEAM)
+            return false;
+
+        _teams.Add(team, numOfTeam);
+        return true;
+    }
+
+    public bool CompleteRamen(RamenTeam team) {
+        if (_teams.ContainsKey(team))
+            return false;
+
+        int teamId = _teams[team];
+        if (teamId >= MAX_TEAM)
+            return false;
+
+        // TODO: Brian
+
+        return true;
     }
 }

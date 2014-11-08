@@ -46,7 +46,7 @@ public class RamenTeam : MonoBehaviour {
         if (ingredient == null)
             return;
 
-        FoodScript script = ingredient.GetComponent<FoodScript>();
+        FoodOnPlateScript script = ingredient.GetComponent<FoodOnPlateScript>();
         if (script == null)
             return;
 
