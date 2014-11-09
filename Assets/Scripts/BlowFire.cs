@@ -16,15 +16,15 @@ public class BlowFire : MonoBehaviour {
 	private float coolSpeed = 1f;
 
 	//progress bar
-	public float width = 1108f;
-	public float height = 455f;
+	public float width;
+	public float height;
 
 	//ramen
 	private bool rawRamenReady = false;
 
 	private float ramenCoolTemperature = 10f;
 
-	private float perfectTemprature = 45f;
+	private float perfectTemprature = 30f;
 	private float temperatureRange = 3f;
 
 	private float requireTime = 5f;

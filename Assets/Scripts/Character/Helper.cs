@@ -51,10 +51,10 @@ public class Helper : MonoBehaviour {
 		switch (teamID)
 		{
 		case 0:
-			ramenPos = new Vector3(-10,2,-0.5f);
+			ramenPos = new Vector3(-17,2,-0.5f);
 			break;
 		case 1:
-			ramenPos = new Vector3(10,2,-0.5f);
+			ramenPos = new Vector3(17,2,-0.5f);
 			break;
 			
 		}
