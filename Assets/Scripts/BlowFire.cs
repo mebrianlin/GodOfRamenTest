@@ -75,8 +75,7 @@ public class BlowFire : MonoBehaviour {
 					rawRamenCount--;
                     if (OnNoodleCooked != null)
                         OnNoodleCooked();
-					Debug.Log("Finish noodles!");
-					Debug.Log("Ramen num: " +  ramenToBeBoiled.Count);
+					Debug.Log("Finish one bunch of noodle! Raw Ramen num: " +  ramenToBeBoiled.Count);
 				}
 			}
 		}
@@ -94,8 +93,7 @@ public class BlowFire : MonoBehaviour {
 		rawRamenCount++;
 		Ramen newRamen = new Ramen();
 		ramenToBeBoiled.Enqueue(newRamen);
-		Debug.Log("Get new noodles!");
-		Debug.Log("Ramen num: " +  ramenToBeBoiled.Count);
+		Debug.Log("Get one bunch of noodle! Raw Ramen num: " +  ramenToBeBoiled.Count);
 
 	}
 
