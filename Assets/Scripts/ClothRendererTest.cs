@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ClothRendererTest : MonoBehaviour
 {
+        public event NoodleEventHandler OnNoodleReady;
 
 		Renderer _renderer;
 		
@@ -74,6 +75,10 @@ public class ClothRendererTest : MonoBehaviour
 		
 						if (noodleScore >= maxNoodleScore) {
 								Debug.Log ("FINISHED ONE SET OF NOODLES");
+
+                                if (OnNoodleReady != null)
+                                    OnNoodleReady();
+
 								noodleScore = 0f;
 								noodlesfinished++;
 						}
