@@ -4,9 +4,6 @@ using System.Collections.Generic;
 
 public class ConveyorBelt : MonoBehaviour {
 
-    public float GenerateFoodSpeed;
-
-
 	FoodFactory _factory;
 	Queue<GameObject> _foodOnBelt;
     GameObject _activeObject;
@@ -14,12 +11,15 @@ public class ConveyorBelt : MonoBehaviour {
     bool ChuanGeMode = false;
     bool 川哥 = false;
 
-	Vector3 _initialPos = new Vector3(-30, -5, 0);
-	Vector3 _deltaMove = new Vector3(0.2f, 0, 0);
+	Vector3 _initialPos = new Vector3(-50, -5, 0);
+	Vector3 _conveyorSpeed = new Vector3(0.2f, 0, 0);
+    float _generateFoodSpeed = 1.0f;
 
 	void Start () {
         _factory = new FoodFactory();
 		_foodOnBelt = new Queue<GameObject>();
+
+        _generateFoodSpeed = 7.8f * Time.fixedDeltaTime / _conveyorSpeed.x;
 		StartCoroutine(generateFood());
 	}
 
@@ -27,7 +27,7 @@ public class ConveyorBelt : MonoBehaviour {
         _activeObject = null;
 
 		foreach (GameObject obj in _foodOnBelt) {
-			obj.transform.position += _deltaMove;
+			obj.transform.position += _conveyorSpeed;
 
 			FoodOnPlateScript foodOnPlate = obj.GetComponent<FoodOnPlateScript>();
             if (foodOnPlate != null && obj.transform.position.x > -5 && obj.transform.position.x < 5)
@@ -46,7 +46,7 @@ public class ConveyorBelt : MonoBehaviour {
 
 	IEnumerator generateFood() {
 		while (true) {
-			yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(_generateFoodSpeed);
 			//_factory.CreateFood(FoodType.Vegetable);
 			GameObject food = _factory.CreateFood();
 			food.transform.position = _initialPos;
@@ -62,6 +62,8 @@ public class ConveyorBelt : MonoBehaviour {
         FoodOnPlateScript script = _activeObject.GetComponent<FoodOnPlateScript>();
         GameObject food = script.Food;
 
+        if (script.Info.Type == FoodType.None)
+            return null;
 
         if (川哥) // Chuan's suggestion
         {

@@ -74,7 +74,7 @@ public class ClothRendererTest : MonoBehaviour
 						}		
 		
 						if (noodleScore >= maxNoodleScore) {
-								Debug.Log ("FINISHED ONE SET OF NOODLES");
+								//Debug.Log ("FINISHED ONE SET OF NOODLES");
 
                                 if (OnNoodleReady != null)
                                     OnNoodleReady();

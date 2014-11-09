@@ -18,11 +18,14 @@ public class AttachNoodleScript : MonoBehaviour
 
 		void OnTriggerEnter (Collider col)
 		{
+            if(col.tag == "TableTrigger")
 				attached = true;
 		}
 
 		void OnTriggerExit (Collider col)
 		{
+
+            if (col.tag == "TableTrigger")
 				attached = false;
 		}
 
