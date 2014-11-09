@@ -70,7 +70,6 @@ public class RamenTeam : MonoBehaviour {
                     break;
             }
 			
-            Debug.Log("WHAT");
 			foreach (var i in _ingredients)
 				i.transform.position = Vector3.Lerp(i.transform.position, _ingredientTargetPos, 0.05f);
 		}

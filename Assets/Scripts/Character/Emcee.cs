@@ -7,9 +7,11 @@ public class Emcee : MonoBehaviour {
     const int MAX_TEAM = 2;
     Dictionary<RamenTeam, int> _teams = new Dictionary<RamenTeam, int>();
 
+    int[] _teamScores = new int[MAX_TEAM];
 
 	void Start () {
-	
+        for (int i = 0; i < _teamScores.Length; ++i)
+            _teamScores[i] = 0;
 	}
 	
 	void Update () {
@@ -41,8 +43,27 @@ public class Emcee : MonoBehaviour {
         if (teamId >= MAX_TEAM)
             return false;
 
+        ++_teamScores[teamId];
         // TODO: Brian
+        switch (teamId)
+        {
+            default:
+                break;
+
+            case 0:
+                break;
+
+            case 1:
+                break;
+        }
 
         return true;
+    }
+
+    void OnGUI() {
+        string output = "";
+        for (int i = 0; i < _teamScores.Length; ++i)
+            output += string.Format("Team {0}: {1} bowls           ", i, _teamScores[i].ToString());
+        GUI.Label(new Rect(10, 10, 250, 250), output);
     }
 }
