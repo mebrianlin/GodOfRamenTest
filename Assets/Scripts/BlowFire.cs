@@ -25,7 +25,7 @@ public class BlowFire : MonoBehaviour {
 	private float ramenCoolTemperature = 10f;
 
 	private float perfectTemprature = 30f;
-	private float temperatureRange = 3f;
+	private float temperatureRange = 2f;
 
 	private float requireTime = 5f;
 
@@ -99,7 +99,7 @@ public class BlowFire : MonoBehaviour {
 
     public void IncreaseTemperature()
     {
-        if (temperature <= 50f)
+        if (temperature <= 35f)
         {
             temperature += blowSpeed * Time.deltaTime;
         }
