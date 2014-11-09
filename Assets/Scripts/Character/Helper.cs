@@ -37,21 +37,7 @@ public class Helper : MonoBehaviour {
 
         // TODO: xiaoxin zhao
         // 1. Add a ramen object to the pot
-		Vector3 ramenPos = Vector3.zero;
 
-		switch (teamID)
-		{
-			case 0:
-				ramenPos = new Vector3(-10,3,0);
-				break;
-			case 1:
-				ramenPos = new Vector3(10,3,0);
-				break;
-
-		}
-
-		GameObject ramenObject = 
-			Instantiate(Resources.Load("Prefabs/Ramen", typeof(GameObject)) as GameObject, ramenPos,  Quaternion.Euler(90, -180, 0) ) as GameObject;
         return true;
     }
 
