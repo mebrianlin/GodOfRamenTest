@@ -49,7 +49,7 @@ public class ConveyorBelt : MonoBehaviour {
             yield return new WaitForSeconds(_generateFoodSpeed);
 			//_factory.CreateFood(FoodType.Vegetable);
 			GameObject food = _factory.CreateFood();
-            food.transform.Rotate(new Vector3(0, 0, 45));
+            
 
 			food.transform.position = _initialPos;
 			_foodOnBelt.Enqueue(food);

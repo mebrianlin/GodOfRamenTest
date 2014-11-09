@@ -4,8 +4,14 @@ using System.Collections.Generic;
 
 public class Emcee : MonoBehaviour {
 
-    const int MAX_TEAM = 2;
+	const int MAX_TEAM = 2;
+	const int MAX_INGREDIENT = 3;
     Dictionary<RamenTeam, int> _teams = new Dictionary<RamenTeam, int>();
+
+	public Food[] RequiredIngredient {
+		get { return new Food[MAX_INGREDIENT]{ Food.Cai, Food.Mushroom, Food.Chicken}; }
+		private set {}
+	}
 
     int[] _teamScores = new int[MAX_TEAM];
 

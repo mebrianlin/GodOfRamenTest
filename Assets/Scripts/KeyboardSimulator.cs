@@ -18,6 +18,7 @@ public class KeyboardSimulator : MonoBehaviour {
 	KeyCode[] _moveHandDownCode   = new KeyCode[MAX_TEAM*2] { KeyCode.S, KeyCode.K, KeyCode.DownArrow, KeyCode.Keypad2 };
 
 
+
 	void Start () {
         if (Teams.Length > MAX_TEAM)
             Debug.LogError("Too many teams");
@@ -31,6 +32,7 @@ public class KeyboardSimulator : MonoBehaviour {
             _apprentices[i] = team.GetComponentInChildren<Apprentice>();
             _helpers[i] = team.GetComponentInChildren<Helper>();
         }
+
 	}
 	
 	void Update () {

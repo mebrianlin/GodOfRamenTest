@@ -12,12 +12,16 @@ public class FoodOnPlateScript : MonoBehaviour {
         get
         {
             updateChildren();
+			if (_food == null)
+				return FoodInfo.None;
             _foodScript = _food.GetComponent<FoodScript>();
             return _foodScript == null ? FoodInfo.None : _foodScript.Info;
         }
         set
         {
             updateChildren();
+			if (_food == null)
+				return;
             _foodScript = _food.GetComponent<FoodScript>();
             if (_foodScript != null)
                 _foodScript.Info = value;

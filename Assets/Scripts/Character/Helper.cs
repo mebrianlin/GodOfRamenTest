@@ -9,6 +9,7 @@ public class Helper : MonoBehaviour {
     BlowFire _blowFire;
 
 	Queue<GameObject> _rawRamen = new Queue<GameObject>();
+	Queue<GameObject> _boiledRamen = new Queue<GameObject>();
 
 	void Start () {
         _blowFire = GetComponentInChildren<BlowFire>();
@@ -29,12 +30,16 @@ public class Helper : MonoBehaviour {
 
 		//ramen+1
 		//destroy
-		Destroy(_rawRamen.Dequeue());
+//		Destroy(_rawRamen.Dequeue());
+
+//		Vector3 boiledRamenPos = new Vector3(0,15,0);
+//
+//		GameObject boiledRamenObject = 
+//			Instantiate(Resources.Load("Prefabs/BoiledRamen", typeof(GameObject)) as GameObject, boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
+//		_boiledRamen.Enqueue(boiledRamenObject);
 
         if (OnNoodleCooked != null)
             OnNoodleCooked();
-
-
     }
 
     /// <summary>
@@ -46,22 +51,22 @@ public class Helper : MonoBehaviour {
 
         // TODO: xiaoxin zhao
         // 1. Add a ramen object to the pot
-		Vector3 ramenPos = Vector3.zero;
-		
-		switch (teamID)
-		{
-		case 0:
-			ramenPos = new Vector3(-17,2,-0.5f);
-			break;
-		case 1:
-			ramenPos = new Vector3(17,2,-0.5f);
-			break;
-			
-		}
-		
-		GameObject ramenObject = 
-			Instantiate(Resources.Load("Prefabs/Ramen", typeof(GameObject)) as GameObject, ramenPos,  Quaternion.Euler(90, -180, 0) ) as GameObject;
-		_rawRamen.Enqueue(ramenObject);
+//		Vector3 ramenPos = Vector3.zero;
+//		
+//		switch (teamID)
+//		{
+//		case 0:
+//			ramenPos = new Vector3(-17,2,-0.5f);
+//			break;
+//		case 1:
+//			ramenPos = new Vector3(17,2,-0.5f);
+//			break;
+//			
+//		}
+//		
+//		GameObject ramenObject = 
+//			Instantiate(Resources.Load("Prefabs/Ramen", typeof(GameObject)) as GameObject, ramenPos,  Quaternion.Euler(90, -180, 0) ) as GameObject;
+//		_rawRamen.Enqueue(ramenObject);
 		return true;
     }
 

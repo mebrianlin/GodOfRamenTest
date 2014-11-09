@@ -11,7 +11,10 @@ public class BlowFire : MonoBehaviour {
 
 	public GameObject water;
 	public Texture[] waterTexture;//water-origin, water-boil, water-noodle-origin, water-noodle-boil
-	private bool useKeyBoardControl = true;
+
+	public GameObject fire;
+	public Texture[] fireTexture;//fire-no, fire-small, fire-big
+
 	private float temperature = 0;
 
 	private float blowSpeed = 3f;
@@ -41,6 +44,8 @@ public class BlowFire : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ramenToBeBoiled = new Queue<Ramen>();
+		fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
+
 	}
 	
 	// Update is called once per frame
@@ -57,17 +62,23 @@ public class BlowFire : MonoBehaviour {
 
         
 
-        if (temperature > 0)
+        if (temperature > 0){
             temperature -= coolSpeed * Time.deltaTime;
+			kedu.transform.localScale = new Vector3(1,1,temperature/perfectTemprature);
+			kedu.transform.localPosition = new Vector3(0,0, 6.8f*(1-temperature/perfectTemprature)/2);
+		}else{
+			kedu.transform.localScale = new Vector3(1,1,0.001f);
+			kedu.transform.localPosition = new Vector3(0,0, 6.8f*(1-temperature/perfectTemprature)/2);
+			fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
+
+		}
 
 
 		gameObject.GetComponent<GUIText>().text = "Temperature: "+temperature.ToString("f2") + " ";
 
-
 		//boil Ramen
 		if(temperature>= perfectTemprature-temperatureRange && temperature<= perfectTemprature+temperatureRange){
-
-
+			fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[2]);
 
 			if(ramenToBeBoiled.Count>0){
 				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[3]);
@@ -93,13 +104,16 @@ public class BlowFire : MonoBehaviour {
 			}else{
 				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[0]);
 			}
+			if(temperature>0 && temperature< perfectTemprature-temperatureRange ){
+				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[1]);
+			}
 		}
 
 
 
 	}
 	void OnGUI(){
-		GUI.Box(new Rect(width, height - temperature *5f, 25f , temperature*5f), "");
+		//GUI.Box(new Rect(width, height - temperature *5f, 25f , temperature*5f), "");
 
 	}
 

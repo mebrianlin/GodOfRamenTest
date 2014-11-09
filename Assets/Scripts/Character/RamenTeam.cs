@@ -15,6 +15,7 @@ public class RamenTeam : MonoBehaviour {
 
     int _numRamen;
 	Queue<GameObject> _ingredients = new Queue<GameObject>();
+	List<GameObject> _ramenBowl = new List<GameObject>();
 
 	void Start () {
         _apprentice = GetComponentInChildren<Apprentice>();
@@ -34,6 +35,7 @@ public class RamenTeam : MonoBehaviour {
         if (_helper == null)
             Debug.LogError("Cannot find Helper.");
 		_apprentice.OnNoodleReady += apprentice_OnNoodleReady;
+		_helper.OnNoodleCooked += helper_OnNoodleCooked;
 
 		_id = _emcee.GetTeamId(this);
 		if (_id == 0)
@@ -53,6 +55,17 @@ public class RamenTeam : MonoBehaviour {
     {
 		_helper.AddNewRamen(_id);
     }
+
+	void helper_OnNoodleCooked()
+	{
+		GameObject boiledRamenObject = 
+			Instantiate(Resources.Load("Prefabs/BoiledRamen", typeof(GameObject)) as GameObject, 
+			            new Vector3(0,0,0) ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
+		RamenBowl bowl = boiledRamenObject.GetComponent<RamenBowl>();
+		bowl.SetRequiredIngredients(_emcee.RequiredIngredient);
+		_ramenBowl.Add(boiledRamenObject);
+
+	}
 
 	IEnumerator movingIngredients() {
 		while (true) {
@@ -95,15 +108,24 @@ public class RamenTeam : MonoBehaviour {
 
         // TODO: xiaoxin zhao
 
-        // if a bowl of ramen is completed (ingredients + noodles)
-        if (false)
-        {
-            ++_numRamen;
-            // add score
-            // destroy the complete ramen
-	
-
-			_emcee.CompleteRamen(this);
-        }
+		for (int i = 0; i < _ramenBowl.Count; ) {
+			GameObject g = _ramenBowl[i];			
+			var r = g.GetComponent<RamenBowl>();
+			if (r.AddIngredient(food)) {
+				// if a bowl of ramen is completed (ingredients + noodles)
+				if (r.IsBowlComplete()) {
+					++_numRamen;
+					// TODO:
+					// add score
+					// destroy the complete ramen
+					_ramenBowl.RemoveAt(i);
+					Destroy(g);
+					_emcee.CompleteRamen(this);
+				}
+				break;
+			}
+			else
+				++i;
+		}
     }
 }
