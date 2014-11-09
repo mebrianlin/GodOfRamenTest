@@ -8,72 +8,97 @@ public class ClothRendererTest : MonoBehaviour
 		
 		public GameObject topBar;
 		public GameObject bottomBar;
+		public GameObject ramenCountText;
+		public GameObject noodles;
+		public GameObject leftHandle;
+		public GameObject rightHandle;
+		public GameObject table;
+		
+
 		public float slope = 1f;
-		public float maxNoodleScore;	
 
 		private float topHeight;
 		private float bottomHeight;
 		private float maxRamenHeight;
-
 		private float noodleScore;
+		private float maxNoodleScore;	
+		private int noodlesfinished;
 
+		private bool attachedToHands = true;
 
-		private bool reachedTopBuffer = false;
-		private bool reachedBottomBuffer = false;
 		// Use this for initialization
 		void Start ()
 		{
-				_renderer = GetComponent<Renderer> ();
+				noodles = GameObject.FindGameObjectWithTag ("Noodles");
+				table = GameObject.FindGameObjectWithTag ("Table");
+				topBar = GameObject.FindGameObjectWithTag ("TopBar");
+				bottomBar = GameObject.FindGameObjectWithTag ("BottomBar");
+				leftHandle = GameObject.FindGameObjectWithTag ("LeftHandle");
+				rightHandle = GameObject.FindGameObjectWithTag ("RightHandle");
+
+				_renderer = noodles.GetComponent<Renderer> ();
 				topHeight = topBar.GetComponent<Transform> ().position.y;
 				bottomHeight = bottomBar.GetComponent<Transform> ().position.y;
 				noodleScore = 0f;
 				slope = 1f;
 				maxNoodleScore = 500f;
-				
+				noodlesfinished = 0;
+			
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-				Debug.Log (noodleScore);
-
 //				Debug.Log (string.Format ("({0},{1})", _renderer.bounds.center.y - _renderer.bounds.extents.y, _renderer.bounds.center.y + _renderer.bounds.extents.y));
-//				Debug.Log (_renderer.bounds.center.y - _renderer.bounds.extents.y);
-//				Debug.Log (string.Format ("({0},{1})", renderer.bounds.min.y, renderer.bounds.max.y));
-
-				maxRamenHeight = _renderer.bounds.max.y;
+				
+				if (attachedToHands) {
+						maxRamenHeight = _renderer.bounds.max.y;
 				
 
-				//checking to see if ramen is within range
-				if (maxRamenHeight > bottomHeight && maxRamenHeight < topHeight) {
+						//checking to see if ramen is within range
+						if (maxRamenHeight > bottomHeight && maxRamenHeight < topHeight) {
 				
-						Debug.Log ("I MADE IT");
-						float distancePastBottomHeight = maxRamenHeight - bottomHeight;
-						addNoodleScore (distancePastBottomHeight);
+								float distancePastBottomHeight = maxRamenHeight - bottomHeight;
+								addNoodleScore (distancePastBottomHeight);
 
-				}
+						}
 
-				if (maxRamenHeight > topHeight) {
-						this.transform.GetComponent<InteractiveCloth> ().tearFactor = 1f;
+						// Noodles BREAAAKKKK
+						if (maxRamenHeight > topHeight) {
+								noodles.transform.GetComponent<InteractiveCloth> ().tearFactor = 1f;
+								noodles.transform.GetComponent<Cloth> ().randomAcceleration = new Vector3 (0, 10, 0);
+								noodleScore = 0f;
+								Invoke ("resetNoodles", 2f);
+								attachedToHands = false;
+						}		
+		
+						if (noodleScore >= maxNoodleScore) {
+								Debug.Log ("FINISHED ONE SET OF NOODLES");
+								noodleScore = 0f;
+								noodlesfinished++;
+						}
 				} else {
-			
+						//check to see if both hands have grabbed the noodles
+						if (leftHandle.GetComponent<AttachNoodleScript> ().isAttached () && rightHandle.GetComponent<AttachNoodleScript> ().isAttached ()) {
+								noodles.GetComponent<InteractiveCloth> ().AttachToCollider (leftHandle.GetComponent<Collider> ().collider);
+								noodles.GetComponent<InteractiveCloth> ().AttachToCollider (rightHandle.GetComponent<Collider> ().collider);
+								attachedToHands = true;
+								Debug.Log ("ITS FUCKING ATTACHING??");
+						}
 				}
 
-		
-				if (noodleScore >= maxNoodleScore) {
-						Debug.Log ("FINISHED ONE SET OF NOODLES");
-						noodleScore = 0f;
-				}
-
-		
-		
+				ramenCountText.GetComponent<TextMesh> ().text = "Score: " + noodleScore.ToString ();
 		}
 	
-
-
-		void setTopBufferFalse ()
+		void resetNoodles ()
 		{
-				reachedTopBuffer = false;
+				Destroy (noodles.gameObject);
+				noodles = (GameObject)Instantiate (Resources.Load ("Prefabs/Noodles", typeof(GameObject)), new Vector3 (0, table.GetComponent<Transform> ().position.y + 1, 0), Quaternion.identity);
+
+				//noodles are reset so no longer attached to hands
+//				leftHandle.GetComponent<AttachNoodleScript> ().unAttach ();
+//				rightHandle.GetComponent<AttachNoodleScript> ().unAttach ();
+				_renderer = noodles.GetComponent<Renderer> ();		
 		}
 
 		//add to ramen score as a linear function y=kx where y is addOnScore, and x is distance. 
@@ -83,4 +108,5 @@ public class ClothRendererTest : MonoBehaviour
 				float addOnScore = slope * Mathf.Pow (distance, 2f); 
 				noodleScore += addOnScore;
 		}
+
 }
