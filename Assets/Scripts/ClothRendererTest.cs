@@ -23,10 +23,12 @@ public class ClothRendererTest : MonoBehaviour
 		private float maxRamenHeight;
 		private float noodleScore;
 		private float maxNoodleScore;	
+		private float centerRamenHeight;
 		private int noodlesfinished;
 
 		private bool attachedToHands = true;
-
+		private bool ramenUpPlayed = false;
+		private bool ramenDownPlayed = false;	
 		// Use this for initialization
 		void Start ()
 		{
@@ -55,25 +57,33 @@ public class ClothRendererTest : MonoBehaviour
 		void Update ()
 		{
 //				Debug.Log (string.Format ("({0},{1})", _renderer.bounds.center.y - _renderer.bounds.extents.y, _renderer.bounds.center.y + _renderer.bounds.extents.y));
-				
-				//check to see if both hands have grabbed the noodlesA
-				if (leftHandle.GetComponent<AttachNoodleScript> ().isAttached () && rightHandle.GetComponent<AttachNoodleScript> ().isAttached ()) {
-						noodles.GetComponent<InteractiveCloth> ().AttachToCollider (leftHandle.GetComponent<Collider> ().collider);
-						noodles.GetComponent<InteractiveCloth> ().AttachToCollider (rightHandle.GetComponent<Collider> ().collider);
-						attachedToHands = true;
-						leftHandle.GetComponent<AttachNoodleScript> ().unAttach ();
-						rightHandle.GetComponent<AttachNoodleScript> ().unAttach ();
-						foreach (GameObject trigger in triggers) {
-								trigger.SetActive (false);
-						}
-						noodles.GetComponent<InteractiveCloth> ().useGravity = true;
-			
-				}
 
 				if (attachedToHands) {
 						maxRamenHeight = _renderer.bounds.max.y;
-				
+						
+						centerRamenHeight = _renderer.bounds.center.y;
+						
+//						bottomBar.transform.position = new Vector3 (bottomBar.transform.position.x, centerRamenHeight, bottomBar.transform.position.z);
 
+						if (leftHandle.transform.position.y < centerRamenHeight && rightHandle.transform.position.y < centerRamenHeight) {
+								if (!ramenUpPlayed) {
+										Debug.Log ("playin' up sound");
+										ramenUpPlayed = true;
+										ramenDownPlayed = false;
+										SoundManager.instance.playRamenUp ();				
+								}
+						}
+
+						if (leftHandle.transform.position.y > centerRamenHeight && rightHandle.transform.position.y > centerRamenHeight) {
+								if (!ramenDownPlayed) {
+										Debug.Log ("playin' down sound");
+										ramenDownPlayed = true;
+										ramenUpPlayed = false;
+										SoundManager.instance.playRamenDown ();
+								}
+						}
+
+			
 						//checking to see if ramen is within range
 						if (maxRamenHeight > bottomHeight && maxRamenHeight < topHeight) {
 				
@@ -82,19 +92,20 @@ public class ClothRendererTest : MonoBehaviour
 
 						}
 
-						// Noodles BREAAAKKKK
+						//BREAAAKKKK
 						if (maxRamenHeight > topHeight) {
 								noodles.transform.GetComponent<InteractiveCloth> ().tearFactor = 1f;
 								noodles.transform.GetComponent<Cloth> ().randomAcceleration = new Vector3 (0, 10, 0);
 								noodleScore = 0f;
 								Invoke ("resetNoodles", 2f);
 								attachedToHands = false;
-								
+				
+								SoundManager.instance.playRamenBreak ();		
 						}		
 		
 						if (noodleScore >= maxNoodleScore) {
 								//Debug.Log ("FINISHED ONE SET OF NOODLES");
-
+								
 								if (OnNoodleReady != null)
 										OnNoodleReady ();
 
@@ -102,9 +113,20 @@ public class ClothRendererTest : MonoBehaviour
 								noodlesfinished++;
 						}
 				} else {
-						
+						//check to see if both hands have grabbed the noodles
+						if (leftHandle.GetComponent<AttachNoodleScript> ().isAttached () && rightHandle.GetComponent<AttachNoodleScript> ().isAttached ()) {
+								noodles.GetComponent<InteractiveCloth> ().AttachToCollider (leftHandle.GetComponent<Collider> ().collider);
+								noodles.GetComponent<InteractiveCloth> ().AttachToCollider (rightHandle.GetComponent<Collider> ().collider);
+								attachedToHands = true;
+								leftHandle.GetComponent<AttachNoodleScript> ().unAttach ();
+								rightHandle.GetComponent<AttachNoodleScript> ().unAttach ();
+								foreach (GameObject trigger in triggers) {
+										trigger.SetActive (false);
+								}
+								noodles.GetComponent<InteractiveCloth> ().useGravity = true;
+						}
 				}
-
+		
 				ramenCountText.GetComponent<TextMesh> ().text = "Score: " + noodleScore.ToString ();
 		}
 	
