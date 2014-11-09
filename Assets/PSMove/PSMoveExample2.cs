@@ -5,7 +5,7 @@ using System;
 public class PSMoveExample2 : MonoBehaviour
 {
 	
-	
+		public GameObject table;
 		public string ipAddress = "128.2.237.237";
 		public string port = "7899";
 	
@@ -28,20 +28,29 @@ public class PSMoveExample2 : MonoBehaviour
 		// Use this for initialization
 		void Start ()
 		{
-		
+				table = GameObject.FindGameObjectWithTag ("Table");
+		}
+
+		float process (float y)
+		{
+				float min = table.GetComponent<Transform> ().position.y, max = 5f;
+				float minPs = -3f, maxPs = 3f;
+				y = Mathf.Clamp (y, minPs, maxPs);
+				return (y - minPs) / (maxPs - minPs) * (max - min) + min;
+
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
 
-				if (PSMoveInput.IsConnected && PSMoveInput.MoveControllers [2].Connected) {
+				if (PSMoveInput.IsConnected && PSMoveInput.MoveControllers [1].Connected) {
 			
 						Vector3 gemPos, handlePos;
-						MoveData moveData = PSMoveInput.MoveControllers [2].Data;
+						MoveData moveData = PSMoveInput.MoveControllers [1].Data;
 						gemPos = moveData.Position;
 						handlePos = moveData.HandlePosition;
-						Vector3 handlePos2 = new Vector3 (15f, handlePos.y / 1.5f, 0f);//Mathf.Clamp (handlePos.y, -maxMin, maxMin), 0);
+						Vector3 handlePos2 = new Vector3 (15f, process (handlePos.y), 0f);//Mathf.Clamp (handlePos.y, -maxMin, maxMin), 0);
 						if (isMirror) {
 								gem.transform.localPosition = gemPos;
 								handle.transform.localPosition = handlePos2;
@@ -108,7 +117,7 @@ public class PSMoveExample2 : MonoBehaviour
 						}
 					
 						//color and rumble for move number 0
-						if (PSMoveInput.MoveControllers [2].Connected) {
+						if (PSMoveInput.MoveControllers [1].Connected) {
 								//Set Color and Track
 								GUI.Label (new Rect (300, 50, 200, 20), "R,G,B are floats that fall in 0 ~ 1");
 								GUI.Label (new Rect (260, 20, 20, 20), "R");
@@ -122,7 +131,7 @@ public class PSMoveExample2 : MonoBehaviour
 												float r = float.Parse (rStr);
 												float g = float.Parse (gStr);
 												float b = float.Parse (bStr);
-												PSMoveInput.MoveControllers [2].SetColorAndTrack (new Color (r, g, b));
+												PSMoveInput.MoveControllers [1].SetColorAndTrack (new Color (r, g, b));
 										} catch (Exception e) {
 												Debug.Log ("input problem");
 										}
@@ -133,7 +142,7 @@ public class PSMoveExample2 : MonoBehaviour
 								if (GUI.Button (new Rect (870, 30, 100, 35), "Rumble")) {
 										try {
 												int rumbleValue = int.Parse (rumbleStr);
-												PSMoveInput.MoveControllers [2].SetRumble (rumbleValue);
+												PSMoveInput.MoveControllers [1].SetRumble (rumbleValue);
 										} catch (Exception e) {
 												Debug.Log ("input problem");
 										}

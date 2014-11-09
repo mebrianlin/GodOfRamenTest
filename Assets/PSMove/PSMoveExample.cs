@@ -4,6 +4,7 @@ using System;
 
 public class PSMoveExample : MonoBehaviour
 {
+		public GameObject table;
 		public string ipAddress = "128.2.237.237";
 		public string port = "7899";
 		
@@ -28,9 +29,19 @@ public class PSMoveExample : MonoBehaviour
 		// Use this for initialization
 		void Start ()
 		{
+				table = GameObject.FindGameObjectWithTag ("Table");
 		
 		}
-	
+
+		float process (float y)
+		{
+				float min = table.GetComponent<Transform> ().position.y, max = 5f;
+				float minPs = -3f, maxPs = 3f;
+				y = Mathf.Clamp (y, minPs, maxPs);
+				return (y - minPs) / (maxPs - minPs) * (max - min) + min;
+
+		}
+		
 		// Update is called once per frame
 		void Update ()
 		{
@@ -41,7 +52,7 @@ public class PSMoveExample : MonoBehaviour
 						MoveData moveData = PSMoveInput.MoveControllers [0].Data;
 						gemPos = moveData.Position;
 						handlePos = moveData.HandlePosition;
-						Vector3 handlePos2 = new Vector3 (-15f, handlePos.y / 1.5f, 0);//Mathf.Clamp (handlePos.y, -maxMin, maxMin), 0);
+						Vector3 handlePos2 = new Vector3 (-15f, process (handlePos.y), 0);//Mathf.Clamp (handlePos.y, -maxMin, maxMin), 0);
 
 						if (isMirror) {
 								gem.transform.localPosition = gemPos;

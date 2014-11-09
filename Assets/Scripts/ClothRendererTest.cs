@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ClothRendererTest : MonoBehaviour
 {
-        public event NoodleEventHandler OnNoodleReady;
+		public event NoodleEventHandler OnNoodleReady;
 
 		Renderer _renderer;
 		
@@ -14,7 +14,7 @@ public class ClothRendererTest : MonoBehaviour
 		public GameObject leftHandle;
 		public GameObject rightHandle;
 		public GameObject table;
-		
+		public GameObject[] triggers;
 
 		public float slope = 1f;
 
@@ -36,6 +36,7 @@ public class ClothRendererTest : MonoBehaviour
 				bottomBar = GameObject.FindGameObjectWithTag ("BottomBar");
 				leftHandle = GameObject.FindGameObjectWithTag ("LeftHandle");
 				rightHandle = GameObject.FindGameObjectWithTag ("RightHandle");
+				triggers = GameObject.FindGameObjectsWithTag ("TableTrigger");	
 
 				_renderer = noodles.GetComponent<Renderer> ();
 				topHeight = topBar.GetComponent<Transform> ().position.y;
@@ -44,7 +45,10 @@ public class ClothRendererTest : MonoBehaviour
 				slope = 1f;
 				maxNoodleScore = 500f;
 				noodlesfinished = 0;
-			
+				foreach (GameObject trigger in triggers) {
+						trigger.SetActive (false);
+				}
+				noodles.GetComponent<InteractiveCloth> ().useGravity = true;
 		}
 	
 		// Update is called once per frame
@@ -52,6 +56,20 @@ public class ClothRendererTest : MonoBehaviour
 		{
 //				Debug.Log (string.Format ("({0},{1})", _renderer.bounds.center.y - _renderer.bounds.extents.y, _renderer.bounds.center.y + _renderer.bounds.extents.y));
 				
+				//check to see if both hands have grabbed the noodlesA
+				if (leftHandle.GetComponent<AttachNoodleScript> ().isAttached () && rightHandle.GetComponent<AttachNoodleScript> ().isAttached ()) {
+						noodles.GetComponent<InteractiveCloth> ().AttachToCollider (leftHandle.GetComponent<Collider> ().collider);
+						noodles.GetComponent<InteractiveCloth> ().AttachToCollider (rightHandle.GetComponent<Collider> ().collider);
+						attachedToHands = true;
+						leftHandle.GetComponent<AttachNoodleScript> ().unAttach ();
+						rightHandle.GetComponent<AttachNoodleScript> ().unAttach ();
+						foreach (GameObject trigger in triggers) {
+								trigger.SetActive (false);
+						}
+						noodles.GetComponent<InteractiveCloth> ().useGravity = true;
+			
+				}
+
 				if (attachedToHands) {
 						maxRamenHeight = _renderer.bounds.max.y;
 				
@@ -71,25 +89,20 @@ public class ClothRendererTest : MonoBehaviour
 								noodleScore = 0f;
 								Invoke ("resetNoodles", 2f);
 								attachedToHands = false;
+								
 						}		
 		
 						if (noodleScore >= maxNoodleScore) {
 								//Debug.Log ("FINISHED ONE SET OF NOODLES");
 
-                                if (OnNoodleReady != null)
-                                    OnNoodleReady();
+								if (OnNoodleReady != null)
+										OnNoodleReady ();
 
 								noodleScore = 0f;
 								noodlesfinished++;
 						}
 				} else {
-						//check to see if both hands have grabbed the noodles
-						if (leftHandle.GetComponent<AttachNoodleScript> ().isAttached () && rightHandle.GetComponent<AttachNoodleScript> ().isAttached ()) {
-								noodles.GetComponent<InteractiveCloth> ().AttachToCollider (leftHandle.GetComponent<Collider> ().collider);
-								noodles.GetComponent<InteractiveCloth> ().AttachToCollider (rightHandle.GetComponent<Collider> ().collider);
-								attachedToHands = true;
-								Debug.Log ("ITS FUCKING ATTACHING??");
-						}
+						
 				}
 
 				ramenCountText.GetComponent<TextMesh> ().text = "Score: " + noodleScore.ToString ();
@@ -97,9 +110,14 @@ public class ClothRendererTest : MonoBehaviour
 	
 		void resetNoodles ()
 		{
+				
 				Destroy (noodles.gameObject);
-				noodles = (GameObject)Instantiate (Resources.Load ("Prefabs/Noodles", typeof(GameObject)), new Vector3 (0, table.GetComponent<Transform> ().position.y + 1, 0), Quaternion.identity);
 
+				foreach (GameObject trigger in triggers) {
+						trigger.SetActive (true);
+				}
+
+				noodles = (GameObject)Instantiate (Resources.Load ("Prefabs/Noodles", typeof(GameObject)), new Vector3 (0, table.GetComponent<Transform> ().position.y + .1f, 0), Quaternion.identity);
 				//noodles are reset so no longer attached to hands
 //				leftHandle.GetComponent<AttachNoodleScript> ().unAttach ();
 //				rightHandle.GetComponent<AttachNoodleScript> ().unAttach ();
