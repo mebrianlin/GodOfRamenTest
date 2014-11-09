@@ -85,7 +85,7 @@ public class FoodFactory {
 		string prefabFilePath = _prefabDir + info.PrefabName;
 		GameObject foodObject = Object.Instantiate(
 			Resources.Load(prefabFilePath, typeof(GameObject)) as GameObject) as GameObject;
-
+        
 		FoodOnPlateScript script = foodObject.GetComponent<FoodOnPlateScript>();
 		if (script == null)
 			return null;

@@ -12,14 +12,14 @@ public class ConveyorBelt : MonoBehaviour {
     bool 川哥 = false;
 
 	Vector3 _initialPos = new Vector3(-50, -5, 0);
-	Vector3 _conveyorSpeed = new Vector3(0.2f, 0, 0);
+	Vector3 _conveyorSpeed = new Vector3(0.15f, 0, 0);
     float _generateFoodSpeed = 1.0f;
 
 	void Start () {
         _factory = new FoodFactory();
 		_foodOnBelt = new Queue<GameObject>();
 
-        _generateFoodSpeed = 7.8f * Time.fixedDeltaTime / _conveyorSpeed.x;
+        _generateFoodSpeed = 9.5f * Time.fixedDeltaTime / _conveyorSpeed.x;
 		StartCoroutine(generateFood());
 	}
 
@@ -39,7 +39,7 @@ public class ConveyorBelt : MonoBehaviour {
                 foodOnPlate.InFocus = false;
 
 		}
-		while (_foodOnBelt.Count > 0 && _foodOnBelt.Peek().transform.position.x > 30)
+        while (_foodOnBelt.Count > 0 && _foodOnBelt.Peek().transform.position.x > 30)
 			Destroy(_foodOnBelt.Dequeue());
 
 	}
@@ -49,6 +49,8 @@ public class ConveyorBelt : MonoBehaviour {
             yield return new WaitForSeconds(_generateFoodSpeed);
 			//_factory.CreateFood(FoodType.Vegetable);
 			GameObject food = _factory.CreateFood();
+            food.transform.Rotate(new Vector3(0, 0, 45));
+
 			food.transform.position = _initialPos;
 			_foodOnBelt.Enqueue(food);
 		}
