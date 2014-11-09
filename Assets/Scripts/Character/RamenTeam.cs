@@ -89,6 +89,7 @@ public class RamenTeam : MonoBehaviour {
         FoodInfo info = script.Info;
         FoodType type = info.Type;
         float value = info.Value;
+		Food food = info.Food;
 
 		_ingredients.Enqueue(ingredient);
 

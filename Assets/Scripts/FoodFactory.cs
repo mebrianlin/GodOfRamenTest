@@ -14,6 +14,7 @@ public enum Food {
 	Pea,
 	Shrimp,
 	Tomato,
+	None,
 };
 
 public enum FoodType
@@ -28,8 +29,9 @@ public struct FoodInfo
     public string PrefabName { get; set; }
     public FoodType Type { get; set; }
     public float Value { get; set; }
+	public Food Food { get; set; }
 
-    public static FoodInfo None = new FoodInfo { PrefabName = "", Type = FoodType.None, Value = 0f };
+    public static FoodInfo None = new FoodInfo { PrefabName = "", Type = FoodType.None, Value = 0f, Food = Food.None };
 }
 
 public class FoodFactory {
@@ -37,16 +39,17 @@ public class FoodFactory {
 	string _prefabDir = "Prefabs/Food/";
 
 	static Dictionary<Food, FoodInfo> _dictionary = new Dictionary<Food, FoodInfo>() {
-		{ Food.Cai,      new FoodInfo { PrefabName = "Cai",      Type = FoodType.Vegetable, Value =  5f,} },
-		{ Food.Carrot,   new FoodInfo { PrefabName = "Carrot",   Type = FoodType.Vegetable, Value =  5f,} },
-		{ Food.Chicken,  new FoodInfo { PrefabName = "Chicken",  Type = FoodType.Meat,      Value =  5f,} },
-		{ Food.Eggs,  	 new FoodInfo { PrefabName = "Eggs",  	 Type = FoodType.Meat,      Value =  5f,} },
-		{ Food.Fish,  	 new FoodInfo { PrefabName = "Fish",  	 Type = FoodType.Meat,      Value =  5f,} },
-		{ Food.Meat,  	 new FoodInfo { PrefabName = "Meat",  	 Type = FoodType.Meat,      Value =  5f,} },
-		{ Food.Mushroom, new FoodInfo { PrefabName = "Mushroom", Type = FoodType.Vegetable, Value = 10f,} },
-		{ Food.Pea,      new FoodInfo { PrefabName = "Pea",      Type = FoodType.Vegetable, Value =  5f,} },
-		{ Food.Shrimp,   new FoodInfo { PrefabName = "Shrimp",	 Type = FoodType.Meat,      Value = 10f,} },
-		{ Food.Tomato,   new FoodInfo { PrefabName = "Tomato",	 Type = FoodType.Vegetable, Value =  5f,} },
+		{ Food.None,     new FoodInfo { PrefabName = "None",     Type = FoodType.Vegetable, Value =  0f, Food = Food.None      } },
+		{ Food.Cai,      new FoodInfo { PrefabName = "Cai",      Type = FoodType.Vegetable, Value =  5f, Food = Food.Cai      } },
+		{ Food.Carrot,   new FoodInfo { PrefabName = "Carrot",   Type = FoodType.Vegetable, Value =  5f, Food = Food.Carrot   } },
+		{ Food.Chicken,  new FoodInfo { PrefabName = "Chicken",  Type = FoodType.Meat,      Value =  5f, Food = Food.Chicken  } },
+		{ Food.Eggs,  	 new FoodInfo { PrefabName = "Eggs",  	 Type = FoodType.Meat,      Value =  5f, Food = Food.Eggs     } },
+		{ Food.Fish,  	 new FoodInfo { PrefabName = "Fish",  	 Type = FoodType.Meat,      Value =  5f, Food = Food.Fish     } },
+		{ Food.Meat,  	 new FoodInfo { PrefabName = "Meat",  	 Type = FoodType.Meat,      Value =  5f, Food = Food.Meat     } },
+		{ Food.Mushroom, new FoodInfo { PrefabName = "Mushroom", Type = FoodType.Vegetable, Value = 10f, Food = Food.Mushroom } },
+		{ Food.Pea,      new FoodInfo { PrefabName = "Pea",      Type = FoodType.Vegetable, Value =  5f, Food = Food.Pea      } },
+		{ Food.Shrimp,   new FoodInfo { PrefabName = "Shrimp",	 Type = FoodType.Meat,      Value = 10f, Food = Food.Shrimp   } },
+		{ Food.Tomato,   new FoodInfo { PrefabName = "Tomato",	 Type = FoodType.Vegetable, Value =  5f, Food = Food.Tomato   } },
 	};
 
 	public GameObject CreateFood()
