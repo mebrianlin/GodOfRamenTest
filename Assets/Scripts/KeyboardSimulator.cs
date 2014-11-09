@@ -5,13 +5,18 @@ public class KeyboardSimulator : MonoBehaviour {
 
     const int MAX_TEAM = 2;
     public RamenTeam[] Teams;
-    
+
+	public GameObject[] Hands;
+
     Apprentice[] _apprentices;
     Helper[] _helpers;
 
-    KeyCode[] _addRamenCode = new KeyCode[MAX_TEAM] { KeyCode.LeftShift, KeyCode.RightShift };
-    KeyCode[] _increaseTempCode = new KeyCode[MAX_TEAM] { KeyCode.LeftControl, KeyCode.RightControl };
-    KeyCode[] _grabIngredientCode = new KeyCode[MAX_TEAM] { KeyCode.LeftAlt, KeyCode.RightAlt };
+    KeyCode[] _addRamenCode       = new KeyCode[MAX_TEAM]   { KeyCode.LeftShift,    KeyCode.RightShift };
+    KeyCode[] _increaseTempCode   = new KeyCode[MAX_TEAM]   { KeyCode.LeftControl,  KeyCode.RightControl };
+    KeyCode[] _grabIngredientCode = new KeyCode[MAX_TEAM]   { KeyCode.LeftAlt,      KeyCode.RightAlt };
+	KeyCode[] _moveHandUpCode     = new KeyCode[MAX_TEAM*2] { KeyCode.W, KeyCode.I, KeyCode.UpArrow,   KeyCode.Keypad8 };
+	KeyCode[] _moveHandDownCode   = new KeyCode[MAX_TEAM*2] { KeyCode.S, KeyCode.K, KeyCode.DownArrow, KeyCode.Keypad2 };
+
 
 	void Start () {
         if (Teams.Length > MAX_TEAM)
@@ -40,5 +45,12 @@ public class KeyboardSimulator : MonoBehaviour {
             if (Input.GetKeyDown(_grabIngredientCode[i]))
                 Teams[i].GrabIngredient();
         }
+
+		for (int i = 0; i < 2*MAX_TEAM && i < 2*Teams.Length; ++i) {
+			if (Input.GetKey(_moveHandUpCode[i]) && i < Hands.Length)
+				Hands[i].transform.Translate(Vector3.up * 0.2f);
+			if (Input.GetKey(_moveHandDownCode[i]) && i < Hands.Length)
+				Hands[i].transform.Translate(Vector3.down * 0.2f);
+		}
 	}
 }

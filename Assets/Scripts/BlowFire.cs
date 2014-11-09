@@ -9,6 +9,8 @@ public class BlowFire : MonoBehaviour {
 
 	public GameObject kedu;
 
+	public GameObject water;
+	public Texture[] waterTexture;//water-origin, water-boil, water-noodle-origin, water-noodle-boil
 	private bool useKeyBoardControl = true;
 	private float temperature = 0;
 
@@ -64,7 +66,11 @@ public class BlowFire : MonoBehaviour {
 
 		//boil Ramen
 		if(temperature>= perfectTemprature-temperatureRange && temperature<= perfectTemprature+temperatureRange){
-			if(ramenToBeBoiled.Count>=0){
+
+
+
+			if(ramenToBeBoiled.Count>0){
+				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[3]);
 				foreach(Ramen ramen in ramenToBeBoiled){
 					ramen.boilTime += Time.deltaTime;
 					Debug.Log(ramen.boilTime);
@@ -76,7 +82,16 @@ public class BlowFire : MonoBehaviour {
                     if (OnNoodleCooked != null)
                         OnNoodleCooked();
 					Debug.Log("Finish one bunch of noodle! Raw Ramen num: " +  ramenToBeBoiled.Count);
+					water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[1]);
 				}
+			}else{
+				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[1]);
+			}
+		}else {
+			if(ramenToBeBoiled.Count>0){
+				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
+			}else{
+				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[0]);
 			}
 		}
 
@@ -94,6 +109,7 @@ public class BlowFire : MonoBehaviour {
 		Ramen newRamen = new Ramen();
 		ramenToBeBoiled.Enqueue(newRamen);
 		Debug.Log("Get one bunch of noodle! Raw Ramen num: " +  ramenToBeBoiled.Count);
+		water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
 
 	}
 
@@ -104,5 +120,5 @@ public class BlowFire : MonoBehaviour {
             temperature += blowSpeed * Time.deltaTime;
         }
     }
-
+	
 }
