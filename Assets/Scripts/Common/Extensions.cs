@@ -24,5 +24,18 @@ namespace ExtensionMethods
                 .Where(x => x.tag == tag)
                 .ToArray();
 		}
+
+		public static GameObject FindObjectWithTagInChildren(this GameObject obj, string tag)
+		{
+			GameObject[] array = obj.transform.Cast<Transform>()
+				.Select(x => x.gameObject)
+				.Where(x => x.tag == tag)
+				.ToArray();
+			if (array.Length == 0)
+				return null;
+			else
+				return array[0];
+
+		}
 	}   
 }

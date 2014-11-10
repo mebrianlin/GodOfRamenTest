@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using ExtensionMethods;
 
 public class RamenTeam : MonoBehaviour {
+	public GameObject delicious;
 
     int _id;
 	Vector3 _ingredientTargetPos;
@@ -25,10 +26,7 @@ public class RamenTeam : MonoBehaviour {
 			Debug.LogError("Cannot find Emcee object.");
 		_emcee = obj.GetComponent<Emcee>();
         _id = _emcee.GetTeamId(this);
-        if (_id == 0)
-            _ingredientTargetPos = new Vector3(-15, 0, 0);
-        else
-            _ingredientTargetPos = new Vector3(15, 0, 0);
+		_ingredientTargetPos = this.gameObject.FindObjectWithTagInChildren("BowlPosition").transform.position;
 
         if (_apprentice == null)
             Debug.LogError("Cannot find Apprentice.");
@@ -54,7 +52,7 @@ public class RamenTeam : MonoBehaviour {
 
 	void helper_OnNoodleCooked()
 	{
-		Vector3 boiledRamenPos = new Vector3(33f-_ramenBowl.Count*8, 20, 0 );
+		Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(_ramenBowl.Count*8, 0, 0 );;
 
 		GameObject boiledRamenObject = 
 			Instantiate(Resources.Load("Prefabs/RamenIngredient", typeof(GameObject)) as GameObject, 
@@ -120,10 +118,9 @@ public class RamenTeam : MonoBehaviour {
 					// add score
 					// destroy the complete ramen
 					_ramenBowl.RemoveAt(i);
-					Destroy(g);
-					foreach(var ramenB in _ramenBowl){
-						ramenB.transform.position += new Vector3(8f,0f,0f);
-					}
+					//Destroy(g);
+					StartCoroutine(WaitAndDestroy(g));
+
 
 					_emcee.CompleteRamen(this);
 				}
@@ -133,4 +130,35 @@ public class RamenTeam : MonoBehaviour {
 				++i;
 		}
     }
+
+	IEnumerator WaitAndDestroy(GameObject g){
+
+		Vector3 originPos = delicious.transform.position;
+		Vector3 targetPos = originPos + new Vector3(0, 47.5f, 0);
+
+		float moveTime = 1f;
+		float currentTime = moveTime;
+	
+		while (currentTime>=0) {
+			currentTime -= 0.01f;
+			yield return new WaitForSeconds(0.01f);
+			delicious.transform.position = Vector3.Lerp( originPos,targetPos, 1-currentTime/moveTime);
+		}
+
+		delicious.GetComponent<Animator>().SetBool("praise", true);
+
+		yield return new WaitForSeconds(1f);
+
+		while (currentTime>=-1 && currentTime<0) {
+			currentTime -= 0.01f;
+			yield return new WaitForSeconds(0.01f);
+			delicious.transform.position = Vector3.Lerp( targetPos, originPos,-currentTime/moveTime);
+		}
+
+		Destroy(g);
+		foreach(var ramenB in _ramenBowl){
+			ramenB.transform.position += new Vector3(8f,0f,0f);
+		}
+	}
+	
 }

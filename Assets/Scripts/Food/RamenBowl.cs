@@ -67,9 +67,9 @@ public class RamenBowl:MonoBehaviour {
 			Debug.Log("Need 2 more!");
 			if(!_requiredIngredients.ContainsKey(Food.Cai))
 				GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenCai);
-			else if(_requiredIngredients.ContainsKey(Food.Meat))
+			else if(!_requiredIngredients.ContainsKey(Food.Meat))
 				GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenMeat);
-			else if(_requiredIngredients.ContainsKey(Food.Eggs))
+			else if(!_requiredIngredients.ContainsKey(Food.Eggs))
 				GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenEgg);
 			break;
 		case 3:
