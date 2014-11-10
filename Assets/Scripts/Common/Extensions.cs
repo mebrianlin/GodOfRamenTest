@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ExtensionMethods
 {
@@ -13,6 +15,14 @@ namespace ExtensionMethods
 		public static bool Empty<K, V>(this Dictionary<K, V> container)
 		{
 			return container.Count == 0;
+		}
+
+        public static GameObject[] FindObjectsWithTagInChildren(this GameObject obj, string tag)
+		{
+            return obj.transform.Cast<Transform>()
+                .Select(x => x.gameObject)
+                .Where(x => x.tag == tag)
+                .ToArray();
 		}
 	}   
 }

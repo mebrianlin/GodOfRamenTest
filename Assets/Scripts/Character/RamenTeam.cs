@@ -10,7 +10,6 @@ public class RamenTeam : MonoBehaviour {
 	Vector3 _ingredientTargetPos;
     Helper _helper;
     Apprentice _apprentice;
-    ConveyorBelt _conveyorBelt;
 	Emcee _emcee;
 
     int _numRamen;
@@ -20,15 +19,16 @@ public class RamenTeam : MonoBehaviour {
 	void Start () {
         _apprentice = GetComponentInChildren<Apprentice>();
         _helper = GetComponentInChildren<Helper>();
-        GameObject obj = GameObject.FindGameObjectWithTag("ConveyorBelt");
-        if (obj == null)
-            Debug.LogError("Cannot find ConveyorBelt object.");
-        _conveyorBelt = obj.GetComponent<ConveyorBelt>();
 
-		obj = GameObject.FindGameObjectWithTag("Emcee");
+        GameObject obj = GameObject.FindGameObjectWithTag("Emcee");
 		if (obj == null)
 			Debug.LogError("Cannot find Emcee object.");
 		_emcee = obj.GetComponent<Emcee>();
+        _id = _emcee.GetTeamId(this);
+        if (_id == 0)
+            _ingredientTargetPos = new Vector3(-15, 0, 0);
+        else
+            _ingredientTargetPos = new Vector3(15, 0, 0);
 
         if (_apprentice == null)
             Debug.LogError("Cannot find Apprentice.");
@@ -37,11 +37,7 @@ public class RamenTeam : MonoBehaviour {
 		_apprentice.OnNoodleReady += apprentice_OnNoodleReady;
 		_helper.OnNoodleCooked += helper_OnNoodleCooked;
 
-		_id = _emcee.GetTeamId(this);
-		if (_id == 0)
-			_ingredientTargetPos = new Vector3(15, 0, 0);
-		else
-			_ingredientTargetPos = new Vector3(-15, 0, 0);
+		
 
 		StartCoroutine(movingIngredients());
 	}
@@ -91,7 +87,7 @@ public class RamenTeam : MonoBehaviour {
 	}
 
     public void GrabIngredient() {
-        GameObject ingredient = _conveyorBelt.GrabIngredient();
+        GameObject ingredient = _emcee.GrabIngredient(this);
 
         // did not get the ingredient
         if (ingredient == null)
