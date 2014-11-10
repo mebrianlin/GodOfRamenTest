@@ -16,7 +16,7 @@ public class ClothRendererTest : MonoBehaviour
 		public GameObject table;
 		public GameObject[] triggers;
 
-		public float slope = 1f;
+		public float slope;
 
 		private float topHeight;
 		private float bottomHeight;
@@ -139,7 +139,7 @@ public class ClothRendererTest : MonoBehaviour
 						trigger.SetActive (true);
 				}
 
-				noodles = (GameObject)Instantiate (Resources.Load ("Prefabs/Noodles", typeof(GameObject)), new Vector3 (0, table.GetComponent<Transform> ().position.y + .1f, 0), Quaternion.identity);
+				noodles = (GameObject)Instantiate (Resources.Load ("Prefabs/Noodles", typeof(GameObject)), new Vector3 (-9, table.GetComponent<Transform> ().position.y + .1f, 0), noodles.transform.rotation);
 				//noodles are reset so no longer attached to hands
 //				leftHandle.GetComponent<AttachNoodleScript> ().unAttach ();
 //				rightHandle.GetComponent<AttachNoodleScript> ().unAttach ();
