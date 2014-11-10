@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class PSMoveExample2 : MonoBehaviour
+public class PSMoveExampleX : MonoBehaviour
 {
 		public int controllerNumber;
 		public GameObject table;
