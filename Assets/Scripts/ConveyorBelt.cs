@@ -11,7 +11,7 @@ public class ConveyorBelt : MonoBehaviour {
     bool ChuanGeMode = false;
     bool 川哥 = false;
 
-	Vector3 _initialPos = new Vector3(-50, -5, 0);
+	Vector3 _initialPos = new Vector3(-40, -11, 7);
 	Vector3 _conveyorSpeed = new Vector3(0.15f, 0, 0);
     float _generateFoodSpeed = 1.0f;
 
@@ -39,7 +39,7 @@ public class ConveyorBelt : MonoBehaviour {
                 foodOnPlate.InFocus = false;
 
 		}
-        while (_foodOnBelt.Count > 0 && _foodOnBelt.Peek().transform.position.x > 30)
+        while (_foodOnBelt.Count > 0 && _foodOnBelt.Peek().transform.position.x > 40)
 			Destroy(_foodOnBelt.Dequeue());
 
 	}
