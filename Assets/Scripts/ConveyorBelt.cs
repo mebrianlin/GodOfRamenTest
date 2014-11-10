@@ -48,6 +48,8 @@ public class ConveyorBelt : MonoBehaviour {
             _foodOnBelt.Enqueue(food);
             pos -= new Vector3(_foodSize, 0, 0);
         }
+
+        StartCoroutine(generateFood());
 	}
 
 	void FixedUpdate () {
@@ -71,12 +73,17 @@ public class ConveyorBelt : MonoBehaviour {
 
 	}
 
-    public void GenerateFood(Food food)
-    {
-        GameObject foodObj = _factory.CreateFood(food);
-        foodObj.transform.position = _leftMaskPos;
-        _foodOnBelt.Enqueue(foodObj);
-    }
+	IEnumerator generateFood() {
+		while (true) {
+            yield return new WaitForSeconds(_generateFoodSpeed);
+			//_factory.CreateFood(FoodType.Vegetable);
+			GameObject food = _factory.CreateFood();
+
+
+            food.transform.position = _leftMaskPos;
+			_foodOnBelt.Enqueue(food);
+		}
+	}
 
     public GameObject GrabIngredient() {
         // TODO: Brian
