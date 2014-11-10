@@ -52,9 +52,22 @@ public class FoodFactory {
 		{ Food.Tomato,   new FoodInfo { PrefabName = "Tomato",	 Type = FoodType.Vegetable, Value =  5f, Food = Food.Tomato   } },
 	};
 
+    public Food GetRandomFood()
+    {
+        return _dictionary.ElementAt(Random.Range(0, _dictionary.Count)).Key;
+    }
+
+    public Food GetRandomFood(FoodType type)
+    {
+        return _dictionary.OrderBy(x => Random.Range(0f, 1f))
+            .SkipWhile(x => x.Value.Type != type)
+			.Select(x => x.Key)
+			.ElementAt(0);
+    }
+
 	public GameObject CreateFood()
 	{
-		return CreateFood(_dictionary.ElementAt(Random.Range(0, _dictionary.Count)).Key);
+        return CreateFood(GetRandomFood());
     }
 
 	public GameObject CreateFood(FoodType type)
@@ -66,12 +79,8 @@ public class FoodFactory {
 			.ElementAt(0);
 
 		*/
-		Food food = _dictionary.OrderBy(x => Random.Range(0f, 1f))
-			.SkipWhile(x => x.Value.Type != type)
-			.Select(x => x.Key)
-			.ElementAt(0);
 			
-		return CreateFood(food);
+		return CreateFood(GetRandomFood(type));
 	}
 	
 	public GameObject CreateFood(Food food)
