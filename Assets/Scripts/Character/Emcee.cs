@@ -8,10 +8,14 @@ using ExtensionMethods;
 public class Emcee : MonoBehaviour {
 
 	const int MAX_TEAM = 2;
-	const int MAX_INGREDIENT = 3;
+    const int MAX_INGREDIENT = 3;
+    
+    FoodFactory _factory;
     // mapping teams to their teamIDs
     Dictionary<RamenTeam, int> _teams = new Dictionary<RamenTeam, int>();
     List<ConveyorBelt> _conveyorBelts;
+
+    float _generateFoodSpeed = 1.0f;
 
 	public Food[] RequiredIngredient {
 		get { return new Food[MAX_INGREDIENT]{ Food.Cai, Food.Mushroom, Food.Chicken}; }
@@ -24,6 +28,8 @@ public class Emcee : MonoBehaviour {
         for (int i = 0; i < _teamScores.Length; ++i)
             _teamScores[i] = 0;
 
+        _factory = new FoodFactory();
+
         // GameObject[] conveyorBeltObjs = gameObject.FindObjectsWithTagInChildren("ConveyorBelt").OrderBy(obj => obj.transform.position.x).ToArray();
         // GameObject[] conveyorBeltObjs = GameObject.FindGameObjectsWithTag("ConveyorBelt");
 
@@ -35,11 +41,24 @@ public class Emcee : MonoBehaviour {
             .ToList();
         if (_conveyorBelts.Count != MAX_TEAM)
             Debug.LogError(string.Format("Number of ConveroyBelt({0}) does not equal to MAX_TEAM({1}).", _conveyorBelts.Count, MAX_TEAM));
+
+        StartCoroutine(generateFood());
 	}
 	
 	void Update () {
 	
 	}
+    
+    IEnumerator generateFood()
+    {
+        while (true)
+        {
+            Food food = _factory.GetRandomFood();
+            foreach (var c in _conveyorBelts)
+                c.GenerateFood(food);
+            yield return new WaitForSeconds(_generateFoodSpeed);
+        }
+    }
 
     /// <summary>
     /// Get a team's ID. If it is a new team, create a new ID for it.
