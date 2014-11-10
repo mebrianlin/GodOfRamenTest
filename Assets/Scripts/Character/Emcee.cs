@@ -18,7 +18,7 @@ public class Emcee : MonoBehaviour {
     float _generateFoodSpeed = 1.0f;
 
 	public Food[] RequiredIngredient {
-		get { return new Food[MAX_INGREDIENT]{ Food.Cai, Food.Mushroom, Food.Chicken}; }
+		get { return new Food[MAX_INGREDIENT]{ Food.Eggs, Food.Meat, Food.Cai}; }
 		private set {}
 	}
 

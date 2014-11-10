@@ -18,6 +18,7 @@ public class ConveyorBelt : MonoBehaviour {
     bool ChuanGeMode = false;
     bool 川哥 = false;
 
+	Vector3 _initialPos = new Vector3(-50, -8.5f, 7);
 	Vector3 _conveyorSpeed = new Vector3(0.15f, 0, 0);
     float _generateFoodSpeed = 1.0f;
 

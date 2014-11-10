@@ -74,7 +74,7 @@ public class BlowFire : MonoBehaviour {
 		}
 
 
-		gameObject.GetComponent<GUIText>().text = "Temperature: "+temperature.ToString("f2") + " ";
+		//gameObject.GetComponent<GUIText>().text = "Temperature: "+temperature.ToString("f2") + " ";
 
 		//boil Ramen
 		if(temperature>= perfectTemprature-temperatureRange && temperature<= perfectTemprature+temperatureRange){

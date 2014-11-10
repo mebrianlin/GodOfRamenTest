@@ -6,6 +6,15 @@ using ExtensionMethods;
 
 public class RamenBowl:MonoBehaviour {
 
+	public Texture ramenAllBlack;
+	public Texture ramenCai;
+	public Texture ramenMeat;
+	public Texture ramenEgg;
+	public Texture ramenCaiMeat;
+	public Texture ramenCaiEgg;
+	public Texture ramenMeatEgg;
+	public Texture ramenFinished;
+
 	Dictionary<Food, int> _requiredIngredients = new Dictionary<Food, int>();
 
 	public void SetRequiredIngredients(Food[] food)
@@ -38,7 +47,42 @@ public class RamenBowl:MonoBehaviour {
 		return _requiredIngredients.Empty();
 	}
 
+	//hardcoded T_T Sorry
+	public void ChangeRamenTexture(){
+		Debug.Log("Required Ingredient Number: " + _requiredIngredients.Count);
+		switch (_requiredIngredients.Count){
+		case 0:
+			GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenFinished);
+			break;
+		case 1:
+			Debug.Log("Need 1 more!");
+			if(_requiredIngredients.ContainsKey(Food.Cai))
+				GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenMeatEgg);
+			else if(_requiredIngredients.ContainsKey(Food.Meat))
+				GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenCaiEgg);
+			else if(_requiredIngredients.ContainsKey(Food.Eggs))
+				GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenCaiMeat);
+			break;
+		case 2:
+			Debug.Log("Need 2 more!");
+			if(!_requiredIngredients.ContainsKey(Food.Cai))
+				GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenCai);
+			else if(_requiredIngredients.ContainsKey(Food.Meat))
+				GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenMeat);
+			else if(_requiredIngredients.ContainsKey(Food.Eggs))
+				GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenEgg);
+			break;
+		case 3:
+			GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", ramenAllBlack);
+			break;
+		}
+	}
+
 	void Start(){
+
+	}
+
+	void Update(){
 
 	}
 }

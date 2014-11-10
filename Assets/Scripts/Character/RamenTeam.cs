@@ -15,7 +15,7 @@ public class RamenTeam : MonoBehaviour {
     int _numRamen;
 	Queue<GameObject> _ingredients = new Queue<GameObject>();
 	List<GameObject> _ramenBowl = new List<GameObject>();
-
+	
 	void Start () {
         _apprentice = GetComponentInChildren<Apprentice>();
         _helper = GetComponentInChildren<Helper>();
@@ -54,12 +54,14 @@ public class RamenTeam : MonoBehaviour {
 
 	void helper_OnNoodleCooked()
 	{
+		Vector3 boiledRamenPos = new Vector3(33f-_ramenBowl.Count*8, 20, 0 );
+
 		GameObject boiledRamenObject = 
-			Instantiate(Resources.Load("Prefabs/BoiledRamen", typeof(GameObject)) as GameObject, 
-			            new Vector3(-6,16.5f,0) ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
+			Instantiate(Resources.Load("Prefabs/RamenIngredient", typeof(GameObject)) as GameObject, 
+			            boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
 		RamenBowl bowl = boiledRamenObject.GetComponent<RamenBowl>();
 		if (bowl == null)
-			Debug.LogError("Cannot find RAMENNNN");
+			Debug.LogError("Cannot find RAMENNNN AAAAAAAAAAAAAAA");
 		bowl.SetRequiredIngredients(_emcee.RequiredIngredient);
 		_ramenBowl.Add(boiledRamenObject);
 
@@ -111,6 +113,7 @@ public class RamenTeam : MonoBehaviour {
 			var r = g.GetComponent<RamenBowl>();
 			if (r.AddIngredient(food)) {
 				// if a bowl of ramen is completed (ingredients + noodles)
+				r.ChangeRamenTexture();
 				if (r.IsBowlComplete()) {
 					++_numRamen;
 					// TODO:
@@ -118,6 +121,10 @@ public class RamenTeam : MonoBehaviour {
 					// destroy the complete ramen
 					_ramenBowl.RemoveAt(i);
 					Destroy(g);
+					foreach(var ramenB in _ramenBowl){
+						ramenB.transform.position += new Vector3(8f,0f,0f);
+					}
+
 					_emcee.CompleteRamen(this);
 				}
 				break;
