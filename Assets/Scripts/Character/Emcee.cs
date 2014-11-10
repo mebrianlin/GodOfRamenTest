@@ -42,6 +42,8 @@ public class Emcee : MonoBehaviour {
         if (_conveyorBelts.Count != MAX_TEAM)
             Debug.LogError(string.Format("Number of ConveroyBelt({0}) does not equal to MAX_TEAM({1}).", _conveyorBelts.Count, MAX_TEAM));
 
+        _generateFoodSpeed = 9.5f * Time.fixedDeltaTime / _conveyorBelts[0].Speed.x;
+
         StartCoroutine(generateFood());
 	}
 	

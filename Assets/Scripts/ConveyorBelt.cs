@@ -18,8 +18,10 @@ public class ConveyorBelt : MonoBehaviour {
     bool ChuanGeMode = false;
     bool 川哥 = false;
 
-	Vector3 _initialPos = new Vector3(-50, -8.5f, 7);
-	Vector3 _conveyorSpeed = new Vector3(0.15f, 0, 0);
+    public Vector3 Speed
+    {
+        get { return new Vector3(0.15f, 0, 0); }
+    }
     float _generateFoodSpeed = 1.0f;
 
 	void Start () {
@@ -28,8 +30,6 @@ public class ConveyorBelt : MonoBehaviour {
 
         _leftMaskPos = LeftMask.renderer.bounds.center - new Vector3(LeftMask.renderer.bounds.extents.x, 0, -0.1f);
         _rightMaskPos = RightMask.renderer.bounds.center + new Vector3(RightMask.renderer.bounds.extents.x, 0, -0.1f);
-
-        _generateFoodSpeed = 9.5f * Time.fixedDeltaTime / _conveyorSpeed.x;
 
         
         // manually create empty belt, so the belt is initially populated
@@ -55,7 +55,7 @@ public class ConveyorBelt : MonoBehaviour {
         _activeObject = null;
 
 		foreach (GameObject obj in _foodOnBelt) {
-			obj.transform.position += _conveyorSpeed;
+			obj.transform.position += Speed;
 
 			FoodOnPlateScript foodOnPlate = obj.GetComponent<FoodOnPlateScript>();
             if (foodOnPlate != null && obj.transform.position.x > transform.position.x - 5 && obj.transform.position.x < transform.position.x + 5)
