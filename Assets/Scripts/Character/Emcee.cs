@@ -9,7 +9,7 @@ public class Emcee : MonoBehaviour {
     Dictionary<RamenTeam, int> _teams = new Dictionary<RamenTeam, int>();
 
 	public Food[] RequiredIngredient {
-		get { return new Food[MAX_INGREDIENT]{ Food.Cai, Food.Mushroom, Food.Chicken}; }
+		get { return new Food[MAX_INGREDIENT]{ Food.Eggs, Food.Meat, Food.Cai}; }
 		private set {}
 	}
 

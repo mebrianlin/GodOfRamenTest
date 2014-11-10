@@ -8,6 +8,8 @@ public class Helper : MonoBehaviour {
 
     BlowFire _blowFire;
 
+	int _numRamenNeedIngredient;
+
 	Queue<GameObject> _rawRamen = new Queue<GameObject>();
 	Queue<GameObject> _boiledRamen = new Queue<GameObject>();
 
@@ -37,7 +39,7 @@ public class Helper : MonoBehaviour {
 //		GameObject boiledRamenObject = 
 //			Instantiate(Resources.Load("Prefabs/BoiledRamen", typeof(GameObject)) as GameObject, boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
 //		_boiledRamen.Enqueue(boiledRamenObject);
-
+		++_numRamenNeedIngredient;
         if (OnNoodleCooked != null)
             OnNoodleCooked();
     }
