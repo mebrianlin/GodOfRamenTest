@@ -60,10 +60,8 @@ public class RamenTeam : MonoBehaviour {
 	{
 		GameObject boiledRamenObject = 
 			Instantiate(Resources.Load("Prefabs/BoiledRamen", typeof(GameObject)) as GameObject, 
-			            new Vector3(-6,16.5f,0) ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
+			            new Vector3(0,0,0) ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
 		RamenBowl bowl = boiledRamenObject.GetComponent<RamenBowl>();
-		if (bowl == null)
-			Debug.LogError("Cannot find RAMENNNN");
 		bowl.SetRequiredIngredients(_emcee.RequiredIngredient);
 		_ramenBowl.Add(boiledRamenObject);
 
