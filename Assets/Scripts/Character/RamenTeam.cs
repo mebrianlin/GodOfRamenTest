@@ -156,6 +156,7 @@ public class RamenTeam : MonoBehaviour {
 		}
 
 		Destroy(g);
+		delicious.GetComponent<Animator>().SetBool("praise", false);
 		foreach(var ramenB in _ramenBowl){
 			ramenB.transform.position += new Vector3(8f,0f,0f);
 		}

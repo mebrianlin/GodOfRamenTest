@@ -17,8 +17,8 @@ public class BlowFire : MonoBehaviour {
 
 	private float temperature = 0;
 
-	private float blowSpeed = 3f;
-	private float coolSpeed = 1f;
+	private float blowSpeed = 8f;
+	private float coolSpeed = 5f;
 
 	//progress bar
 	public float width;
@@ -126,13 +126,20 @@ public class BlowFire : MonoBehaviour {
 		water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
 
 	}
+	
+	public void IncreaseTemperature(float magnitude)
+	{
+		if (temperature <= 35f)
+		{
+			temperature += magnitude;// * Time.deltaTime;
+		}
+	}
 
     public void IncreaseTemperature()
     {
-        if (temperature <= 35f)
-        {
-            temperature += blowSpeed * Time.deltaTime;
-        }
+		if (temperature <= 35f)
+		{
+			temperature += blowSpeed * Time.deltaTime;
+		}
     }
-	
 }

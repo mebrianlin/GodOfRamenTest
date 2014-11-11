@@ -75,4 +75,9 @@ public class Helper : MonoBehaviour {
     public void IncreaseTemperature() {
         _blowFire.IncreaseTemperature();
     }
+
+	public void IncreaseTemperature(float magnitude)
+	{
+		_blowFire.IncreaseTemperature(magnitude);
+	}
 }
