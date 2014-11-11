@@ -6,7 +6,7 @@ using ExtensionMethods;
 public class ClothRendererTest : MonoBehaviour
 {
 		public event NoodleEventHandler OnNoodleReady;
-
+		public bool mute = false;
 		Renderer _renderer;
 		
 		public GameObject topBar;
@@ -82,7 +82,8 @@ public class ClothRendererTest : MonoBehaviour
 										Debug.Log ("playin' up sound");
 										ramenUpPlayed = true;
 										ramenDownPlayed = false;
-										SoundManager.instance.playRamenUp ();				
+										if(!mute)
+											SoundManager.instance.playRamenUp ();				
 								}
 						}
 
@@ -91,7 +92,8 @@ public class ClothRendererTest : MonoBehaviour
 										Debug.Log ("playin' down sound");
 										ramenDownPlayed = true;
 										ramenUpPlayed = false;
-										SoundManager.instance.playRamenDown ();
+										if(!mute)
+											SoundManager.instance.playRamenDown ();
 								}
 						}
 
@@ -111,8 +113,8 @@ public class ClothRendererTest : MonoBehaviour
 								noodleScore = 0f;
 								Invoke ("resetNoodles", 2f);
 								attachedToHands = false;
-				
-								SoundManager.instance.playRamenBreak ();		
+								if(!mute)
+									SoundManager.instance.playRamenBreak ();		
 						}		
 		
 						if (noodleScore >= maxNoodleScore) {
