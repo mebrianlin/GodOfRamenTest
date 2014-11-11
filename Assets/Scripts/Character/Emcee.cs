@@ -36,7 +36,7 @@ public class Emcee : MonoBehaviour {
         _conveyorBelts = this.transform.Cast<Transform>()
             .Select(x => x.gameObject)
             .Where(obj => obj.tag == "ConveyorBelt")
-            .OrderByDescending(obj => obj.transform.position.x)
+            .OrderBy(obj => obj.transform.position.x)
             .Select(obj => obj.GetComponent<ConveyorBelt>())
             .ToList();
         if (_conveyorBelts.Count != MAX_TEAM)

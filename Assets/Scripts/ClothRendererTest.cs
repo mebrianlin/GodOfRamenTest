@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using ExtensionMethods;
+
 public class ClothRendererTest : MonoBehaviour
 {
 		public event NoodleEventHandler OnNoodleReady;
@@ -32,14 +34,24 @@ public class ClothRendererTest : MonoBehaviour
 		// Use this for initialization
 		void Start ()
 		{
-				noodles = GameObject.FindGameObjectWithTag ("Noodles");
+		/*
+				noodles = this.gameObject.FindObjectWithTagInChildren("Noodles");
+				table = this.gameObject.FindObjectWithTagInChildren ("Table");
+				topBar = this.gameObject.FindObjectWithTagInChildren ("TopBar");
+				bottomBar = this.gameObject.FindObjectWithTagInChildren ("BottomBar");
+				leftHandle = this.gameObject.FindObjectWithTagInChildren ("LeftHandle");
+				rightHandle = this.gameObject.FindObjectWithTagInChildren ("RightHandle");
+				triggers = this.gameObject.FindObjectsWithTagInChildren ("TableTrigger");	
+				*/
+				/*
+				 * noodles = GameObject.FindGameObjectWithTag ("Noodles");
 				table = GameObject.FindGameObjectWithTag ("Table");
 				topBar = GameObject.FindGameObjectWithTag ("TopBar");
 				bottomBar = GameObject.FindGameObjectWithTag ("BottomBar");
 				leftHandle = GameObject.FindGameObjectWithTag ("LeftHandle");
 				rightHandle = GameObject.FindGameObjectWithTag ("RightHandle");
 				triggers = GameObject.FindGameObjectsWithTag ("TableTrigger");	
-
+*/
 				_renderer = noodles.GetComponent<Renderer> ();
 				topHeight = topBar.GetComponent<Transform> ().position.y;
 				bottomHeight = bottomBar.GetComponent<Transform> ().position.y;
@@ -139,7 +151,7 @@ public class ClothRendererTest : MonoBehaviour
 						trigger.SetActive (true);
 				}
 
-				noodles = (GameObject)Instantiate (Resources.Load ("Prefabs/Noodles", typeof(GameObject)), new Vector3 (-9, table.GetComponent<Transform> ().position.y + .1f, 0), noodles.transform.rotation);
+				noodles = (GameObject)Instantiate (Resources.Load ("Prefabs/Noodles", typeof(GameObject)), new Vector3 (noodles.transform.position.x, table.GetComponent<Transform> ().position.y + .1f, 0), noodles.transform.rotation);
 				//noodles are reset so no longer attached to hands
 //				leftHandle.GetComponent<AttachNoodleScript> ().unAttach ();
 //				rightHandle.GetComponent<AttachNoodleScript> ().unAttach ();

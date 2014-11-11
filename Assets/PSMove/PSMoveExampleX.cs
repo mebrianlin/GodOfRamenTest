@@ -6,7 +6,7 @@ public class PSMoveExampleX : MonoBehaviour
 {
 		public int controllerNumber;
 		public GameObject table;
-		public string ipAddress = "128.2.237.237";
+		public string ipAddress = "128.2.239.254";
 		public string port = "7899";
 	
 		public GameObject gem, handle;
@@ -29,7 +29,7 @@ public class PSMoveExampleX : MonoBehaviour
 		// Use this for initialization
 		void Start ()
 		{
-				table = GameObject.FindGameObjectWithTag ("Table");
+				//table = GameObject.FindGameObjectWithTag ("Table");
 		}
 
 		float process (float y)
@@ -50,17 +50,17 @@ public class PSMoveExampleX : MonoBehaviour
 						Vector3 gemPos, handlePos;
 						MoveData moveData = PSMoveInput.MoveControllers [controllerNumber].Data;
 						gemPos = moveData.Position;
-						handlePos = moveData.HandlePosition;
-						Vector3 handlePos2 = new Vector3 (15f, process (handlePos.y), 0f);
+						handlePos = new Vector3(handle.transform.position.x,process(moveData.HandlePosition.y),handle.transform.position.z);//moveData.HandlePosition;
+						//Vector3 handlePos = new Vector3 (15, process (handlePos.y), 0f);
 						if (isMirror) {
 								gem.transform.localPosition = gemPos;
-								handle.transform.localPosition = handlePos2;
+								handle.transform.localPosition = handlePos;
 								handle.transform.localRotation = Quaternion.Euler (moveData.Orientation);
 						} else {
 								gemPos.z = -gemPos.z + zOffset;
 								handlePos.z = -handlePos.z + zOffset;
 								gem.transform.localPosition = gemPos;
-								handle.transform.localPosition = handlePos2;
+								handle.transform.localPosition = handlePos;
 								handle.transform.localRotation = Quaternion.LookRotation (gemPos - handlePos);
 								handle.transform.Rotate (new Vector3 (0, 0, moveData.Orientation.z));
 				
