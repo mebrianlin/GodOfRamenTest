@@ -141,7 +141,7 @@ public class ClothRendererTest : MonoBehaviour
 						}
 				}
 		
-				ramenCountText.GetComponent<TextMesh> ().text = "Score: " + noodleScore.ToString ();
+				ramenCountText.GetComponent<TextMesh> ().text = "Score: " + ((int)noodleScore).ToString ();
 		}
 	
 		void resetNoodles ()
