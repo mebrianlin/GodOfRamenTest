@@ -34,7 +34,7 @@ public class PSMoveExampleX : MonoBehaviour
 
 		float process (float y)
 		{
-				float min = table.GetComponent<Transform> ().position.y, max = 5f;
+				float min = table.GetComponent<Transform> ().position.y, max = 15f;
 				float minPs = -3f, maxPs = 3f;
 				y = Mathf.Clamp (y, minPs, maxPs);
 				return (y - minPs) / (maxPs - minPs) * (max - min) + min;
@@ -50,17 +50,17 @@ public class PSMoveExampleX : MonoBehaviour
 						Vector3 gemPos, handlePos;
 						MoveData moveData = PSMoveInput.MoveControllers [controllerNumber].Data;
 						gemPos = moveData.Position;
-						handlePos = new Vector3(handle.transform.position.x,process(moveData.HandlePosition.y),handle.transform.position.z);//moveData.HandlePosition;
-						//Vector3 handlePos = new Vector3 (15, process (handlePos.y), 0f);
+						handlePos = new Vector3 (handle.transform.position.x, process (moveData.HandlePosition.y), handle.transform.position.z);//moveData.HandlePosition;
+
 						if (isMirror) {
 								gem.transform.localPosition = gemPos;
-								handle.transform.localPosition = handlePos;
+								handle.transform.position = handlePos;
 								handle.transform.localRotation = Quaternion.Euler (moveData.Orientation);
 						} else {
 								gemPos.z = -gemPos.z + zOffset;
 								handlePos.z = -handlePos.z + zOffset;
 								gem.transform.localPosition = gemPos;
-								handle.transform.localPosition = handlePos;
+								handle.transform.position = handlePos;
 								handle.transform.localRotation = Quaternion.LookRotation (gemPos - handlePos);
 								handle.transform.Rotate (new Vector3 (0, 0, moveData.Orientation.z));
 				
