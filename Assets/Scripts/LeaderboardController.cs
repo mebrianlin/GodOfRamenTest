@@ -6,11 +6,11 @@ using System.Linq;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-public class LeaderboardController : Leaderboard, MonoBehaviour
+public class LeaderboardController : MonoBehaviour
 {
     void OnApplicationQuit()
     {
-        saveFile();
+        Leaderboard.Instance.Save();
     }
 }
 
@@ -22,7 +22,15 @@ public struct LeaderboardEntry
     public int Score;
 }
 
-public class Leaderboard {
+public class LeaderboardEntryComparer : IComparer<LeaderboardEntry>
+{
+    public int Compare(LeaderboardEntry lhs, LeaderboardEntry rhs)
+    {
+        return rhs.Score - lhs.Score;
+    }
+}
+
+public sealed class Leaderboard {
     static readonly Leaderboard _instance = new Leaderboard();
 
     public static Leaderboard Instance
@@ -33,24 +41,29 @@ public class Leaderboard {
         }
     }
 
-    const int MAX_ENTRY = 10;
-    readonly string FILE_DIR = Application.persistentDataPath + "/";
+    const int MAX_ENTRY = 100;
+    readonly string FILE_DIR = Application.persistentDataPath;
     const string FILE_NAME = "leaderboard.bin";
-    readonly string FILE_PATH;
+    readonly string _filePath;
     List<LeaderboardEntry> _leaderBoard = new List<LeaderboardEntry>();
+
+    //IComparer<LeaderboardEntry> c = new LeaderboardEntryComparer();
+    //SortedList<LeaderboardEntry, int> _sortedLeaderBoard = 
+    //    new SortedList<LeaderboardEntry, int>(new LeaderboardEntryComparer());
 
     private Leaderboard()
     {
-        FILE_PATH = FILE_DIR + "/" + FILE_NAME;
-        //FILE_PATH = Path.Combine(Application.persistentDataPath, FILE_NAME);
-        Debug.Log(FILE_PATH);
+        _filePath = Path.Combine(FILE_DIR, FILE_NAME);
         readFile();
     }
 
-    int addEntry(LeaderboardEntry entry)
+    int addEntry(LeaderboardEntry entry, int hint = 0)
     {
         int rank = 0;
-        for (rank = 0; rank < _leaderBoard.Count; ++rank)
+        if (hint < _leaderBoard.Count && _leaderBoard[hint].Score > entry.Score)
+            rank = hint;
+
+        for (; rank < _leaderBoard.Count; ++rank)
             if (entry.Score > _leaderBoard[rank].Score)
                 break;
 
@@ -68,6 +81,7 @@ public class Leaderboard {
     /// <returns>The rank of entry</returns>
     public int[] AddEntries(LeaderboardEntry[] entries)
     {
+        /*
         int[] ranks = entries
             .Select((x, i) => new { Index = i, Entry = x })
             .OrderByDescending(x => x.Entry.Score)
@@ -76,21 +90,22 @@ public class Leaderboard {
             .Select(x => x.Rank)
             .ToArray();
 
-        saveFile();
         return ranks;
-
-        /*
+        */
+        
         int[] ranks = new int[entries.Length];
         var sorted = entries
             .Select((x, i) => new { Index = i, Entry = x })
             .OrderByDescending(x => x.Entry.Score)
             .ToArray();
+
+        int lastIndex = 0;
         foreach (var i in sorted)
-            ranks[i.Index] = AddEntry(i.Entry);
+            lastIndex = ranks[i.Index] = addEntry(i.Entry, lastIndex);
         
         saveFile();
         return ranks;
-        */
+        
     }
 
     public LeaderboardEntry[] GetEntries()
@@ -104,11 +119,15 @@ public class Leaderboard {
             Debug.Log(string.Format("{0}: Score = {1}", i, _leaderBoard[i].Score));
     }
 
-    protected void saveFile()
+    public void Save() {
+        saveFile();
+    }
+
+    void saveFile()
     {
         try
         {
-            using (Stream stream = File.Open(FILE_PATH, FileMode.Create))
+            using (Stream stream = File.Open(_filePath, FileMode.Create))
             {
                 BinaryFormatter bin = new BinaryFormatter();
                 bin.Serialize(stream, _leaderBoard);
@@ -123,7 +142,7 @@ public class Leaderboard {
     {
         try
         {
-            using (Stream stream = File.Open(FILE_PATH, FileMode.Open))
+            using (Stream stream = File.Open(_filePath, FileMode.Open))
             {
                 BinaryFormatter bin = new BinaryFormatter();
                 _leaderBoard = (List<LeaderboardEntry>)bin.Deserialize(stream);

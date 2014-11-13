@@ -9,7 +9,8 @@ public class Emcee : MonoBehaviour {
 
 	const int MAX_TEAM = 2;
     const int MAX_INGREDIENT = 3;
-    
+
+    Timer _timer;
     FoodFactory _factory;
     Leaderboard _leaderboard = Leaderboard.Instance;
     // mapping teams to their teamIDs
@@ -28,6 +29,11 @@ public class Emcee : MonoBehaviour {
 	void Start () {
         for (int i = 0; i < _teamScores.Length; ++i)
             _teamScores[i] = 0;
+
+        _timer = GetComponentInChildren<Timer>();
+        _timer.OnTimeElpased += timeUp;
+        _timer.Interval = 60;
+        _timer.StartTimer();
 
         _factory = new FoodFactory();
 
@@ -108,26 +114,11 @@ public class Emcee : MonoBehaviour {
             return false;
 
         ++_teamScores[teamId];
-        // TODO: Brian
-        switch (teamId)
-        {
-            default:
-                break;
-
-            case 0:
-                break;
-
-            case 1:
-                break;
-        }
 
         return true;
     }
 
-    void OnGUI() {
-        string output = "";
-        for (int i = 0; i < _teamScores.Length; ++i)
-            output += string.Format("Team {0}: {1} bowls           ", i, _teamScores[i].ToString());
-        GUI.Label(new Rect(10, 10, 250, 250), output);
+    void timeUp(GameObject sender) {
+        
     }
 }
