@@ -11,6 +11,7 @@ public class Emcee : MonoBehaviour {
     const int MAX_INGREDIENT = 3;
     
     FoodFactory _factory;
+    Leaderboard _leaderboard = Leaderboard.Instance;
     // mapping teams to their teamIDs
     Dictionary<RamenTeam, int> _teams = new Dictionary<RamenTeam, int>();
     List<ConveyorBelt> _conveyorBelts;

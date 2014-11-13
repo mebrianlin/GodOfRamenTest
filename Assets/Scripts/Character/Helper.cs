@@ -7,6 +7,7 @@ public class Helper : MonoBehaviour {
     public event NoodleEventHandler OnNoodleCooked;
 
     BlowFire _blowFire;
+    phidgetTest _phidget;
 
 	int _numRamenNeedIngredient;
 
@@ -18,6 +19,20 @@ public class Helper : MonoBehaviour {
         if (_blowFire == null)
             Debug.LogError("Cannot find BlowFire script.");
         _blowFire.OnNoodleCooked += onNoodleCooked;
+
+        _phidget = GetComponentInChildren<phidgetTest>();
+        if (_phidget == null)
+            Debug.LogError("Cannot find Phidget script.");
+        _phidget.SpatialData += (sender, e) =>
+        {
+            // if (e.spatialData [0].Acceleration.Length > 0)
+            //	    Debug.Log (" Acceleration: " + e.spatialData [0].Acceleration [0] + ", " + e.spatialData [0].Acceleration [1] + ", " + e.spatialData [0].Acceleration [2]);
+            Vector3 acceleration = new Vector3((float)e.spatialData[0].Acceleration[0], (float)e.spatialData[0].Acceleration[1], (float)e.spatialData[0].Acceleration[2]);
+
+            // Helper calls increaseTemp
+            // Debug.Log("Acceleration Magnitude: " + acceleration.magnitude);
+            IncreaseTemperature(Mathf.Pow(acceleration.magnitude - 1, 2) * .1f);
+        };
 	}
 	
 	void Update () {
