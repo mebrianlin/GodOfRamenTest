@@ -7,32 +7,41 @@ public class phidgetTest : MonoBehaviour
     public int serialNum = -1;
     public event SpatialDataEventHandler SpatialData;
 
-    Spatial spatial = new Spatial();
+    Spatial spatial;
 
     // Use this for initialization
     void Start()
     {
-        //Declare an spatial object
-        spatial = new Spatial();
+        try
+        {
+            //Declare an spatial object
+            spatial = new Spatial();
+        }
+        catch
+        {
 
-        //Hook the basic event handlers
-        spatial.Attach += new AttachEventHandler(accel_Attach);
-        spatial.Detach += new DetachEventHandler(accel_Detach);
-        spatial.Error += new ErrorEventHandler(accel_Error);
+        }
 
-        //hook the phidget specific event handlers
-        spatial.SpatialData += new SpatialDataEventHandler(spatial_SpatialData);
+        if (spatial != null)
+        {
+            //Hook the basic event handlers
+            spatial.Attach += new AttachEventHandler(accel_Attach);
+            spatial.Detach += new DetachEventHandler(accel_Detach);
+            spatial.Error += new ErrorEventHandler(accel_Error);
 
-        //open the acclerometer object for device connections
-        spatial.open(serialNum);
+            //hook the phidget specific event handlers
+            spatial.SpatialData += new SpatialDataEventHandler(spatial_SpatialData);
 
-        //get the program to wait for an spatial device to be attached
-        Debug.Log("Waiting for spatial to be attached....");
-        spatial.waitForAttachment();
+            //open the acclerometer object for device connections
+            spatial.open(serialNum);
 
-        //Set the data rate so the events aren't crazy
-        spatial.DataRate = 400; //multiple of 8
-        //spatial.close();
+            //get the program to wait for an spatial device to be attached
+            Debug.Log("Waiting for spatial to be attached....");
+            spatial.waitForAttachment();
+
+            //Set the data rate so the events aren't crazy
+            spatial.DataRate = 400; //multiple of 8
+        }
     }
 
     // Update is called once per frame
@@ -80,6 +89,7 @@ public class phidgetTest : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        spatial.close();
+        if (spatial != null)
+            spatial.close();
     }
 }
