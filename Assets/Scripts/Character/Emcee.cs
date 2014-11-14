@@ -120,5 +120,11 @@ public class Emcee : MonoBehaviour {
 
     void timeUp(GameObject sender) {
         
+
+        // if the game has finished
+        LeaderboardEntry[] entries = _teamScores
+            .Select(x => new LeaderboardEntry { Player1Name = "", Player2Name = "", Score = x })
+            .ToArray();
+        int[] ranks = _leaderboard.AddEntries(entries);
     }
 }
