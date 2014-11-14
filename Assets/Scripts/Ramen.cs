@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Ramen{
+public class Ramen: MonoBehaviour{
 
 	public float boilTime;
-	public Ramen(){
+	void start(){
 		boilTime = 0f;
 	}
 

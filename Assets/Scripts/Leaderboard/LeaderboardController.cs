@@ -95,20 +95,27 @@ public class LeaderboardEntryComparer : IComparer<LeaderboardEntry>
 }
 
 public sealed class Leaderboard {
-    static readonly Leaderboard _instance = new Leaderboard();
+    static Leaderboard _instance;
 
     public static Leaderboard Instance
     {
         get 
         {
+			if (string.IsNullOrEmpty(FILE_DIR)) {
+				FILE_DIR = Application.persistentDataPath;;
+				_filePath = Path.Combine(FILE_DIR, FILE_NAME);
+			}
+			if (_instance == null)
+				_instance = new Leaderboard();
+
             return _instance;
         }
     }
 
-    const int MAX_ENTRY = 100;
-    readonly string FILE_DIR;
+	const int MAX_ENTRY = 100;
+	static string FILE_DIR;
     const string FILE_NAME = "leaderboard.bin";
-    readonly string _filePath;
+    static string _filePath;
     List<LeaderboardEntry> _leaderBoard = new List<LeaderboardEntry>();
 
     //IComparer<LeaderboardEntry> c = new LeaderboardEntryComparer();
@@ -117,9 +124,6 @@ public sealed class Leaderboard {
 
     private Leaderboard()
     {
-        FILE_DIR = Application.persistentDataPath;
-        _filePath = Path.Combine(FILE_DIR, FILE_NAME);
-        Debug.Log(_filePath);
         readFile();
     }
 
