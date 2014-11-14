@@ -63,7 +63,7 @@ public class LeaderboardController : MonoBehaviour
                 }
                 entryObject.transform.position = new Vector3(95 * b, -3 * i, 0);
             }
-    }
+        }
     }
 
 
@@ -106,7 +106,7 @@ public sealed class Leaderboard {
     }
 
     const int MAX_ENTRY = 100;
-    readonly string FILE_DIR = Application.persistentDataPath;
+    readonly string FILE_DIR;
     const string FILE_NAME = "leaderboard.bin";
     readonly string _filePath;
     List<LeaderboardEntry> _leaderBoard = new List<LeaderboardEntry>();
@@ -117,7 +117,9 @@ public sealed class Leaderboard {
 
     private Leaderboard()
     {
+        FILE_DIR = Application.persistentDataPath;
         _filePath = Path.Combine(FILE_DIR, FILE_NAME);
+        Debug.Log(_filePath);
         readFile();
     }
 
