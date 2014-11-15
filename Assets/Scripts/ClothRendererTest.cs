@@ -31,8 +31,6 @@ public class ClothRendererTest : MonoBehaviour
 		private bool attachedToHands = true;
 		private bool ramenUpPlayed = false;
 		private bool ramenDownPlayed = false;	
-		
-		private bool canAddCount;
 		// Use this for initialization
 		void Start ()
 		{
@@ -73,9 +71,8 @@ public class ClothRendererTest : MonoBehaviour
 //				Debug.Log (string.Format ("({0},{1})", _renderer.bounds.center.y - _renderer.bounds.extents.y, _renderer.bounds.center.y + _renderer.bounds.extents.y));
 
 				if (attachedToHands) {
-
-
-						maxRamenHeight = _renderer.bounds.max.y;						
+						maxRamenHeight = _renderer.bounds.max.y;
+						
 						centerRamenHeight = _renderer.bounds.center.y;
 						
 //						bottomBar.transform.position = new Vector3 (bottomBar.transform.position.x, centerRamenHeight, bottomBar.transform.position.z);
@@ -99,20 +96,16 @@ public class ClothRendererTest : MonoBehaviour
 											SoundManager.instance.playRamenDown ();
 								}
 						}
-						AttachNoodleScript currentNoodle = noodles.GetComponent<AttachNoodleScript>();
-						//Debug.Log("max =  " + maxRamenHeight + ", bottom = "+bottomHeight +", center = " + centerRamenHeight);
+
+			
 						//checking to see if ramen is within range
-						if (maxRamenHeight <= bottomHeight){
-								currentNoodle.countAbility = true;
-						}else if (maxRamenHeight > bottomHeight && maxRamenHeight < topHeight) {
+						if (maxRamenHeight > bottomHeight && maxRamenHeight < topHeight) {
 				
 								float distancePastBottomHeight = maxRamenHeight - bottomHeight;
 								addNoodleScore (distancePastBottomHeight);
-								noodles.GetComponent<AttachNoodleScript>().AddWaveCount();
-								currentNoodle.AddWaveCount();
 
 						}
-						
+
 						//BREAAAKKKK
 						if (maxRamenHeight > topHeight) {
 								noodles.transform.GetComponent<InteractiveCloth> ().tearFactor = 1f;
@@ -124,27 +117,16 @@ public class ClothRendererTest : MonoBehaviour
 									SoundManager.instance.playRamenBreak ();		
 						}		
 		
-//						if (noodleScore >= maxNoodleScore) {
-//								//Debug.Log ("FINISHED ONE SET OF NOODLES");
-//								
-//								if (OnNoodleReady != null)
-//										OnNoodleReady ();
-//
-//								noodleScore = 0f;
-//								noodlesfinished++;
-//						}
+						if (noodleScore >= maxNoodleScore) {
+								//Debug.Log ("FINISHED ONE SET OF NOODLES");
+								
+								if (OnNoodleReady != null)
+										OnNoodleReady ();
 
-						if(currentNoodle.IsNoodleComplete()){
-							if (OnNoodleReady != null)
-								OnNoodleReady ();
-							resetNoodles();
-							attachedToHands = false;
-							noodlesfinished++;
+								noodleScore = 0f;
+								noodlesfinished++;
 						}
-			
-			
-			
-		} else {
+				} else {
 						//check to see if both hands have grabbed the noodles
 						if (leftHandle.GetComponent<AttachNoodleScript> ().isAttached () && rightHandle.GetComponent<AttachNoodleScript> ().isAttached ()) {
 								noodles.GetComponent<InteractiveCloth> ().AttachToCollider (leftHandle.GetComponent<Collider> ().collider);
