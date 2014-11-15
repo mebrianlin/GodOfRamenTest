@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define __DEBUG
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,13 +29,13 @@ public class Emcee : MonoBehaviour {
     int _round = 0;
     const int TOTAL_ROUND = 3;
     int[] _teamScores = new int[MAX_TEAM];
-    int[] _ranks = new int[MAX_TEAM];
+    LeaderboardInsertResult[] _ranks = new LeaderboardInsertResult[MAX_TEAM];
 
     public void Reset() {
         for (int i = 0; i < _teamScores.Length; ++i)
             _teamScores[i] = 0;
         for (int i = 0; i < _ranks.Length; ++i)
-            _ranks[i] = -1;
+            _ranks[i] = LeaderboardInsertResult.Default;
     }
 
 	void Start () {
@@ -145,16 +146,16 @@ public class Emcee : MonoBehaviour {
         return true;
     }
 
-    public int GetTeamRank(RamenTeam team)
+    public LeaderboardInsertResult GetTeamRank(RamenTeam team)
     {
         if (!_teams.ContainsKey(team)) {
             Debug.LogError("Cannot find the team.");
-            return -1;
+            return LeaderboardInsertResult.Default;
         }
 
         int teamId = _teams[team];
         if (teamId >= MAX_TEAM)
-            return -1;
+            return LeaderboardInsertResult.Default;
 
         return _ranks[teamId];
     }

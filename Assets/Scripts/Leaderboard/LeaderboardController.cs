@@ -52,6 +52,13 @@ public struct LeaderboardEntry
     public int Score;
 }
 
+public struct LeaderboardInsertResult
+{
+    public int Index;
+    public int Rank;
+    public static LeaderboardInsertResult Default = new LeaderboardInsertResult { Index = -1, Rank = -1 };
+}
+
 public class LeaderboardEntryComparer : IComparer<LeaderboardEntry>
 {
     public int Compare(LeaderboardEntry lhs, LeaderboardEntry rhs)
@@ -116,7 +123,7 @@ public sealed class Leaderboard {
     /// </summary>
     /// <param name="entry"></param>
     /// <returns>The rank of entry</returns>
-    public int[] AddEntries(LeaderboardEntry[] entries)
+    public LeaderboardInsertResult[] AddEntries(LeaderboardEntry[] entries)
     {
         /*
         int[] ranks = entries
@@ -129,19 +136,31 @@ public sealed class Leaderboard {
 
         return ranks;
         */
-        
-        int[] ranks = new int[entries.Length];
-        var sorted = entries
+
+        LeaderboardInsertResult[] result = new LeaderboardInsertResult[entries.Length];
+
+        int[] positions = new int[entries.Length];
+        var sortedEntries = entries
             .Select((x, i) => new { Index = i, Entry = x })
             .OrderByDescending(x => x.Entry.Score)
             .ToArray();
 
         int lastIndex = 0;
-        foreach (var i in sorted)
-            lastIndex = ranks[i.Index] = addEntry(i.Entry, lastIndex);
-        
+        // add the entries first
+        foreach (var i in sortedEntries)
+            lastIndex = result[i.Index].Index = addEntry(i.Entry, lastIndex);
+
+        // then get the ranks
+        int[] ranks = new int[_leaderBoard.Count];
+        ranks[0] = 0;
+        for (int i = 1; i < _leaderBoard.Count; ++i)
+            ranks[i] = ranks[i - 1] + (_leaderBoard[i].Score == _leaderBoard[i - 1].Score ? 0 : 1);
+
+        foreach (var i in sortedEntries)
+            result[i.Index].Rank = ranks[i.Index];
+
         saveFile();
-        return ranks;
+        return result;
         
     }
 

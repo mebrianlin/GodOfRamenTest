@@ -14,6 +14,8 @@ public class LeaderboardEntryScript : MonoBehaviour {
     {
         set
         {
+            Names.GetComponent<TextMesh>().color = value ? Color.red : Color.black;
+            Score.GetComponent<TextMesh>().color = value ? Color.red : Color.black;
             Background.GetComponent<MeshRenderer>().materials[0].mainTexture = Textures[(value ? 0 : 1)];
         }
     }

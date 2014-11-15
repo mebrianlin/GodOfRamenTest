@@ -3,18 +3,20 @@ using System.Collections;
 
 public class LeaderboardForTeam : MonoBehaviour {
 
-    const int NUM_SHOWN = 10;
+    const int NUM_SHOWN = 6;
+    float itemHeight = 0f;
 
 	void Start () {
-	
+	    
 	}
 
 	void Update () {
 	
 	}
 
-    public void Show(int highlightIndex)
+    public void Show(LeaderboardInsertResult insertResult)
     {
+        int highlightIndex = insertResult.Index;
         Leaderboard board = Leaderboard.Instance;
         LeaderboardEntry[] entry = board.GetEntries();
 
@@ -24,6 +26,12 @@ public class LeaderboardForTeam : MonoBehaviour {
             GameObject entryObject = UnityEngine.Object.Instantiate(
                    Resources.Load(prefabFilePath, typeof(GameObject)) as GameObject) as GameObject;
             entryObject.transform.parent = this.transform;
+
+            if (itemHeight == 0)
+            {
+                foreach (var t in entryObject.GetComponentsInChildren<TextMesh>())
+                    itemHeight = Mathf.Max(itemHeight, t.renderer.bounds.extents.y * 2);
+            }
 
             LeaderboardEntryScript script = entryObject.GetComponent<LeaderboardEntryScript>();
 
@@ -38,7 +46,7 @@ public class LeaderboardForTeam : MonoBehaviour {
                 script.IsFocus = (i == highlightIndex);
             }
             //entryObject.transform.position = new Vector3(0, -3 * i, 0);
-            entryObject.transform.localPosition = new Vector3(0, -3 * i, 0);
+            entryObject.transform.localPosition = new Vector3(0, -itemHeight * i, 0);
         }
     }
 

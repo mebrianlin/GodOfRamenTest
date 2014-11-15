@@ -172,7 +172,7 @@ public class RamenTeam : MonoBehaviour {
 		}
 	}
 
-    public void ShowLeaderboard(int rank) {
+    public void ShowLeaderboard(LeaderboardInsertResult rank) {
         _leaderboard.Show(rank);
     }
 
