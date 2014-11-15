@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using ExtensionMethods;
+
 public class LeaderboardForTeam : MonoBehaviour {
 
     const int NUM_SHOWN = 6;
@@ -17,8 +19,11 @@ public class LeaderboardForTeam : MonoBehaviour {
     public void Show(LeaderboardInsertResult insertResult)
     {
         int highlightIndex = insertResult.Index;
+
         Leaderboard board = Leaderboard.Instance;
         LeaderboardEntry[] entry = board.GetEntries();
+        if (highlightIndex >= entry.Length)
+            highlightIndex = entry.Length - 1;
 
         string prefabFilePath = "Prefabs/LeaderboardEntry";
         for (int i = 0; i < NUM_SHOWN; ++i)
@@ -37,6 +42,7 @@ public class LeaderboardForTeam : MonoBehaviour {
 
             if (i == NUM_SHOWN - 1 && highlightIndex >= NUM_SHOWN)
             {
+                Debug.Log(highlightIndex);
                 script.Entry = entry[highlightIndex];
                 script.IsFocus = true;
             }
@@ -48,6 +54,8 @@ public class LeaderboardForTeam : MonoBehaviour {
             //entryObject.transform.position = new Vector3(0, -3 * i, 0);
             entryObject.transform.localPosition = new Vector3(0, -itemHeight * i, 0);
         }
+
+        this.gameObject.FindObjectWithTagInChildren("Leaderboard").GetComponent<SpriteRenderer>().enabled = true;
     }
 
     public void Hide()

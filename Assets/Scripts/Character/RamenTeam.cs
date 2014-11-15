@@ -7,6 +7,18 @@ using ExtensionMethods;
 public class RamenTeam : MonoBehaviour {
 	public GameObject delicious;
 
+    public string Player1Name
+    {
+        get;
+        private set;
+    }
+
+    public string Player2Name
+    {
+        get;
+        private set;
+    }
+
     int _id;
 	Vector3 _ingredientTargetPos;
     Helper _helper;
@@ -21,6 +33,20 @@ public class RamenTeam : MonoBehaviour {
     TextMesh _scoreText;
 	
 	void Start () {
+        // set default player names
+#if __DEBUG
+        int length = Random.Range(3, 10);
+        string s1 = "", s2 = "";
+        for (int i = 0; i < length; ++i)
+        {
+            s1 += (char)((int)'A' + Random.Range(0, 25));
+            s2 += (char)((int)'A' + Random.Range(0, 25));
+        }
+         SetPlayerNames(s1, s2);
+#else
+        SetPlayerNames("", "");
+#endif
+
         _apprentice = GetComponentInChildren<Apprentice>();
         _helper = GetComponentInChildren<Helper>();
         _leaderboard = GetComponentInChildren<LeaderboardForTeam>();
@@ -49,11 +75,6 @@ public class RamenTeam : MonoBehaviour {
 		StartCoroutine(movingIngredients());
 	}
 	
-    void FixedUpdate()
-	{
-		
-	}
-	
 	void apprentice_OnNoodleReady()
     {
 		_helper.AddNewRamen(_id);
@@ -71,7 +92,6 @@ public class RamenTeam : MonoBehaviour {
 			Debug.LogError("Cannot find RAMENNNN AAAAAAAAAAAAAAA");
 		bowl.SetRequiredIngredients(_emcee.RequiredIngredient);
 		_ramenBowl.Add(boiledRamenObject);
-
 	}
 
 	IEnumerator movingIngredients() {
@@ -94,6 +114,12 @@ public class RamenTeam : MonoBehaviour {
 				i.transform.position = Vector3.Lerp(i.transform.position, _ingredientTargetPos, 0.05f);
 		}
 	}
+
+    public void SetPlayerNames(string name1, string name2)
+    {
+        this.Player1Name = name1;
+        this.Player2Name = name2;
+    }
 
     public void GrabIngredient() {
         GameObject ingredient = _emcee.GrabIngredient(this);

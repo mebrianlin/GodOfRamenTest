@@ -1,0 +1,48 @@
+Initialize engine version: 4.5.3f3 (fca41a4fabea)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: AMD Radeon(TM) R9 270 (ID=0x6811)
+    Vendor:   ATI
+    VRAM:     2022 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\Phidget21.NET.dll (this message is harmless)
+Loading F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\Phidget21.NET.dll into Unity Child Domain
+- Completed reload, in  0.045 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+desktop: 2560x1440 60Hz; virtual: 2560x1440 at 0,0
+Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\System.dll (this message is harmless)
+Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\System.Core.dll (this message is harmless)
+C:/Users/pohengl/AppData/LocalLow/DefaultCompany/GodOfRamenTest\leaderboard.bin
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+UnloadTime: 0.232436 ms
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 562.
+Total: 1.569700 ms (FindLiveObjects: 0.017508 ms CreateObjectMapping: 0.007546 ms MarkObjects: 0.111992 ms  DeleteObjects: 1.061358 ms)
+
+UnloadTime: 1.948843 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 560.
+Total: 1.180293 ms (FindLiveObjects: 0.046487 ms CreateObjectMapping: 0.020828 ms MarkObjects: 0.227002 ms  DeleteObjects: 0.032903 ms)
+
+playin' down sound
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+playin' down sound
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+Disconnect
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+

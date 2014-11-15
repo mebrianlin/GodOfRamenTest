@@ -11,6 +11,7 @@ public class Emcee : MonoBehaviour {
 	const int MAX_TEAM = 2;
     const int MAX_INGREDIENT = 3;
 	const int COMBINATION_NUM = 3;
+    const int TIME_PER_ROUnD = 3;
 
     Timer _timer;
     FoodFactory _factory;
@@ -31,20 +32,21 @@ public class Emcee : MonoBehaviour {
     int _round = 0;
     const int TOTAL_ROUND = 3;
     int[] _teamScores = new int[MAX_TEAM];
-    LeaderboardInsertResult[] _ranks = new LeaderboardInsertResult[MAX_TEAM];
+    LeaderboardInsertResult[] _insertResults = new LeaderboardInsertResult[MAX_TEAM];
 
     public void Reset() {
         for (int i = 0; i < _teamScores.Length; ++i)
             _teamScores[i] = 0;
-        for (int i = 0; i < _ranks.Length; ++i)
-            _ranks[i] = LeaderboardInsertResult.Default;
+        for (int i = 0; i < _insertResults.Length; ++i)
+            _insertResults[i] = LeaderboardInsertResult.Default;
     }
 
-	void Start () {
+    void Start()
+    {
 
         _timer = GetComponentInChildren<Timer>();
         _timer.OnTimeElpased += timeUp;
-        _timer.Interval = 60;
+        _timer.Interval = TIME_PER_ROUnD;
         _timer.StartTimer();
 
         _factory = new FoodFactory();
@@ -65,21 +67,10 @@ public class Emcee : MonoBehaviour {
         _generateFoodSpeed = 9.5f * Time.fixedDeltaTime / _conveyorBelts[0].Speed.x;
 
         Reset();
-		RequiredIngredient = RequiredIngredientCombinations[_round];
+        RequiredIngredient = RequiredIngredientCombinations[_round];
 
 
         StartCoroutine(generateFood());
-
-#if __DEBUG
-        StartCoroutine(test());
-#endif
-	}
-
-    IEnumerator test()
-    {
-        yield return new WaitForSeconds(1f);
-        _teamScores = new int[2] { 20, 25 };
-        endGame();
     }
 
 	void Update () {
@@ -161,29 +152,39 @@ public class Emcee : MonoBehaviour {
         if (teamId >= MAX_TEAM)
             return LeaderboardInsertResult.Default;
 
-        return _ranks[teamId];
+        return _insertResults[teamId];
     }
 
     void timeUp(GameObject sender) {
         ++_round;
-        if (_round >= TOTAL_ROUND) {
+        if (_round >= TOTAL_ROUND)
+        {
             _round = 0;
             endGame();
         }
         else
-            //throw new System.NotImplementedException("Change to a new bowl of ramen");
-			ChangeNewBowlOfRamen();
+        {
+            ChangeNewBowlOfRamen();
+            _timer.StartTimer();
+        }
     }
 
     void endGame() {
+#if __DEBUG
+        _teamScores = new int[] { Random.Range(1, 100), Random.Range(1, 100) };
+#endif
         // if the game has ended
-        LeaderboardEntry[] entries = _teamScores
-            .Select(x => new LeaderboardEntry { Player1Name = "", Player2Name = "", Score = x })
+        LeaderboardEntry[] entries = _teams
+            .OrderBy(x => x.Value) // order by team id
+            .Select((x, i) => new LeaderboardEntry { Player1Name = x.Key.Player1Name, Player2Name = x.Key.Player2Name, Score = _teamScores[i] })
             .ToArray();
-        _ranks = _leaderboard.AddEntries(entries);
+        //LeaderboardEntry[] entries = _teamScores
+        //     .Select(x => new LeaderboardEntry { Player1Name = "", Player2Name = "", Score = x })
+        //    .ToArray();
+        _insertResults = _leaderboard.AddEntries(entries);
 
         foreach (var t in _teams)
-            t.Key.ShowLeaderboard(_ranks[t.Value]);
+            t.Key.ShowLeaderboard(_insertResults[t.Value]);
     }
 
 	void ChangeNewBowlOfRamen(){

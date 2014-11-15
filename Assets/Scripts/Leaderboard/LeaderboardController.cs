@@ -13,25 +13,7 @@ public class LeaderboardController : MonoBehaviour
 
     void Start()
     {
-        /*
-        Leaderboard.Instance.AddEntries(new LeaderboardEntry[]
-        {
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 20 },
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 21 },
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 22 },
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 23 },
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 24 },
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 25 },
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 26 },
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 27 },
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 28 },
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 29 },
-        });
-        int[] ranks = Leaderboard.Instance.AddEntries(new LeaderboardEntry[]
-        {
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 30 },
-            new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 25 },
-        });*/
+
     }
 
     void OnApplicationQuit()
@@ -107,13 +89,14 @@ public sealed class Leaderboard {
         if (hint < _leaderBoard.Count && _leaderBoard[hint].Score > entry.Score)
             rank = hint;
 
+        // first remove extra entries
+        if (_leaderBoard.Count >= MAX_ENTRY - 1)
+            _leaderBoard.RemoveRange(MAX_ENTRY, _leaderBoard.Count - MAX_ENTRY);
+
         for (; rank < _leaderBoard.Count; ++rank)
             if (entry.Score > _leaderBoard[rank].Score)
                 break;
-
         _leaderBoard.Insert(rank, entry);
-        if (_leaderBoard.Count >= MAX_ENTRY)
-            _leaderBoard.RemoveRange(MAX_ENTRY, _leaderBoard.Count - MAX_ENTRY);
 
         return rank;
     }
@@ -157,7 +140,15 @@ public sealed class Leaderboard {
             ranks[i] = ranks[i - 1] + (_leaderBoard[i].Score == _leaderBoard[i - 1].Score ? 0 : 1);
 
         foreach (var i in sortedEntries)
-            result[i.Index].Rank = ranks[i.Index];
+        {
+            int indexInLeaderboard = result[i.Index].Index;
+
+            // should not happen
+            if (indexInLeaderboard >= _leaderBoard.Count)
+                indexInLeaderboard = _leaderBoard.Count - 1;
+
+            result[i.Index].Rank = ranks[indexInLeaderboard];
+        }
 
         saveFile();
         return result;
