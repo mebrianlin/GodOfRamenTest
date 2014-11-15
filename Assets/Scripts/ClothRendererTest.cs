@@ -24,13 +24,16 @@ public class ClothRendererTest : MonoBehaviour
 		private float bottomHeight;
 		private float maxRamenHeight;
 		private float noodleScore;
-		private float maxNoodleScore;	
+        private float maxNoodleScore;
+        private int noodleHitCount;
+        private int maxNoodleHitCount;
 		private float centerRamenHeight;
 		private int noodlesfinished;
 
 		private bool attachedToHands = true;
 		private bool ramenUpPlayed = false;
-		private bool ramenDownPlayed = false;	
+		private bool ramenDownPlayed = false;
+        private bool isRamenWithinRange = false;
 		// Use this for initialization
 		void Start ()
 		{
@@ -56,8 +59,10 @@ public class ClothRendererTest : MonoBehaviour
 				topHeight = topBar.GetComponent<Transform> ().position.y;
 				bottomHeight = bottomBar.GetComponent<Transform> ().position.y;
 				noodleScore = 0f;
+                noodleHitCount = 0;
 				slope = 1f;
 				maxNoodleScore = 500f;
+                maxNoodleHitCount = 4;
 				noodlesfinished = 0;
 				foreach (GameObject trigger in triggers) {
 						trigger.SetActive (false);
@@ -82,8 +87,10 @@ public class ClothRendererTest : MonoBehaviour
 										Debug.Log ("playin' up sound");
 										ramenUpPlayed = true;
 										ramenDownPlayed = false;
-										if(!mute)
-											SoundManager.instance.playRamenUp ();				
+                                        if (!mute) {
+											//SoundManager.instance.playRamenUp ();
+                                            SoundManager.instance.PlayRamenUpSound(noodleHitCount);
+                                        }
 								}
 						}
 
@@ -92,8 +99,10 @@ public class ClothRendererTest : MonoBehaviour
 										Debug.Log ("playin' down sound");
 										ramenDownPlayed = true;
 										ramenUpPlayed = false;
-										if(!mute)
-											SoundManager.instance.playRamenDown ();
+                                        if (!mute) {
+											//SoundManager.instance.playRamenDown ();
+                                            SoundManager.instance.PlayRamenDownSound(noodleHitCount);
+                                        }
 								}
 						}
 
@@ -103,28 +112,40 @@ public class ClothRendererTest : MonoBehaviour
 				
 								float distancePastBottomHeight = maxRamenHeight - bottomHeight;
 								addNoodleScore (distancePastBottomHeight);
-
 						}
+
+                        if (isRamenWithinRange)
+                            isRamenWithinRange = maxRamenHeight > bottomHeight && maxRamenHeight < topHeight;
+                        else
+                        {
+                            if (maxRamenHeight > bottomHeight && maxRamenHeight < topHeight) {
+                                isRamenWithinRange = true;
+                                ++noodleHitCount;
+                            }
+                        }
 
 						//BREAAAKKKK
 						if (maxRamenHeight > topHeight) {
 								noodles.transform.GetComponent<InteractiveCloth> ().tearFactor = 1f;
 								noodles.transform.GetComponent<Cloth> ().randomAcceleration = new Vector3 (0, 10, 0);
 								noodleScore = 0f;
+                                noodleHitCount = 0;
 								Invoke ("resetNoodles", 2f);
 								attachedToHands = false;
 								if(!mute)
 									SoundManager.instance.playRamenBreak ();		
 						}		
 		
-						if (noodleScore >= maxNoodleScore) {
+						if (noodleHitCount >= maxNoodleHitCount) {// noodleScore >= maxNoodleScore) {
 								//Debug.Log ("FINISHED ONE SET OF NOODLES");
 								
 								if (OnNoodleReady != null)
 										OnNoodleReady ();
 
 								noodleScore = 0f;
+                                noodleHitCount = 0;
 								noodlesfinished++;
+                                SoundManager.instance.PlayRamenFinishSound();
 						}
 				} else {
 						//check to see if both hands have grabbed the noodles

@@ -15,11 +15,11 @@ public class phidgetTest : MonoBehaviour
         try
         {
             //Declare an spatial object
-            spatial = new Spatial();
+            //spatial = new Spatial();
         }
-        catch
+        catch (System.Exception ex)
         {
-
+            Debug.Log(ex.Message);
         }
 
         if (spatial != null)

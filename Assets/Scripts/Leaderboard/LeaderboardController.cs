@@ -183,6 +183,11 @@ public sealed class Leaderboard {
         return _leaderBoard.ToArray();
     }
 
+    public void Clear()
+    {
+        _leaderBoard.Clear();
+    }
+
     public void Print()
     {
         for (int i = 0; i < _leaderBoard.Count; ++i)
