@@ -15,24 +15,23 @@ public class BlowFire : MonoBehaviour {
 	public GameObject fire;
 	public Texture[] fireTexture;//fire-no, fire-small, fire-big
 
+	public GameObject ramenProgressBar;
+	public GameObject extraFire;
+
 	private float temperature = 0;
 
 	private float blowSpeed = 8f;
 	private float coolSpeed = 5f;
-
-	//progress bar
-	public float width;
-	public float height;
 
 	//ramen
 	private bool potIsFull = false;
 
 	private float ramenCoolTemperature = 10f;
 
-	private float perfectTemprature = 30f;
-	private float temperatureRange = 2f;
+	private float perfectTemprature = 20f;
+	private float temperatureRange = 5f;
 
-	private float requireTime = 5f;
+	private float requireTime = 8f;
 
 	private float boilTime = 0f;
 
@@ -48,6 +47,7 @@ public class BlowFire : MonoBehaviour {
 	void Start () {
 		//ramenToBeBoiled = new Queue<Ramen>();
 		fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
+		ramenProgressBar.transform.localScale = new Vector3(1,0,1);
 	}
 	
 	// Update is called once per frame
@@ -57,46 +57,60 @@ public class BlowFire : MonoBehaviour {
         if (temperature > 0){
             temperature -= coolSpeed * Time.deltaTime;
 
-			kedu.transform.localScale = new Vector3(1,1,temperature/perfectTemprature);
-			kedu.transform.localPosition = new Vector3(0,0, 6.8f*(1-temperature/perfectTemprature)/2);
+//			kedu.transform.localScale = new Vector3(1,1,temperature/perfectTemprature);
+//			kedu.transform.localPosition = new Vector3(0,0, 6.8f*(1-temperature/perfectTemprature)/2);
 
 		}else{
 
-			kedu.transform.localScale = new Vector3(1,1,0.001f);
-			kedu.transform.localPosition = new Vector3(0,0, 6.8f*(1-temperature/perfectTemprature)/2);
+//			kedu.transform.localScale = new Vector3(1,1,0.001f);
+//			kedu.transform.localPosition = new Vector3(0,0, 6.8f*(1-temperature/perfectTemprature)/2);
 			fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
 
 		}
 
 		if(potIsFull){
+			GameObject r= ramenInThePot.Peek();
+			ramenProgressBar.transform.localScale = new Vector3(1,r.GetComponent<Ramen>().boilTime/requireTime,1);
+			ramenProgressBar.transform.localPosition = new Vector3(0, -4.2f*(1- r.GetComponent<Ramen>().boilTime/requireTime)/2,0);
+			
 			if(temperature<=0){
+				extraFire.SetActive(false);
+
 				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
 				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
 			}else if(temperature>0 && temperature <= perfectTemprature-temperatureRange){
+				extraFire.SetActive(false);
 
 				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[1]);
 				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
 
 
 			}else if(temperature>= perfectTemprature-temperatureRange && temperature<= perfectTemprature+temperatureRange){
+
 				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[2]);
 				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[3]);
+				extraFire.SetActive(false);
 
-				GameObject r= ramenInThePot.Peek();
 				
 				r.GetComponent<Ramen>().boilTime += Time.deltaTime;
 				if(r.GetComponent<Ramen>().boilTime >= requireTime){
 					//finish one bowl of ramen
 
 					ramenInThePot.Dequeue();
+
 					Destroy(r);
+					ramenProgressBar.transform.localScale = new Vector3(1,0,1);
+
 					//throw ramen out
 					water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[1]);
 					if (OnNoodleCooked != null)
 						OnNoodleCooked();
 					potIsFull = false;
 				}
+			}else if(temperature> perfectTemprature+temperatureRange){
+				extraFire.SetActive(true);
 			}
+
 
 		}else{
 			if(ramenToBeBoiled.Count > 0){
@@ -111,14 +125,13 @@ public class BlowFire : MonoBehaviour {
 				}
 			}
 		}
-		
-		
-		
-	}
-	void OnGUI(){
-		//GUI.Box(new Rect(width, height - temperature *5f, 25f , temperature*5f), "");
 
+
+
+		
+		
 	}
+
 
 	public void AddNewRamen(){
 

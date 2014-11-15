@@ -10,6 +10,7 @@ public class Emcee : MonoBehaviour {
 
 	const int MAX_TEAM = 2;
     const int MAX_INGREDIENT = 3;
+	const int COMBINATION_NUM = 3;
 
     Timer _timer;
     FoodFactory _factory;
@@ -20,10 +21,11 @@ public class Emcee : MonoBehaviour {
 
     float _generateFoodSpeed = 1.0f;
 
-	public Food[] RequiredIngredient {
-		get { return new Food[MAX_INGREDIENT]{ Food.Eggs, Food.Meat, Food.Cai}; }
-		private set {}
-	}
+	public Food[] RequiredIngredient;
+	
+	public Food[][] RequiredIngredientCombinations= new Food[][]{ new Food[]{Food.Eggs, Food.Meat, Food.Cai},
+		new Food[]{Food.Carrot, Food.Cai, Food.Mushroom},
+		new Food[]{Food.Eggs, Food.Meat, Food.Carrot}}; 
 
 
     int _round = 0;
@@ -63,6 +65,8 @@ public class Emcee : MonoBehaviour {
         _generateFoodSpeed = 9.5f * Time.fixedDeltaTime / _conveyorBelts[0].Speed.x;
 
         Reset();
+		RequiredIngredient = RequiredIngredientCombinations[_round];
+
 
         StartCoroutine(generateFood());
 
@@ -167,7 +171,8 @@ public class Emcee : MonoBehaviour {
             endGame();
         }
         else
-            throw new System.NotImplementedException("Change to a new bowl of ramen");
+            //throw new System.NotImplementedException("Change to a new bowl of ramen");
+			ChangeNewBowlOfRamen();
     }
 
     void endGame() {
@@ -180,4 +185,13 @@ public class Emcee : MonoBehaviour {
         foreach (var t in _teams)
             t.Key.ShowLeaderboard(_ranks[t.Value]);
     }
+
+	void ChangeNewBowlOfRamen(){
+		Debug.Log("Round = " + _round + ". Change new bowl of Ramen");
+		if(_round<= RequiredIngredientCombinations.GetLength(0)){
+			RequiredIngredient= RequiredIngredientCombinations[_round];
+			
+		}
+		
+	}
 }
