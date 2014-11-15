@@ -32,25 +32,31 @@ public class PSMoveExampleX : MonoBehaviour
 				//table = GameObject.FindGameObjectWithTag ("Table");
 		}
 
-		float process (float y)
+		float processY (float y)
 		{
-				float min = table.GetComponent<Transform> ().position.y, max = 15f;
-				float minPs = -3f, maxPs = 3f;
+				float min = table.GetComponent<Transform> ().position.y, max = 16f;
+				float minPs = -2.5f, maxPs = 2.5f;
 				y = Mathf.Clamp (y, minPs, maxPs);
 				return (y - minPs) / (maxPs - minPs) * (max - min) + min;
+		}
 
+		float processX (float x)
+		{
+				float min = -18f, max = 0f; //hardcoded
+				float minPs = -3f, maxPs = 3f;
+				x = Mathf.Clamp (x, minPs, maxPs);
+				return (x - minPs) / (maxPs - minPs) * (max - min) + min;
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-
 				if (PSMoveInput.IsConnected && PSMoveInput.MoveControllers [controllerNumber].Connected) {
 			
 						Vector3 gemPos, handlePos;
 						MoveData moveData = PSMoveInput.MoveControllers [controllerNumber].Data;
 						gemPos = moveData.Position;
-						handlePos = new Vector3 (handle.transform.position.x, process (moveData.HandlePosition.y), handle.transform.position.z);//moveData.HandlePosition;
+						handlePos = new Vector3 (processX (moveData.HandlePosition.x), processY (moveData.HandlePosition.y), handle.transform.position.z);//moveData.HandlePosition;
 
 						if (isMirror) {
 								gem.transform.localPosition = gemPos;
