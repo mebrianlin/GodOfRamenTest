@@ -12,6 +12,7 @@ public class RamenTeam : MonoBehaviour {
     Helper _helper;
     Apprentice _apprentice;
 	Emcee _emcee;
+    LeaderboardForTeam _leaderboard;
 
     int _numRamen;
 	Queue<GameObject> _ingredients = new Queue<GameObject>();
@@ -22,6 +23,7 @@ public class RamenTeam : MonoBehaviour {
 	void Start () {
         _apprentice = GetComponentInChildren<Apprentice>();
         _helper = GetComponentInChildren<Helper>();
+        _leaderboard = GetComponentInChildren<LeaderboardForTeam>();
 
         GameObject obj = GameObject.FindGameObjectWithTag("Emcee");
 		if (obj == null)
@@ -169,5 +171,12 @@ public class RamenTeam : MonoBehaviour {
 			ramenB.transform.position += new Vector3(8f,0f,0f);
 		}
 	}
-	
+
+    public void ShowLeaderboard(int rank) {
+        _leaderboard.Show(rank);
+    }
+
+    public void HideLeaderboard() {
+        _leaderboard.Hide();
+    }
 }

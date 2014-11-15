@@ -13,6 +13,7 @@ public class LeaderboardController : MonoBehaviour
 
     void Start()
     {
+        /*
         Leaderboard.Instance.AddEntries(new LeaderboardEntry[]
         {
             new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 20 },
@@ -30,43 +31,8 @@ public class LeaderboardController : MonoBehaviour
         {
             new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 30 },
             new LeaderboardEntry { Player1Name = "a", Player2Name = "b", Score = 25 },
-        });
-        Show(ranks);
+        });*/
     }
-
-    public void Show(int[] highlightIndex)
-    {
-        Leaderboard board = Leaderboard.Instance;
-        LeaderboardEntry[] entry = board.GetEntries();
-
-        for (int i = 0; i < highlightIndex.Length; ++i)
-            if (highlightIndex[i] >= entry.Length)
-                highlightIndex[i] = -1;
-
-        string prefabFilePath = "Prefabs/LeaderboardEntry";
-        for (int b = 0; b < highlightIndex.Length; ++b) {
-            for (int i = 0; i < NUM_SHOWN; ++i)
-            {
-                GameObject entryObject = UnityEngine.Object.Instantiate(
-                       Resources.Load(prefabFilePath, typeof(GameObject)) as GameObject) as GameObject;
-                LeaderboardEntryScript script = entryObject.GetComponent<LeaderboardEntryScript>();
-
-                if (i == NUM_SHOWN - 1 && highlightIndex[b] >= NUM_SHOWN)
-                {
-                    script.Entry = entry[highlightIndex[b]];
-                    script.IsFocus = true;
-                }
-                else
-                {
-                    script.Entry = entry[i];
-                    script.IsFocus = (i == highlightIndex[b]);
-                }
-                entryObject.transform.position = new Vector3(95 * b, -3 * i, 0);
-            }
-        }
-    }
-
-
 
     void OnApplicationQuit()
     {
@@ -125,6 +91,7 @@ public sealed class Leaderboard {
     private Leaderboard()
     {
         readFile();
+        Debug.Log(_filePath);
     }
 
     int addEntry(LeaderboardEntry entry, int hint = 0)

@@ -24,11 +24,20 @@ public class Emcee : MonoBehaviour {
 		private set {}
 	}
 
-    int[] _teamScores = new int[MAX_TEAM];
 
-	void Start () {
+    int _round = 0;
+    const int TOTAL_ROUND = 3;
+    int[] _teamScores = new int[MAX_TEAM];
+    int[] _ranks = new int[MAX_TEAM];
+
+    public void Reset() {
         for (int i = 0; i < _teamScores.Length; ++i)
             _teamScores[i] = 0;
+        for (int i = 0; i < _ranks.Length; ++i)
+            _ranks[i] = -1;
+    }
+
+	void Start () {
 
         _timer = GetComponentInChildren<Timer>();
         _timer.OnTimeElpased += timeUp;
@@ -49,11 +58,25 @@ public class Emcee : MonoBehaviour {
         if (_conveyorBelts.Count != MAX_TEAM)
             Debug.LogError(string.Format("Number of ConveroyBelt({0}) does not equal to MAX_TEAM({1}).", _conveyorBelts.Count, MAX_TEAM));
 
+
         _generateFoodSpeed = 9.5f * Time.fixedDeltaTime / _conveyorBelts[0].Speed.x;
 
+        Reset();
+
         StartCoroutine(generateFood());
+
+#if __DEBUG
+        StartCoroutine(test());
+#endif
 	}
-	
+
+    IEnumerator test()
+    {
+        yield return new WaitForSeconds(1f);
+        _teamScores = new int[2] { 20, 25 };
+        endGame();
+    }
+
 	void Update () {
 	
 	}
@@ -92,7 +115,9 @@ public class Emcee : MonoBehaviour {
             return null;
         }
         int teamId = _teams[team];
-        
+        if (teamId >= MAX_TEAM)
+            return null;
+
         GameObject food = null;
         for (int i = 0; i < _conveyorBelts.Count; ++i) {
             GameObject tmp = _conveyorBelts[i].GrabIngredient();
@@ -106,8 +131,10 @@ public class Emcee : MonoBehaviour {
     }
 
     public bool CompleteRamen(RamenTeam team) {
-        if (_teams.ContainsKey(team))
+        if (!_teams.ContainsKey(team)) {
+            Debug.LogError("Cannot find the team.");
             return false;
+        }
 
         int teamId = _teams[team];
         if (teamId >= MAX_TEAM)
@@ -118,13 +145,38 @@ public class Emcee : MonoBehaviour {
         return true;
     }
 
-    void timeUp(GameObject sender) {
-        
+    public int GetTeamRank(RamenTeam team)
+    {
+        if (!_teams.ContainsKey(team)) {
+            Debug.LogError("Cannot find the team.");
+            return -1;
+        }
 
-        // if the game has finished
+        int teamId = _teams[team];
+        if (teamId >= MAX_TEAM)
+            return -1;
+
+        return _ranks[teamId];
+    }
+
+    void timeUp(GameObject sender) {
+        ++_round;
+        if (_round >= TOTAL_ROUND) {
+            _round = 0;
+            endGame();
+        }
+        else
+            throw new System.NotImplementedException("Change to a new bowl of ramen");
+    }
+
+    void endGame() {
+        // if the game has ended
         LeaderboardEntry[] entries = _teamScores
             .Select(x => new LeaderboardEntry { Player1Name = "", Player2Name = "", Score = x })
             .ToArray();
-        int[] ranks = _leaderboard.AddEntries(entries);
+        _ranks = _leaderboard.AddEntries(entries);
+
+        foreach (var t in _teams)
+            t.Key.ShowLeaderboard(_ranks[t.Value]);
     }
 }
