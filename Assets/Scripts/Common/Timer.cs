@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
 {
     public event TimerEventHandler OnTimeElpased;
 
-    TextMesh[] _timerTexts;
+    GUIText _timerText;
     /*
     private string _clockClickPath = "Sounds/count_down";
     private string _timeUpPath = "Sounds/time_up";
@@ -54,7 +54,7 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
-        _timerTexts = GetComponentsInChildren<TextMesh>();
+        _timerText = GetComponentInChildren<GUIText>();
         /*
         _clockClickAudioClip = Resources.Load(_clockClickPath) as AudioClip;
         _timeUpAudioClip = Resources.Load(_timeUpPath) as AudioClip;
@@ -76,8 +76,7 @@ public class Timer : MonoBehaviour
             float ratio = 1 - Mathf.Max(0.0001f, (float)(this.RemainingTime / this.Interval));
             renderer.material.SetFloat("_Cutoff", ratio);
 
-            foreach (var text in _timerTexts)
-                text.text = ((int)this.RemainingTime).ToString();
+            _timerText.text = ((int)this.RemainingTime).ToString();
 
             if (this.RemainingTime <= 0.0)
             {

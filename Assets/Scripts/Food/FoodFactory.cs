@@ -42,7 +42,7 @@ public class FoodFactory {
 		{ Food.None,     new FoodInfo { PrefabName = "None",     Type = FoodType.None,      Value =  0f, Food = Food.None      } },
 		{ Food.Cai,      new FoodInfo { PrefabName = "Cai",      Type = FoodType.Vegetable, Value =  5f, Food = Food.Cai      } },
 		//{ Food.Carrot,   new FoodInfo { PrefabName = "Carrot",   Type = FoodType.Vegetable, Value =  5f, Food = Food.Carrot   } },
-		{ Food.Chicken,  new FoodInfo { PrefabName = "Chicken",  Type = FoodType.Meat,      Value =  5f, Food = Food.Chicken  } },
+		//{ Food.Chicken,  new FoodInfo { PrefabName = "Chicken",  Type = FoodType.Meat,      Value =  5f, Food = Food.Chicken  } },
 		{ Food.Eggs,  	 new FoodInfo { PrefabName = "Eggs",  	 Type = FoodType.Meat,      Value =  5f, Food = Food.Eggs     } },
 		//{ Food.Fish,  	 new FoodInfo { PrefabName = "Fish",  	 Type = FoodType.Meat,      Value =  5f, Food = Food.Fish     } },
 		{ Food.Meat,  	 new FoodInfo { PrefabName = "Meat",  	 Type = FoodType.Meat,      Value =  5f, Food = Food.Meat     } },

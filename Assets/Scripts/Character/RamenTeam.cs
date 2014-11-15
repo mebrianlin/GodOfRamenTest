@@ -16,6 +16,8 @@ public class RamenTeam : MonoBehaviour {
     int _numRamen;
 	Queue<GameObject> _ingredients = new Queue<GameObject>();
 	List<GameObject> _ramenBowl = new List<GameObject>();
+
+    TextMesh _scoreText;
 	
 	void Start () {
         _apprentice = GetComponentInChildren<Apprentice>();
@@ -26,6 +28,12 @@ public class RamenTeam : MonoBehaviour {
 			Debug.LogError("Cannot find Emcee object.");
 		_emcee = obj.GetComponent<Emcee>();
         _id = _emcee.GetTeamId(this);
+
+        obj = this.gameObject.FindObjectWithTagInChildren("ScoreText");
+        if (obj == null)
+            Debug.LogError("Cannot find ScoreText.");
+        _scoreText = obj.GetComponent<TextMesh>();
+
 		_ingredientTargetPos = this.gameObject.FindObjectWithTagInChildren("BowlPosition").transform.position;
 
         if (_apprentice == null)
@@ -35,7 +43,6 @@ public class RamenTeam : MonoBehaviour {
 		_apprentice.OnNoodleReady += apprentice_OnNoodleReady;
 		_helper.OnNoodleCooked += helper_OnNoodleCooked;
 
-		
 
 		StartCoroutine(movingIngredients());
 	}
@@ -113,9 +120,10 @@ public class RamenTeam : MonoBehaviour {
 				// if a bowl of ramen is completed (ingredients + noodles)
 				r.ChangeRamenTexture();
 				if (r.IsBowlComplete()) {
+
 					++_numRamen;
+                    _scoreText.text = _numRamen.ToString();
 					// TODO:
-					// add score
 					// destroy the complete ramen
 					_ramenBowl.RemoveAt(i);
 					//Destroy(g);
