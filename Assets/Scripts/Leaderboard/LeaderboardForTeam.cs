@@ -26,10 +26,10 @@ public class LeaderboardForTeam : MonoBehaviour {
             highlightIndex = entry.Length - 1;
 
         string prefabFilePath = "Prefabs/LeaderboardEntry";
-        for (int i = 0; i < NUM_SHOWN; ++i)
+        for (int i = 0; i < NUM_SHOWN && i < entry.Length; ++i)
         {
             GameObject entryObject = UnityEngine.Object.Instantiate(
-                   Resources.Load(prefabFilePath, typeof(GameObject)) as GameObject) as GameObject;
+                   Resources.Load(prefabFilePath, typeof(GameObject))) as GameObject;
             entryObject.transform.parent = this.transform;
 
             if (itemHeight == 0)

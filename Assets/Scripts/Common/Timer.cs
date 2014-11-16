@@ -81,6 +81,7 @@ public class Timer : MonoBehaviour
             if (this.RemainingTime <= 0.0)
             {
                 StopTimer();
+                _timerText.text = "";
 
                 this.RemainingTime = this.Interval;
                 

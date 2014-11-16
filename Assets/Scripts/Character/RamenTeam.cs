@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define __DEBUG
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -39,8 +40,8 @@ public class RamenTeam : MonoBehaviour {
         string s1 = "", s2 = "";
         for (int i = 0; i < length; ++i)
         {
-            s1 += (char)((int)'A' + Random.Range(0, 25));
-            s2 += (char)((int)'A' + Random.Range(0, 25));
+            s1 += (char)((int)'A' + Random.Range(0, 51));
+            s2 += (char)((int)'A' + Random.Range(0, 51));
         }
          SetPlayerNames(s1, s2);
 #else
