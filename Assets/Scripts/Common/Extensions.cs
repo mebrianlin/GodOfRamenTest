@@ -37,5 +37,30 @@ namespace ExtensionMethods
 				return array[0];
 
 		}
+
+		public static GameObject FindObjectWithTagInChildrenRecursive(this GameObject obj, string tag)
+		{
+			return GetAllChildren(obj)
+				.Where(x => x.tag == tag)
+				.ToArray();
+		}
+
+		public static GameObject[] GetAllChildren(this GameObject obj)
+		{
+			List<GameObject> allChildren = new List<GameObject>();
+			/*
+			GameObject[][] array = obj.transform.Cast<Transform>()
+				.Select(x => GetAllChilds(x.gameObject))
+				.ToArray();
+			*/
+			foreach (Transform trans in obj.transform)
+			{
+				Gameobject[] grandChildren = GetAllChildren(trans.gameObject);
+				foreach (GameObject g in grandChildren)
+					allChildren.Add (g);
+				allChildren.Add(trans.gameObject);
+			}        
+			return allChildren.ToArray();
+		}
 	}   
 }
