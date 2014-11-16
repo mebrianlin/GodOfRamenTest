@@ -86,7 +86,7 @@ public class RamenTeam : MonoBehaviour {
 
 	void helper_OnNoodleCooked()
 	{
-		Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(_ramenBowl.Count*8, 0, 0 );;
+		Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(0, _ramenBowl.Count*8, 0 );;
 
 		string prefabPath = "Prefabs/RamenIngredient" + _emcee.GetRoundNum().ToString();
 		GameObject boiledRamenObject = 
@@ -199,7 +199,7 @@ public class RamenTeam : MonoBehaviour {
 		Destroy(g);
 		delicious.GetComponent<Animator>().SetBool("praise", false);
 		foreach(var ramenB in _ramenBowl){
-			ramenB.transform.position += new Vector3(8f,0f,0f);
+			ramenB.transform.position += new Vector3(0f, 8f,0f);
 		}
 	}
 
@@ -225,7 +225,7 @@ public class RamenTeam : MonoBehaviour {
 		string ingredientPrefabPath = "Prefabs/RamenIngredient" + round.ToString();
 
 		for(int i = 0; i< currentBoiledRamenNum; i++){
-			Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(i*8, 0, 0 );;
+			Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(0,i*8, 0 );;
 			GameObject g = Instantiate(Resources.Load(ingredientPrefabPath, typeof(GameObject)) as GameObject, 
 			                boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
 			g.GetComponent<RamenBowl>().SetRequiredIngredients (_emcee.RequiredIngredient);

@@ -50,9 +50,8 @@ public class BlowFire : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//ramenToBeBoiled = new Queue<Ramen>();
 		fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
-		ramenProgressBar.transform.localScale = new Vector3(1,0,1);
+		ramenProgressBar.transform.localScale = new Vector3(0,1,1);
 		waterAnim = newwater.GetComponent<Animator>();
 	}
 	
@@ -61,13 +60,12 @@ public class BlowFire : MonoBehaviour {
 		//temperature cool down
         if (temperature > 0){
             temperature -= coolSpeed * Time.deltaTime;
-			ramenProgressBar.transform.localScale = new Vector3(1,temperature/perfectTemprature,1);
-			ramenProgressBar.transform.localPosition = new Vector3(0, -4.2f*(1- temperature/perfectTemprature)/2,0);
+			ramenProgressBar.transform.localScale = new Vector3(temperature/perfectTemprature,1,1);
+			ramenProgressBar.transform.localPosition = new Vector3((temperature/perfectTemprature-1)*3.98f/2,0,0);
 
 		}else{
 
-
-			ramenProgressBar.transform.localScale = new Vector3(1,0,1);
+			ramenProgressBar.transform.localScale = new Vector3(0,1,1);
 			fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
 
 		}
@@ -80,14 +78,12 @@ public class BlowFire : MonoBehaviour {
 				extraFire.SetActive(false);
 
 				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
-				//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
 				waterAnim.SetBool("isBlow", false);
 
 			}else if(temperature>0 && temperature <= perfectTemprature-temperatureRange){
 				extraFire.SetActive(false);
 
 				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[1]);
-				//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
 				waterAnim.SetBool("isBlow", true);
 
 
@@ -103,9 +99,8 @@ public class BlowFire : MonoBehaviour {
 			}else if(temperature >= perfectTemprature){
 				ramenInThePot.Dequeue();
 				Destroy(r);
-				ramenProgressBar.transform.localScale = new Vector3(1,0,1);
+				ramenProgressBar.transform.localScale = new Vector3(0,1,1);
 							//throw ramen out
-				//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[1]);
 				if (OnNoodleCooked != null)
 					OnNoodleCooked();
 				potIsFull = false;
@@ -122,19 +117,16 @@ public class BlowFire : MonoBehaviour {
 				if(temperature<=0){
 					extraFire.SetActive(false);
 					fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
-					//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[0]);
 					waterAnim.SetBool("isBlow", false);
 
 				}else if(temperature>0 && temperature <= perfectTemprature-temperatureRange){
 					extraFire.SetActive(false);
 					fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[1]);
-					//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[0]);
 					waterAnim.SetBool("isBlow", true);
 
 				}else if(temperature>= perfectTemprature-temperatureRange){
 					extraFire.SetActive(true);
 					fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[2]);
-					//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[1]);
 					waterAnim.SetBool("isBlow", true);
 
 				}
