@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define __DEBUG
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ public class Emcee : MonoBehaviour
 		const int MAX_TEAM = 2;
 		const int MAX_INGREDIENT = 3;
 		const int COMBINATION_NUM = 3;
-		int TIME_PER_ROUnD = GameSettings.GetInt("TimePerRound");
+		const int TIME_PER_ROUnD = 100;
 
 		Timer _timer;
 		FoodFactory _factory;
@@ -178,9 +179,9 @@ public class Emcee : MonoBehaviour
 
 		void endGame ()
 		{
-
-            if (GameSettings.GetBool("DebugMode"))
+#if __DEBUG
 				_teamScores = new int[] { Random.Range (1, 100), Random.Range (1, 100) };
+#endif
 
         // if the game has ended
         LeaderboardEntry[] entries = _teams

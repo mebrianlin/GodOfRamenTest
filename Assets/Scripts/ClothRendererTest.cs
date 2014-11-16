@@ -77,7 +77,7 @@ public class ClothRendererTest : MonoBehaviour
 				noodleHitCount = 0;
 				slope = 1f;
 				maxNoodleScore = 500f;
-                maxNoodleHitCount = GameSettings.GetInt("MaxNoodleHitCount");
+				maxNoodleHitCount = 4;
 				noodlesfinished = 0;
 				foreach (GameObject trigger in triggers) {
 						trigger.SetActive (false);

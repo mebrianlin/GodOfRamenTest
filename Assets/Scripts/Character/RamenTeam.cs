@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define __DEBUG
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -34,22 +35,19 @@ public class RamenTeam : MonoBehaviour {
     TextMesh _scoreText;
 	
 	void Start () {
-        if (GameSettings.GetBool("DebugMode"))
+        // set default player names
+#if __DEBUG
+        int length = Random.Range(3, 10);
+        string s1 = "", s2 = "";
+        for (int i = 0; i < length; ++i)
         {
-            int length = Random.Range(3, 10);
-            string s1 = "", s2 = "";
-            for (int i = 0; i < length; ++i)
-            {
-                s1 += (char)((int)'A' + Random.Range(0, 51));
-                s2 += (char)((int)'A' + Random.Range(0, 51));
-            }
-            SetPlayerNames(s1, s2);
+            s1 += (char)((int)'A' + Random.Range(0, 51));
+            s2 += (char)((int)'A' + Random.Range(0, 51));
         }
-        else
-        {
-            // set default player names
-            SetPlayerNames("", "");
-        }
+         SetPlayerNames(s1, s2);
+#else
+        SetPlayerNames("", "");
+#endif
 
         _apprentice = GetComponentInChildren<Apprentice>();
         _helper = GetComponentInChildren<Helper>();
