@@ -12,6 +12,7 @@ public class Emcee : MonoBehaviour
 		const int MAX_TEAM = 2;
 		const int MAX_INGREDIENT = 3;
 		const int COMBINATION_NUM = 3;
+
 		int TIME_PER_ROUnD = GameSettings.GetInt("TimePerRound");
 
 		Timer _timer;
@@ -24,11 +25,11 @@ public class Emcee : MonoBehaviour
 		float _generateFoodSpeed = 1.0f;
 
 		public Food[] RequiredIngredient;
-	
 
-	public Food[][] RequiredIngredientCombinations= new Food[][]{ new Food[]{Food.Eggs},
-																  new Food[]{Food.Carrot, Food.Cai, Food.Mushroom},
-															      new Food[]{Food.Eggs, Food.Meat, Food.Carrot}}; 
+		public Food[][] RequiredIngredientCombinations= new Food[][]{ new Food[]{Food.Shrimp},
+																	  new Food[]{Food.Eggs, Food.Meat, Food.Cai},
+																      new Food[]{Food.Carrot, Food.Chicken, Food.Pea, Food.Mushroom, Food.Tomato}}; 
+
 
 
 
