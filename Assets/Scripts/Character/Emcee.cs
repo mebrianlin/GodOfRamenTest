@@ -13,7 +13,7 @@ public class Emcee : MonoBehaviour
 		const int MAX_TEAM = 2;
 		const int MAX_INGREDIENT = 3;
 		const int COMBINATION_NUM = 3;
-		const int TIME_PER_ROUnD = 10;
+		const int TIME_PER_ROUnD = 30;
 
 		Timer _timer;
 		FoodFactory _factory;
@@ -27,9 +27,9 @@ public class Emcee : MonoBehaviour
 		public Food[] RequiredIngredient;
 	
 
-	public Food[][] RequiredIngredientCombinations= new Food[][]{ new Food[]{Food.Shrimp},
-																  new Food[]{Food.Eggs, Food.Meat, Food.Cai},
-															      new Food[]{Food.Carrot, Food.Chicken, Food.Mushroom, Food.Pea, Food.Tomato}}; 
+		public Food[][] RequiredIngredientCombinations= new Food[][]{ new Food[]{Food.Shrimp},
+																	  new Food[]{Food.Eggs, Food.Meat, Food.Cai},
+																      new Food[]{Food.Carrot, Food.Chicken, Food.Pea, Food.Mushroom, Food.Tomato}}; 
 
 
 

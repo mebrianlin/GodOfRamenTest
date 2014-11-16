@@ -86,8 +86,9 @@ public class RamenTeam : MonoBehaviour {
 	{
 		Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(_ramenBowl.Count*8, 0, 0 );;
 
+		string prefabPath = "Prefabs/RamenIngredient" + _emcee.GetRoundNum().ToString();
 		GameObject boiledRamenObject = 
-			Instantiate(Resources.Load("Prefabs/RamenIngredient", typeof(GameObject)) as GameObject, 
+			Instantiate(Resources.Load(prefabPath, typeof(GameObject)) as GameObject, 
 			            boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
 		RamenBowl bowl = boiledRamenObject.GetComponent<RamenBowl>();
 		if (bowl == null)
@@ -212,12 +213,14 @@ public class RamenTeam : MonoBehaviour {
 
 		_ingredients.Clear();
 		int currentBoiledRamenNum = _ramenBowl.Count;
-
+		Debug.Log("current boiled ramen Number = " + currentBoiledRamenNum);
 		for(int i = 0 ; i< _ramenBowl.Count; i++){
 			GameObject g = _ramenBowl[i];
-			_ramenBowl.RemoveAt(i);
+			Debug.Log("destroy unfinished ramen!!!!!!!!!!!!!!! aaaaaaaaaaaaaaaaaaaa");
 			Destroy(g);
 		}
+
+		_ramenBowl.Clear();
 
 		string ingredientPrefabPath = "Prefabs/RamenIngredient" + round.ToString();
 
