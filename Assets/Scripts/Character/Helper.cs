@@ -58,9 +58,12 @@ public class Helper : MonoBehaviour {
 //		GameObject boiledRamenObject = 
 //			Instantiate(Resources.Load("Prefabs/BoiledRamen", typeof(GameObject)) as GameObject, boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
 //		_boiledRamen.Enqueue(boiledRamenObject);
+
 		++_numRamenNeedIngredient;
-        if (OnNoodleCooked != null)
+		_blowFire.ResetTempreature();
+		if (OnNoodleCooked != null)
             OnNoodleCooked();
+
     }
 
     /// <summary>

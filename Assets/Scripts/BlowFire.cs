@@ -29,7 +29,7 @@ public class BlowFire : MonoBehaviour {
 	private float ramenCoolTemperature = 10f;
 
 	private float perfectTemprature = 20f;
-	private float temperatureRange = 5f;
+	private float temperatureRange = 2f;
 
 	private float requireTime = 8f;
 
@@ -85,12 +85,11 @@ public class BlowFire : MonoBehaviour {
 				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
 
 
-			}else if(temperature>= perfectTemprature-temperatureRange && temperature<= perfectTemprature+temperatureRange){
+			}else if(temperature>= perfectTemprature-temperatureRange){
 
 				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[2]);
 				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[3]);
-				extraFire.SetActive(false);
-
+				extraFire.SetActive(true);
 				
 				r.GetComponent<Ramen>().boilTime += Time.deltaTime;
 				if(r.GetComponent<Ramen>().boilTime >= requireTime){
@@ -107,8 +106,6 @@ public class BlowFire : MonoBehaviour {
 						OnNoodleCooked();
 					potIsFull = false;
 				}
-			}else if(temperature> perfectTemprature+temperatureRange){
-				extraFire.SetActive(true);
 			}
 
 
@@ -174,4 +171,8 @@ public class BlowFire : MonoBehaviour {
 			temperature += blowSpeed * Time.deltaTime;
 		}
     }
+	public void ResetTempreature(){
+		temperature = 5f;
+		extraFire.SetActive(false);
+	}
 }

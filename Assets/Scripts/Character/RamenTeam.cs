@@ -7,6 +7,7 @@ using ExtensionMethods;
 
 public class RamenTeam : MonoBehaviour {
 	public GameObject delicious;
+	public GameObject samplePos;
 
     public string Player1Name
     {
@@ -147,7 +148,7 @@ public class RamenTeam : MonoBehaviour {
 			var r = g.GetComponent<RamenBowl>();
 			if (r.AddIngredient(food)) {
 				// if a bowl of ramen is completed (ingredients + noodles)
-				r.ChangeRamenTexture();
+				r.ChangeRamenTexture(_emcee.GetRoundNum());
 				if (r.IsBowlComplete()) {
 
 					++_numRamen;
@@ -206,4 +207,32 @@ public class RamenTeam : MonoBehaviour {
     public void HideLeaderboard() {
         _leaderboard.Hide();
     }
+
+	public void ChangeIngredientAfterOneRound( int round){
+
+		_ingredients.Clear();
+		int currentBoiledRamenNum = _ramenBowl.Count;
+
+		for(int i = 0 ; i< _ramenBowl.Count; i++){
+			GameObject g = _ramenBowl[i];
+			_ramenBowl.RemoveAt(i);
+			Destroy(g);
+		}
+
+		string ingredientPrefabPath = "Prefabs/RamenIngredient" + round.ToString();
+
+		for(int i = 0; i< currentBoiledRamenNum; i++){
+			Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(i*8, 0, 0 );;
+			GameObject g = Instantiate(Resources.Load(ingredientPrefabPath, typeof(GameObject)) as GameObject, 
+			                boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
+			g.GetComponent<RamenBowl>().SetRequiredIngredients (_emcee.RequiredIngredient);
+			_ramenBowl.Add(g);
+		}
+
+		//change sample
+		string samplePrefabPath = "Prefabs/FinishedRamenSample" + round.ToString();
+		GameObject s = Instantiate(Resources.Load(samplePrefabPath, typeof(GameObject)) as GameObject,
+		                           samplePos.transform.position, Quaternion.identity) as GameObject;
+
+	}
 }
