@@ -79,10 +79,12 @@ public class Emcee : MonoBehaviour
 
 		void Update ()
 		{
-				if (Input.GetKeyDown (KeyCode.R)) {
-						Application.LoadLevel ("Main");
-				}
 		}
+
+        public void Restart()
+        {
+            Application.LoadLevel("Main");
+        }
     
 		IEnumerator generateFood ()
 		{

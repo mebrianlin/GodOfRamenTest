@@ -10,6 +10,10 @@ public class KeyboardSimulator : MonoBehaviour {
 
     Apprentice[] _apprentices;
     Helper[] _helpers;
+    Emcee _emcee;
+
+    bool _leftAltDown = false;
+    bool _rightAltDown = false;
 
     KeyCode[] _addRamenCode       = new KeyCode[MAX_TEAM]   { KeyCode.LeftShift,    KeyCode.RightShift };
     KeyCode[] _increaseTempCode   = new KeyCode[MAX_TEAM]   { KeyCode.LeftControl,  KeyCode.RightControl };
@@ -26,6 +30,7 @@ public class KeyboardSimulator : MonoBehaviour {
 
         _apprentices = new Apprentice[Teams.Length];
         _helpers = new Helper[Teams.Length];
+        _emcee = GameObject.FindGameObjectWithTag("Emcee").GetComponent<Emcee>();
 
         for (int i = 0; i < Teams.Length; ++i)
         {
@@ -39,6 +44,15 @@ public class KeyboardSimulator : MonoBehaviour {
 	void Update () {
         if (GameSettings.GetBool("UseKeyboard"))
         {
+            if (Input.GetKeyDown(KeyCode.LeftAlt))
+                _leftAltDown = true;
+            if (Input.GetKeyUp(KeyCode.LeftAlt))
+                _leftAltDown = false;
+            if (Input.GetKeyDown(KeyCode.RightAlt))
+                _rightAltDown = true;
+            if (Input.GetKeyUp(KeyCode.RightAlt))
+                _rightAltDown = false;
+
             for (int i = 0; i < MAX_TEAM && i < Teams.Length; ++i)
             {
                 if (Input.GetKeyDown(_addRamenCode[i]))
@@ -61,6 +75,12 @@ public class KeyboardSimulator : MonoBehaviour {
                     Hands[i].transform.Translate(Vector3.left * 0.2f);
                 if (Input.GetKey(_moveHandRightCode[i]) && i < Hands.Length)
                     Hands[i].transform.Translate(Vector3.right * 0.2f);
+            }
+
+            bool altDown = _leftAltDown || _rightAltDown;
+            if (Input.GetKey(KeyCode.R) && altDown)
+            {
+                _emcee.Restart();
             }
         }
 	}
