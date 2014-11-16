@@ -15,7 +15,7 @@ public class phidgetTest : MonoBehaviour
         try
         {
             //Declare an spatial object
-            spatial = new Spatial();
+            //spatial = new Spatial();
         }
         catch (System.Exception ex)
         {

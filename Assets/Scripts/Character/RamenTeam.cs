@@ -230,9 +230,14 @@ public class RamenTeam : MonoBehaviour {
 		}
 
 		//change sample
+		GameObject sampleRamen = this.gameObject.FindObjectWithTagInChildren("SampleRamen");
+		if(sampleRamen!= null){
+			Destroy(sampleRamen);
+		}
 		string samplePrefabPath = "Prefabs/FinishedRamenSample" + round.ToString();
 		GameObject s = Instantiate(Resources.Load(samplePrefabPath, typeof(GameObject)) as GameObject,
 		                           samplePos.transform.position, Quaternion.identity) as GameObject;
+		s.transform.parent = this.gameObject.transform;
 
 	}
 }
