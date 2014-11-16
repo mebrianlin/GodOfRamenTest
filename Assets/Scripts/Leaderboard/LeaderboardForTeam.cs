@@ -52,7 +52,7 @@ public class LeaderboardForTeam : MonoBehaviour {
                 script.IsFocus = (i == highlightIndex);
             }
             //entryObject.transform.position = new Vector3(0, -3 * i, 0);
-            entryObject.transform.localPosition = new Vector3(0, -itemHeight * i, 0);
+            entryObject.transform.localPosition = new Vector3(0, -itemHeight * i, -1);
         }
 
         this.gameObject.FindObjectWithTagInChildren("Leaderboard").GetComponent<SpriteRenderer>().enabled = true;
