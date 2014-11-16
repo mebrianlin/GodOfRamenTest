@@ -215,10 +215,8 @@ public class RamenTeam : MonoBehaviour {
 
 		_ingredients.Clear();
 		int currentBoiledRamenNum = _ramenBowl.Count;
-		Debug.Log("current boiled ramen Number = " + currentBoiledRamenNum);
 		for(int i = 0 ; i< _ramenBowl.Count; i++){
 			GameObject g = _ramenBowl[i];
-			Debug.Log("destroy unfinished ramen!!!!!!!!!!!!!!! aaaaaaaaaaaaaaaaaaaa");
 			Destroy(g);
 		}
 

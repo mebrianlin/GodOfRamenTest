@@ -12,6 +12,9 @@ public class BlowFire : MonoBehaviour {
 	public GameObject water;
 	public Texture[] waterTexture;//water-origin, water-boil, water-noodle-origin, water-noodle-boil
 
+	public GameObject newwater;
+	public GameObject ramenInPot;
+
 	public GameObject fire;
 	public Texture[] fireTexture;//fire-no, fire-small, fire-big
 
@@ -42,12 +45,15 @@ public class BlowFire : MonoBehaviour {
 
 	public GameObject rawRamenSpawnPos;
 
+	private Animator waterAnim;
+
 
 	// Use this for initialization
 	void Start () {
 		//ramenToBeBoiled = new Queue<Ramen>();
 		fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
 		ramenProgressBar.transform.localScale = new Vector3(1,0,1);
+		waterAnim = newwater.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -67,62 +73,74 @@ public class BlowFire : MonoBehaviour {
 		}
 
 		if(potIsFull){
+			ramenInPot.SetActive(true);
 			GameObject r= ramenInThePot.Peek();
 			
 			if(temperature<=0){
 				extraFire.SetActive(false);
 
 				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
-				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
+				//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
+				waterAnim.SetBool("isBlow", false);
+
 			}else if(temperature>0 && temperature <= perfectTemprature-temperatureRange){
 				extraFire.SetActive(false);
 
 				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[1]);
-				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
+				//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[2]);
+				waterAnim.SetBool("isBlow", true);
+
 
 
 			}else if(temperature>= perfectTemprature-temperatureRange && temperature< perfectTemprature){
 
 				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[2]);
-				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[3]);
+				//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[3]);
 				extraFire.SetActive(true);
+				waterAnim.SetBool("isBlow", true);
+
 
 			}else if(temperature >= perfectTemprature){
 				ramenInThePot.Dequeue();
 				Destroy(r);
 				ramenProgressBar.transform.localScale = new Vector3(1,0,1);
 							//throw ramen out
-				water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[1]);
+				//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[1]);
 				if (OnNoodleCooked != null)
 					OnNoodleCooked();
 				potIsFull = false;
+				waterAnim.SetBool("isBlow", true);
+
 			}
 
 
 		}else{
+			ramenInPot.SetActive(false);
 			if(ramenToBeBoiled.Count > 0){
 				ThrowRawRamenToPot();
 			}else{
 				if(temperature<=0){
 					extraFire.SetActive(false);
 					fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
-					water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[0]);
+					//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[0]);
+					waterAnim.SetBool("isBlow", false);
+
 				}else if(temperature>0 && temperature <= perfectTemprature-temperatureRange){
 					extraFire.SetActive(false);
 					fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[1]);
-					water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[0]);
+					//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[0]);
+					waterAnim.SetBool("isBlow", true);
+
 				}else if(temperature>= perfectTemprature-temperatureRange){
 					extraFire.SetActive(true);
 					fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[2]);
-					water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[1]);
+					//water.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex",waterTexture[1]);
+					waterAnim.SetBool("isBlow", true);
+
 				}
 			}
 		}
 
-
-
-		
-		
 	}
 
 
