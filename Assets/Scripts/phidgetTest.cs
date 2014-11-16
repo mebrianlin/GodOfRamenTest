@@ -12,14 +12,10 @@ public class phidgetTest : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        try
+        if (GameSettings.GetBool("UsePhidget"))
         {
             //Declare an spatial object
-            //spatial = new Spatial();
-        }
-        catch (System.Exception ex)
-        {
-            Debug.Log(ex.Message);
+            spatial = new Spatial();
         }
 
         if (spatial != null)

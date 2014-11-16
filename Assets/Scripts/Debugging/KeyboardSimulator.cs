@@ -37,27 +37,31 @@ public class KeyboardSimulator : MonoBehaviour {
 	}
 	
 	void Update () {
-        for (int i = 0; i < MAX_TEAM && i < Teams.Length; ++i)
+        if (GameSettings.GetBool("UseKeyboard"))
         {
-            if (Input.GetKeyDown(_addRamenCode[i]))
-                _helpers[i].AddNewRamen(i);
+            for (int i = 0; i < MAX_TEAM && i < Teams.Length; ++i)
+            {
+                if (Input.GetKeyDown(_addRamenCode[i]))
+                    _helpers[i].AddNewRamen(i);
 
-            if (Input.GetKey(_increaseTempCode[i]))
-                _helpers[i].IncreaseTemperature();
+                if (Input.GetKey(_increaseTempCode[i]))
+                    _helpers[i].IncreaseTemperature();
 
-            if (Input.GetKeyDown(_grabIngredientCode[i]))
-                Teams[i].GrabIngredient();
+                if (Input.GetKeyDown(_grabIngredientCode[i]))
+                    Teams[i].GrabIngredient();
+            }
+
+            for (int i = 0; i < 2 * MAX_TEAM && i < 2 * Teams.Length; ++i)
+            {
+                if (Input.GetKey(_moveHandUpCode[i]) && i < Hands.Length)
+                    Hands[i].transform.Translate(Vector3.up * 0.2f);
+                if (Input.GetKey(_moveHandDownCode[i]) && i < Hands.Length)
+                    Hands[i].transform.Translate(Vector3.down * 0.2f);
+                if (Input.GetKey(_moveHandLeftCode[i]) && i < Hands.Length)
+                    Hands[i].transform.Translate(Vector3.left * 0.2f);
+                if (Input.GetKey(_moveHandRightCode[i]) && i < Hands.Length)
+                    Hands[i].transform.Translate(Vector3.right * 0.2f);
+            }
         }
-
-		for (int i = 0; i < 2*MAX_TEAM && i < 2*Teams.Length; ++i) {
-			if (Input.GetKey(_moveHandUpCode[i]) && i < Hands.Length)
-				Hands[i].transform.Translate(Vector3.up * 0.2f);
-			if (Input.GetKey(_moveHandDownCode[i]) && i < Hands.Length)
-				Hands[i].transform.Translate(Vector3.down * 0.2f);
-            if (Input.GetKey(_moveHandLeftCode[i]) && i < Hands.Length)
-                Hands[i].transform.Translate(Vector3.left * 0.2f);
-            if (Input.GetKey(_moveHandRightCode[i]) && i < Hands.Length)
-                Hands[i].transform.Translate(Vector3.right * 0.2f);
-		}
 	}
 }
