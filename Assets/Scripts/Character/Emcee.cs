@@ -13,7 +13,7 @@ public class Emcee : MonoBehaviour
 		const int MAX_TEAM = 2;
 		const int MAX_INGREDIENT = 3;
 		const int COMBINATION_NUM = 3;
-		const int TIME_PER_ROUnD = 30;
+		const int TIME_PER_ROUnD = 100;
 
 		Timer _timer;
 		FoodFactory _factory;

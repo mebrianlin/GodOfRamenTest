@@ -34,7 +34,7 @@ public class Helper : MonoBehaviour {
 
                 // Helper calls increaseTemp
                 // Debug.Log("Acceleration Magnitude: " + acceleration.magnitude);
-                IncreaseTemperature(Mathf.Pow(acceleration.magnitude - 1, 2) * .1f);
+                IncreaseTemperature(Mathf.Pow(acceleration.magnitude - 1, 2));
             };
         }
 	}

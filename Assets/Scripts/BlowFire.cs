@@ -21,7 +21,7 @@ public class BlowFire : MonoBehaviour {
 	private float temperature = 0;
 
 	private float blowSpeed = 8f;
-	private float coolSpeed = 2f;
+	private float coolSpeed = 1f;
 
 	//ramen
 	private bool potIsFull = false;
