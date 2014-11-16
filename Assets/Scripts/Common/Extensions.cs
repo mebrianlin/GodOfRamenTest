@@ -19,6 +19,7 @@ namespace ExtensionMethods
 
         public static GameObject[] FindObjectsWithTagInChildren(this GameObject obj, string tag)
 		{
+            // cannot find disabled children
             return obj.transform.Cast<Transform>()
                 .Select(x => x.gameObject)
                 .Where(x => x.tag == tag)
@@ -27,6 +28,7 @@ namespace ExtensionMethods
 
 		public static GameObject FindObjectWithTagInChildren(this GameObject obj, string tag)
 		{
+            // cannot find disabled children
 			GameObject[] array = obj.transform.Cast<Transform>()
 				.Select(x => x.gameObject)
 				.Where(x => x.tag == tag)
@@ -38,14 +40,14 @@ namespace ExtensionMethods
 
 		}
 
-		public static GameObject FindObjectWithTagInChildrenRecursive(this GameObject obj, string tag)
+		public static GameObject[] FindObjectsWithTagInChildrenRecursive(this GameObject obj, string tag)
 		{
 			return GetAllChildren(obj)
 				.Where(x => x.tag == tag)
 				.ToArray();
 		}
 
-		public static GameObject[] GetAllChildren(this GameObject obj)
+        public static List<GameObject> GetAllChildren(this GameObject obj)
 		{
 			List<GameObject> allChildren = new List<GameObject>();
 			/*
@@ -55,12 +57,10 @@ namespace ExtensionMethods
 			*/
 			foreach (Transform trans in obj.transform)
 			{
-				Gameobject[] grandChildren = GetAllChildren(trans.gameObject);
-				foreach (GameObject g in grandChildren)
-					allChildren.Add (g);
+                allChildren.AddRange(GetAllChildren(trans.gameObject));
 				allChildren.Add(trans.gameObject);
 			}        
-			return allChildren.ToArray();
+			return allChildren;
 		}
 	}   
 }

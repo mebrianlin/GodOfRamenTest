@@ -13,10 +13,15 @@ public class ClothRendererTest : MonoBehaviour
 		public GameObject bottomBar;
 		public GameObject ramenCountText;
 		public GameObject noodles;
-		public GameObject leftHandle;
-		public GameObject rightHandle;
+		private GameObject leftHandle;
+		private GameObject rightHandle;
 		public GameObject table;
 		public GameObject[] triggers;
+
+		public GameObject[] leftHand;
+		public GameObject[] rightHand;
+		public GameObject openLeftHand;
+		public GameObject openRightHand;
 
 		public float slope;
 
@@ -42,7 +47,6 @@ public class ClothRendererTest : MonoBehaviour
 				table = this.gameObject.FindObjectWithTagInChildren ("Table");
 				topBar = this.gameObject.FindObjectWithTagInChildren ("TopBar");
 				bottomBar = this.gameObject.FindObjectWithTagInChildren ("BottomBar");
-				leftHandle = this.gameObject.FindObjectWithTagInChildren ("LeftHandle");
 				rightHandle = this.gameObject.FindObjectWithTagInChildren ("RightHandle");
 				triggers = this.gameObject.FindObjectsWithTagInChildren ("TableTrigger");	
 				*/
@@ -52,9 +56,20 @@ public class ClothRendererTest : MonoBehaviour
 				topBar = GameObject.FindGameObjectWithTag ("TopBar");
 				bottomBar = GameObject.FindGameObjectWithTag ("BottomBar");
 				leftHandle = GameObject.FindGameObjectWithTag ("LeftHandle");
-				rightHandle = GameObject.FindGameObjectWithTag ("RightHandle");
 				triggers = GameObject.FindGameObjectsWithTag ("TableTrigger");	
-*/
+				*/
+				leftHandle = this.gameObject.FindObjectWithTagInChildren ("LeftHandle");
+				rightHandle = this.gameObject.FindObjectWithTagInChildren ("RightHandle");
+
+				leftHand = leftHandle.gameObject.FindObjectsWithTagInChildren ("Hand");
+				rightHand = rightHandle.gameObject.FindObjectsWithTagInChildren ("Hand");
+				
+				openLeftHand = leftHandle.gameObject.FindObjectWithTagInChildren ("OpenHand");
+				openRightHand = rightHandle.gameObject.FindObjectWithTagInChildren ("OpenHand");
+
+				openLeftHand.SetActive (false);
+				openRightHand.SetActive (false);
+		
 				_renderer = noodles.GetComponent<Renderer> ();
 				topHeight = topBar.GetComponent<Transform> ().position.y;
 				bottomHeight = bottomBar.GetComponent<Transform> ().position.y;
@@ -74,7 +89,6 @@ public class ClothRendererTest : MonoBehaviour
 		void Update ()
 		{
 //				Debug.Log (string.Format ("({0},{1})", _renderer.bounds.center.y - _renderer.bounds.extents.y, _renderer.bounds.center.y + _renderer.bounds.extents.y));
-
 				if (attachedToHands) {
 						maxRamenHeight = _renderer.bounds.max.y;
 						
@@ -154,6 +168,7 @@ public class ClothRendererTest : MonoBehaviour
 								noodles.GetComponent<InteractiveCloth> ().AttachToCollider (leftHandle.GetComponent<Collider> ().collider);
 								noodles.GetComponent<InteractiveCloth> ().AttachToCollider (rightHandle.GetComponent<Collider> ().collider);
 								attachedToHands = true;
+								closeTheHands ();
 								leftHandle.GetComponent<AttachNoodleScript> ().unAttach ();
 								rightHandle.GetComponent<AttachNoodleScript> ().unAttach ();
 								foreach (GameObject trigger in triggers) {
@@ -168,7 +183,6 @@ public class ClothRendererTest : MonoBehaviour
 	
 		void resetNoodles ()
 		{
-				
 				Destroy (noodles.gameObject);
 
 				foreach (GameObject trigger in triggers) {
@@ -180,8 +194,32 @@ public class ClothRendererTest : MonoBehaviour
 //				leftHandle.GetComponent<AttachNoodleScript> ().unAttach ();
 //				rightHandle.GetComponent<AttachNoodleScript> ().unAttach ();
 				_renderer = noodles.GetComponent<Renderer> ();		
+				openHands ();
 		}
 
+		void openHands ()
+		{
+				foreach (GameObject hand in rightHand) {
+						hand.SetActive (false);
+				}
+				foreach (GameObject hand in leftHand) {
+						hand.SetActive (false);
+				}
+				openLeftHand.SetActive (true);
+				openRightHand.SetActive (true);
+		}
+	
+		void closeTheHands ()
+		{
+				foreach (GameObject hand in rightHand) {
+						hand.SetActive (true);
+				}
+				foreach (GameObject hand in leftHand) {
+						hand.SetActive (true);
+				}
+				openLeftHand.SetActive (false);
+				openRightHand.SetActive (false);
+		}
 		//add to ramen score as a linear function y=kx where y is addOnScore, and x is distance. 
 		//addOnScore is then added onto the noodleScore
 		void addNoodleScore (float distance)
