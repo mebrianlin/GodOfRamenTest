@@ -78,7 +78,7 @@ public class Emcee : MonoBehaviour
         RequiredIngredient = RequiredIngredientCombinations[_round];
 
 
-        StartCoroutine(generateFood());
+        StartCoroutine("generateFood");
         StartCoroutine(WaitAndPlayTransitionAnimation());
 
     }
@@ -187,16 +187,19 @@ public class Emcee : MonoBehaviour
 
     void timeUp(GameObject sender)
     {
-        //<<<<<<< HEAD
         ++_round;
-        foreach (var conveyorBelt in _conveyorBelts)
-            conveyorBelt.ChangeSpeed(_round);
-        StartCoroutine(WaitAndPlayTransitionAnimation());
-        //=======
+        if (_round >= TOTAL_ROUND)
+        {
+            _round = 0;
+            endGame();
+        }
+        else
+        {
+            foreach (var conveyorBelt in _conveyorBelts)
+                conveyorBelt.ChangeSpeed(_round);
 
-        //				StartCoroutine (WaitAndPlayTransitionAnimation ());
-        //>>>>>>> origin/master
-
+            StartCoroutine(WaitAndPlayTransitionAnimation());
+        }
     }
 
     void endGame()
@@ -242,25 +245,16 @@ public class Emcee : MonoBehaviour
     {
 
         //<<<<<<< HEAD
+        StopCoroutine("generateFood");
         Time.timeScale = 0.0001f;
 
         float audioLength = SoundManager.instance.PlayerTransitionSound(_round);
-
-        /*
-        for (int i = 0; i < TOTAL_ROUND; i++)
-        {
-            transitions1[i].SetActive(false);
-            transitions2[i].SetActive(false);
-            if (i == _round)
-            {
-                transitions1[i].SetActive(true);
-                transitions2[i].SetActive(true);
-            }
-        }*/
+        
         foreach (var team in _teams)
+        {
             team.Key.ShowSampleRamen();
+        }
 
-        //wait 5 seconds
         float start = Time.realtimeSinceStartup;
         //while (Time.realtimeSinceStartup < start + 5f) {
         while (Time.realtimeSinceStartup < start + audioLength)
@@ -277,6 +271,9 @@ public class Emcee : MonoBehaviour
             transitions2[i].SetActive(false);
         }*/
 
+        Time.timeScale = 1;
+        StartCoroutine("generateFood");
+
         if (_round >= TOTAL_ROUND)
         {
             _round = 0;
@@ -284,45 +281,13 @@ public class Emcee : MonoBehaviour
         }
         else
         {
+            if (_round != 0)
+            {
+                foreach (var belt in _conveyorBelts)
+                    belt.Reset();
+            }
             ChangeNewBowlOfRamen();
             _timer.StartTimer();
         }
-
-        Time.timeScale = 1;
     }
-    /*=======
-
-
-                    Debug.Log ("wait transition animation 000000000");
-
-                    ++_round;
-
-                    for (int i = 0; i < TOTAL_ROUND; i ++) {
-                            transitions1 [i].SetActive (false);
-                            transitions2 [i].SetActive (false);
-                            if (i == _round) {
-                                    transitions1 [i].SetActive (true);
-                                    transitions2 [i].SetActive (true);
-                            }
-                    }
-
-                    yield return  new WaitForSeconds (5f);
-                    for (int i = 0; i < TOTAL_ROUND; i ++) {
-                            transitions1 [i].SetActive (false);
-                            transitions2 [i].SetActive (false);
-                    }
-
-                    if (_round >= TOTAL_ROUND) {
-                            _round = 0;
-                            endGame ();
-                    } else {
-                            ChangeNewBowlOfRamen ();
-                            _timer.StartTimer ();
-                    }
-                    Debug.Log ("wait transition animation 11111111111");
-
-            }
-    >>>>>>> origin/master
-    */
-
 }

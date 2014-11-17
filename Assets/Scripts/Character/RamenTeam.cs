@@ -354,6 +354,7 @@ public class RamenTeam : MonoBehaviour
         GameObject s = Instantiate(Resources.Load(samplePrefabPath, typeof(GameObject)) as GameObject,
                                    samplePos.transform.position, Quaternion.identity) as GameObject;
         s.transform.parent = this.gameObject.transform;
+        s.SetActive(false);
 
 
     }

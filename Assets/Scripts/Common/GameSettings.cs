@@ -25,7 +25,7 @@ public static class GameSettings
     };
     static Dictionary<string, int> _intTable = new Dictionary<string, int>()
     { 
-        { "TimePerRound", 15 },
+        { "TimePerRound", 3 },
         { "MaxNoodleHitCount", 4 },
     };
     static Dictionary<string, string> _stringTable = new Dictionary<string, string>();

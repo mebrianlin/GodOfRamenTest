@@ -6,8 +6,7 @@ public class SoundManager : MonoBehaviour
 		public static SoundManager instance { get; private set; }
 		public AudioClip[] clips;
 		private AudioSource source;
-
-        GameObject BGMusic;
+        AudioSource _bgmSource;
 
         AudioSource _ramenAudio;
         AudioSource _transitionAudio;
@@ -29,7 +28,7 @@ public class SoundManager : MonoBehaviour
 
                 _ramenAudio = transform.Find("RamenFeedback").gameObject.GetComponent<AudioSource>();
                 _transitionAudio = transform.Find("Transition").gameObject.GetComponent<AudioSource>();
-                BGMusic = transform.Find("BGM").gameObject;
+                _bgmSource = transform.Find("BGM").gameObject.GetComponent<AudioSource>();
         }
 
         void Update()
@@ -102,9 +101,12 @@ public class SoundManager : MonoBehaviour
         /// <returns>The length of the sound (in seconds)</returns>
         public float PlayerTransitionSound(int round)
         {
-            if (round < _transitionSounds.Length)
+            if (0 <= round && round < _transitionSounds.Length)
             {
-                fadeOutBGM();
+                if (round == 0)
+                    _bgmSource.Pause();
+                else
+                    fadeOutBGM();
                 AudioClip newClip = Resources.Load(string.Concat(_transitionPath, _transitionSounds[round]), typeof(AudioClip)) as AudioClip;
                 _transitionAudio.clip = newClip;
                 _transitionAudio.Play();
@@ -122,13 +124,15 @@ public class SoundManager : MonoBehaviour
 
         void fadeInBGM()
         {
+            if (!_bgmSource.isPlaying)
+                _bgmSource.Play();
             StartCoroutine("fadingBGM", 0.35f);
         }
     
         IEnumerator fadingBGM(float targetVolume)
         {
             float startTime = Time.realtimeSinceStartup;
-            float startVolume = BGMusic.GetComponent<AudioSource>().volume;
+            float startVolume = _bgmSource.volume;
             float elapsedTime = 0f;
             float transitionTime = 1f;
 
@@ -142,22 +146,8 @@ public class SoundManager : MonoBehaviour
                 float volume = startVolume + (targetVolume - startVolume) * elapsedTime / transitionTime;
                 volume = Mathf.Clamp01(volume);
 
-                BGMusic.GetComponent<AudioSource>().volume = volume;
+                _bgmSource.volume = volume;
             }
-            /*
-            Debug.Log(targetVolume);
-            int count = 20;
-            float step = (BGMusic.GetComponent<AudioSource>().volume - targetVolume) / count;
-            for (int i = 0; i < count; i++)
-            {
-                yield return new WaitForSeconds(0.1f);
-                float volume = BGMusic.GetComponent<AudioSource>().volume;
-                //volume -= 1f / (float)count;
-                volume -= step;
-                volume = Mathf.Clamp01(volume);
-                Debug.Log("CHANGING VOLUME" + volume.ToString());
-                BGMusic.GetComponent<AudioSource>().volume = volume;
-            }*/
         }
      
 }

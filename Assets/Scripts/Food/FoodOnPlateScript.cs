@@ -49,6 +49,8 @@ public class FoodOnPlateScript : MonoBehaviour {
             {
                 _focus = value;
 
+                // do not need to make it transparent
+                /*
                 foreach (var r in GetComponentsInChildren<Renderer>())
                 {
 					if (r != this.renderer) {
@@ -57,7 +59,7 @@ public class FoodOnPlateScript : MonoBehaviour {
                     	r.material.color = color;
 					}
                 }
-
+                */
             }
         }
     }

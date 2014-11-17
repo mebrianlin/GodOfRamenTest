@@ -42,7 +42,8 @@ public class ConveyorBelt : MonoBehaviour {
         _leftMaskPos = LeftMask.renderer.bounds.center - new Vector3(LeftMask.renderer.bounds.extents.x, 0, -0.1f);
         _rightMaskPos = RightMask.renderer.bounds.center + new Vector3(RightMask.renderer.bounds.extents.x, 0, -0.1f);
 
-        
+        Reset();
+        /*
         // manually create empty belt, so the belt is initially populated
         // populate it from right to left
         GameObject food = _factory.CreateFood(Food.None);
@@ -61,12 +62,11 @@ public class ConveyorBelt : MonoBehaviour {
             _foodOnBelt.Enqueue(food);
             food.transform.parent = this.transform;
             pos -= new Vector3(_foodSize, 0, 0);
-        }
+        }*/
 	}
 
 	void FixedUpdate () {
-        float step = 0.02f;
-        _speed = Vector3.MoveTowards(_speed, _targetSpeed, step);
+        _speed = _targetSpeed;
 
         _activeObject = null;
 
@@ -87,6 +87,35 @@ public class ConveyorBelt : MonoBehaviour {
 			Destroy(_foodOnBelt.Dequeue());
 
 	}
+
+    public void Reset()
+    {
+        while (_foodOnBelt.Count > 0)
+        {
+            Destroy(_foodOnBelt.Dequeue());
+        }
+
+        // manually create empty belt, so the belt is initially populated
+        // populate it from right to left
+        GameObject food = _factory.CreateFood(Food.None);
+        _foodSize = food.renderer.bounds.extents.x * 2;
+
+        int numOfEmptyBelt = (int)Mathf.Ceil((_rightMaskPos.x - _leftMaskPos.x) / _foodSize);
+        Vector3 pos = _leftMaskPos + new Vector3(_foodSize * numOfEmptyBelt, 0, 0);
+        
+        food.transform.position = pos;
+        _foodOnBelt.Enqueue(food);
+        food.transform.parent = this.transform;
+
+        for (; pos.x >= _leftMaskPos.x; )
+        {
+            food = _factory.CreateFood(Food.None);
+            food.transform.position = pos;
+            _foodOnBelt.Enqueue(food);
+            food.transform.parent = this.transform;
+            pos -= new Vector3(_foodSize, 0, 0);
+        }
+    }
 
     public void GenerateFood(Food food)
     {
@@ -127,5 +156,6 @@ public class ConveyorBelt : MonoBehaviour {
     {
         if (0 <= level && level < _speeds.Length)
             _targetSpeed = _speeds[level];
+        _speed = _targetSpeed;
     }
 }
