@@ -12,7 +12,7 @@ Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\A
 Loading F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\Phidget21.NET.dll (this message is harmless)
 Loading F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\Phidget21.NET.dll into Unity Child Domain
-- Completed reload, in  0.045 seconds
+- Completed reload, in  0.039 seconds
 <RI> Initializing input.
 <RI> Input initialized.
 desktop: 2560x1440 60Hz; virtual: 2560x1440 at 0,0
@@ -22,17 +22,17 @@ C:/Users/pohengl/AppData/LocalLow/DefaultCompany/GodOfRamenTest\leaderboard.bin
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-UnloadTime: 0.232436 ms
+UnloadTime: 0.304582 ms
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 562.
-Total: 1.569700 ms (FindLiveObjects: 0.017508 ms CreateObjectMapping: 0.007546 ms MarkObjects: 0.111992 ms  DeleteObjects: 1.061358 ms)
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 716.
+Total: 1.986878 ms (FindLiveObjects: 0.028979 ms CreateObjectMapping: 0.008150 ms MarkObjects: 0.152743 ms  DeleteObjects: 1.256665 ms)
 
-UnloadTime: 1.948843 ms
+UnloadTime: 0.596486 ms
 Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 560.
-Total: 1.180293 ms (FindLiveObjects: 0.046487 ms CreateObjectMapping: 0.020828 ms MarkObjects: 0.227002 ms  DeleteObjects: 0.032903 ms)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 711.
+Total: 0.700327 ms (FindLiveObjects: 0.018715 ms CreateObjectMapping: 0.009055 ms MarkObjects: 0.133424 ms  DeleteObjects: 0.019923 ms)
 
 playin' down sound
  
