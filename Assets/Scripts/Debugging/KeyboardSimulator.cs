@@ -14,6 +14,7 @@ public class KeyboardSimulator : MonoBehaviour {
 
     bool _leftAltDown = false;
     bool _rightAltDown = false;
+    bool _paused = false;
 
     KeyCode[] _addRamenCode       = new KeyCode[MAX_TEAM]   { KeyCode.LeftShift,    KeyCode.RightShift };
     KeyCode[] _increaseTempCode   = new KeyCode[MAX_TEAM]   { KeyCode.LeftControl,  KeyCode.RightControl };
@@ -24,7 +25,16 @@ public class KeyboardSimulator : MonoBehaviour {
     KeyCode[] _moveHandRightCode  = new KeyCode[MAX_TEAM*2] { KeyCode.D, KeyCode.L, KeyCode.RightArrow, KeyCode.Keypad6 };
 
 
+    void Awake()
+    {
+        GameSettings.OnBoolValueChange += GameSettings_OnBoolValueChange;
+    }
 
+    void GameSettings_OnBoolValueChange(string name, bool b)
+    {
+        if (name == "Pause")
+            _paused = b;
+    }
 
 	void Start () {
         if (Teams.Length > MAX_TEAM)
@@ -42,8 +52,11 @@ public class KeyboardSimulator : MonoBehaviour {
         }
 
 	}
-	
-	void Update () {
+
+    void Update() {
+        if (_paused)
+            return;
+
         if (GameSettings.GetBool("UseKeyboard"))
         {
             if (Input.GetKeyDown(KeyCode.LeftAlt))

@@ -49,8 +49,7 @@ public class ConveyorBelt : MonoBehaviour {
         _leftMaskPos = LeftMask.renderer.bounds.center - new Vector3(LeftMask.renderer.bounds.extents.x, 0, -0.1f);
         _rightMaskPos = RightMask.renderer.bounds.center + new Vector3(RightMask.renderer.bounds.extents.x, 0, -0.1f);
 
-        Reset();
-        /*
+        
         // manually create empty belt, so the belt is initially populated
         // populate it from right to left
         GameObject food = _factory.CreateFood(Food.None);
@@ -69,7 +68,7 @@ public class ConveyorBelt : MonoBehaviour {
             _foodOnBelt.Enqueue(food);
             food.transform.parent = this.transform;
             pos -= new Vector3(_foodSize, 0, 0);
-        }*/
+        }
 	}
 
 	void FixedUpdate () {
@@ -95,7 +94,7 @@ public class ConveyorBelt : MonoBehaviour {
 
 	}
 
-    public void Reset()
+    void Reset()
     {
         while (_foodOnBelt.Count > 0)
         {

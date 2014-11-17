@@ -55,16 +55,6 @@ public class Timer : MonoBehaviour
     void Start()
     {
 		_timerTexts = GetComponentsInChildren<TextMesh>();
-
-        /*
-        _clockClickAudioClip = Resources.Load(_clockClickPath) as AudioClip;
-        _timeUpAudioClip = Resources.Load(_timeUpPath) as AudioClip;
-
-        _audioSource = GetComponent<AudioSource>();
-
-        _audioSource.clip = _clockClickAudioClip;
-        _audioSource.loop = true;
-         */
     }
 
     // Update is called once per frame

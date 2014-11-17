@@ -21,12 +21,12 @@ public static class GameSettings
     {
         { "DebugMode", false },
         { "UseKeyboard", true },
-        { "UsePhidget", true },
+        { "UsePhidget", false },
         { "Pause", false },
     };
     static Dictionary<string, int> _intTable = new Dictionary<string, int>()
     { 
-        { "TimePerRound", 60 },
+        { "TimePerRound", 5 },
         { "MaxNoodleHitCount", 4 },
     };
     static Dictionary<string, string> _stringTable = new Dictionary<string, string>();

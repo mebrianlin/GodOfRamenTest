@@ -52,9 +52,24 @@ public class Emcee : MonoBehaviour
             _insertResults[i] = LeaderboardInsertResult.Default;
     }
 
+    void Awake()
+    {
+        GameSettings.OnBoolValueChange += GameSettings_OnBoolValueChange;   
+    }
+
+    void GameSettings_OnBoolValueChange(string name, bool b)
+    {
+        if (name == "Pause")
+        {
+            if (b)
+                _timer.StopTimer();
+            else
+                _timer.StartTimer();
+        }
+    }
+
     void Start()
     {
-
         _timer = GetComponentInChildren<Timer>();
         _timer.OnTimeElpased += timeUp;
         _timer.Interval = TIME_PER_ROUnD;
@@ -106,8 +121,13 @@ public class Emcee : MonoBehaviour
             Food food = randomFoodInArray(_foodsOnBeltInRounds[_round]);
             foreach (var c in _conveyorBelts)
                 c.GenerateFood(food);
-            float _generateFoodSpeed = 9.5f * Time.fixedDeltaTime / _conveyorBelts[0].Speed;
-            yield return new WaitForSeconds(_generateFoodSpeed);
+
+            float elapsedTime = 0;
+            while (elapsedTime < 9.5f  / _conveyorBelts[0].Speed)
+            {
+                elapsedTime += 1;
+                yield return new WaitForFixedUpdate();
+            }
         }
     }
 
@@ -195,8 +215,8 @@ public class Emcee : MonoBehaviour
         }
         else
         {
-            //foreach (var conveyorBelt in _conveyorBelts)
-            //    conveyorBelt.ChangeSpeed(_round);
+            foreach (var conveyorBelt in _conveyorBelts)
+                conveyorBelt.ChangeSpeed(_round);
 
             StartCoroutine(WaitAndPlayTransitionAnimation());
         }
@@ -244,7 +264,7 @@ public class Emcee : MonoBehaviour
     IEnumerator WaitAndPlayTransitionAnimation()
     {
         //StopCoroutine("generateFood");
-        Time.timeScale = 0.00001f;
+        GameSettings.SetBool("Pause", true);
 
         float audioLength = SoundManager.instance.PlayerTransitionSound(_round);
         
@@ -269,7 +289,8 @@ public class Emcee : MonoBehaviour
             transitions2[i].SetActive(false);
         }*/
 
-        Time.timeScale = 1;
+        GameSettings.SetBool("Pause", false);
+
         //StartCoroutine("generateFood");
 
         if (_round >= TOTAL_ROUND)
@@ -281,8 +302,8 @@ public class Emcee : MonoBehaviour
         {
             if (_round != 0)
             {
-                foreach (var belt in _conveyorBelts)
-                    belt.Reset();
+                //foreach (var belt in _conveyorBelts)
+                //    belt.Reset();
             }
             ChangeNewBowlOfRamen();
             _timer.StartTimer();

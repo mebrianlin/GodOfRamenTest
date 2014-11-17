@@ -38,6 +38,8 @@ public class BlowFire : MonoBehaviour {
 
 	private float boilTime = 0f;
 
+    private bool _paused = false;
+
 	Queue<GameObject> ramenToBeBoiled = new Queue<GameObject>();	
 	Queue<GameObject> ramenInThePot = new Queue<GameObject>();
 
@@ -47,6 +49,16 @@ public class BlowFire : MonoBehaviour {
 
 	private Animator waterAnim;
 
+    void Awake()
+    {
+        GameSettings.OnBoolValueChange += GameSettings_OnBoolValueChange;
+    }
+
+    void GameSettings_OnBoolValueChange(string name, bool b)
+    {
+        if (name == "Pause")
+            _paused = b;
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -56,9 +68,12 @@ public class BlowFire : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+    void Update()
+    {
+        if (_paused)
+            return;
+
 		//temperature cool down
-        
 
 		if(potIsFull){
 			if (temperature > 0){
