@@ -41,12 +41,12 @@ public class RamenTeam : MonoBehaviour {
 	void Start () {
         if (GameSettings.GetBool("DebugMode"))
         {
-            int length = Random.Range(3, 10);
+            int length = Random.Range(3, 5);
             string s1 = "", s2 = "";
             for (int i = 0; i < length; ++i)
             {
-                s1 += (char)((int)'A' + Random.Range(0, 51));
-                s2 += (char)((int)'A' + Random.Range(0, 51));
+                s1 += (char)((int)'A' + Random.Range(0, 26));
+                s2 += (char)((int)'A' + Random.Range(0, 26));
             }
             SetPlayerNames(s1, s2);
         }
