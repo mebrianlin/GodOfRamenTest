@@ -36,6 +36,8 @@ public class RamenTeam : MonoBehaviour {
 
 	//instructor
 	Vector3 instructorOriginPos;
+	bool instructorIsMoving = false;
+
 	
 
 	void Start () {
@@ -93,7 +95,7 @@ public class RamenTeam : MonoBehaviour {
 
 	void helper_OnNoodleCooked()
 	{
-		if(_ramenBowl.Count < 6){
+		if(_ramenBowl.Count < 5){
 			Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(0, _ramenBowl.Count*8, 0 );;
 
 			string prefabPath = "Prefabs/RamenIngredient" + _emcee.GetRoundNum().ToString();
@@ -178,6 +180,7 @@ public class RamenTeam : MonoBehaviour {
 						ramenB.transform.position += new Vector3(0f, 8f,0f);
 					}
 					_emcee.CompleteRamen(this);
+					delicious.transform.position = instructorOriginPos;
 				}
 				break;
 			}
@@ -219,7 +222,7 @@ public class RamenTeam : MonoBehaviour {
 
 
 	IEnumerator InstructorMoving(){
-		Vector3 originPos = delicious.transform.position;
+		Vector3 originPos = instructorOriginPos;
 		Vector3 targetPos = originPos + new Vector3(0, 47.5f, 0);
 		
 		float moveTime = 0.7f;

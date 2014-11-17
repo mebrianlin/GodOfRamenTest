@@ -7,6 +7,8 @@ using ExtensionMethods;
 
 public class Emcee : MonoBehaviour
 {
+		public GameObject[] transitions1;
+		public GameObject[] transitions2;
 
 
 		const int MAX_TEAM = 2;
@@ -178,14 +180,9 @@ public class Emcee : MonoBehaviour
 
 		void timeUp (GameObject sender)
 		{
-				++_round;
-				if (_round >= TOTAL_ROUND) {
-						_round = 0;
-						endGame ();
-				} else {
-						ChangeNewBowlOfRamen ();
-						_timer.StartTimer ();
-				}
+				
+				StartCoroutine(WaitAndPlayTransitionAnimation());
+				
 		}
 
 		void endGame ()
@@ -222,6 +219,39 @@ public class Emcee : MonoBehaviour
 		return _round;
 	}
 
+
+	IEnumerator WaitAndPlayTransitionAnimation(){
+
+
+
+		Debug.Log("wait transition animation 000000000");
+
+		++_round;
+
+		for(int i = 0 ; i < TOTAL_ROUND; i ++){
+			transitions1[i].SetActive (false);
+			transitions2[i].SetActive (false);
+			if(i == _round){
+				transitions1[i].SetActive(true);
+				transitions2[i].SetActive(true);
+			}
+		}
+		yield return  new WaitForSeconds(5f);
+		for(int i = 0 ; i < TOTAL_ROUND; i ++){
+			transitions1[i].SetActive (false);
+			transitions2[i].SetActive (false);
+		}
+
+		if (_round >= TOTAL_ROUND) {
+			_round = 0;
+			endGame ();
+		} else {
+			ChangeNewBowlOfRamen ();
+			_timer.StartTimer ();
+		}
+		Debug.Log("wait transition animation 11111111111");
+
+	}
 
 
 
