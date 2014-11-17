@@ -21,7 +21,8 @@ public static class GameSettings
     {
         { "DebugMode", false },
         { "UseKeyboard", true },
-        { "UsePhidget", false },
+        { "UsePhidget", true },
+        { "Pause", false },
     };
     static Dictionary<string, int> _intTable = new Dictionary<string, int>()
     { 
