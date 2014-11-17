@@ -79,8 +79,10 @@ public class Emcee : MonoBehaviour
 
 
 				StartCoroutine (generateFood ());
-		}
+				StartCoroutine(WaitAndPlayTransitionAnimation());
 
+	}
+	
 		void Update ()
 		{
 		}
@@ -180,8 +182,13 @@ public class Emcee : MonoBehaviour
 
 		void timeUp (GameObject sender)
 		{
+//<<<<<<< HEAD
+				++_round;
+				StartCoroutine(WaitAndPlayTransitionAnimation());
+//=======
 				
-				StartCoroutine (WaitAndPlayTransitionAnimation ());
+//				StartCoroutine (WaitAndPlayTransitionAnimation ());
+//>>>>>>> origin/master
 				
 		}
 
@@ -225,6 +232,41 @@ public class Emcee : MonoBehaviour
 		IEnumerator WaitAndPlayTransitionAnimation ()
 		{
 
+//<<<<<<< HEAD
+		Time.timeScale = 0;
+
+		for(int i = 0 ; i < TOTAL_ROUND; i ++){
+			transitions1[i].SetActive (false);
+			transitions2[i].SetActive (false);
+			if(i == _round){
+				transitions1[i].SetActive(true);
+				transitions2[i].SetActive(true);
+			}
+		}
+
+		//wait 5 seconds
+		float start = Time.realtimeSinceStartup;
+		while (Time.realtimeSinceStartup < start + 5f) {
+			yield return null;
+		}
+		
+		
+		for(int i = 0 ; i < TOTAL_ROUND; i ++){
+			transitions1[i].SetActive (false);
+			transitions2[i].SetActive (false);
+		}
+
+		if (_round >= TOTAL_ROUND) {
+			_round = 0;
+			endGame ();
+		} else {
+			ChangeNewBowlOfRamen ();
+			_timer.StartTimer ();
+		}
+
+		Time.timeScale = 1;
+	}
+/*=======
 
 
 				Debug.Log ("wait transition animation 000000000");
@@ -256,7 +298,7 @@ public class Emcee : MonoBehaviour
 				Debug.Log ("wait transition animation 11111111111");
 
 		}
-
-
-
+>>>>>>> origin/master
+*/
+	
 }
