@@ -32,7 +32,7 @@ public class BlowFire : MonoBehaviour {
 	private float ramenCoolTemperature = 10f;
 
 	private float perfectTemprature = 35f;
-	private float temperatureRange = 5f;
+	private float temperatureRange = 9f;
 
 	private float requireTime = 8f;
 
@@ -58,19 +58,21 @@ public class BlowFire : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//temperature cool down
-        if (temperature > 0){
-            temperature -= coolSpeed * Time.deltaTime;
-			ramenProgressBar.transform.localScale = new Vector3(temperature/perfectTemprature,1,1);
-			ramenProgressBar.transform.localPosition = new Vector3((temperature/perfectTemprature-1)*3.98f/2,0,0);
-
-		}else{
-
-			ramenProgressBar.transform.localScale = new Vector3(0,1,1);
-			fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
-
-		}
+        
 
 		if(potIsFull){
+			if (temperature > 0){
+				temperature -= coolSpeed * Time.deltaTime;
+				ramenProgressBar.transform.localScale = new Vector3(temperature/perfectTemprature,1,1);
+				ramenProgressBar.transform.localPosition = new Vector3((temperature/perfectTemprature-1)*3.98f/2,0,0.1f);
+				
+			}else{
+				
+				ramenProgressBar.transform.localScale = new Vector3(0,1,1);
+				fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);
+				
+			}
+
 			ramenInPot.SetActive(true);
 			GameObject r= ramenInThePot.Peek();
 			
@@ -105,7 +107,6 @@ public class BlowFire : MonoBehaviour {
 					OnNoodleCooked();
 				potIsFull = false;
 				waterAnim.SetBool("isBlow", true);
-
 			}
 
 
@@ -137,12 +138,15 @@ public class BlowFire : MonoBehaviour {
 
 
 	public void AddNewRamen(){
-
-		rawRamenCount++;
-		Vector3 rawRamenPos =   rawRamenSpawnPos.transform.position - new Vector3(ramenToBeBoiled.Count*8, 0, 0 );;;
-		GameObject rawRamen = Instantiate(Resources.Load("Prefabs/Ramen", typeof(GameObject)) as GameObject, 
-		                                  rawRamenPos ,   Quaternion.Euler(90, -180, 0)) as GameObject;
-		ramenToBeBoiled.Enqueue(rawRamen);
+		if(ramenToBeBoiled.Count<5){
+			rawRamenCount++;
+			Vector3 rawRamenPos =   rawRamenSpawnPos.transform.position - new Vector3(ramenToBeBoiled.Count*8, 0, 0 );;;
+			GameObject rawRamen = Instantiate(Resources.Load("Prefabs/RawRamen", typeof(GameObject)) as GameObject, 
+			                                  rawRamenPos ,   Quaternion.identity) as GameObject;
+			ramenToBeBoiled.Enqueue(rawRamen);
+		}else{
+			Debug.Log("table is full!");
+		}
 
 	}
 
@@ -159,6 +163,7 @@ public class BlowFire : MonoBehaviour {
 		}
 	
 		rawRamenCount--;
+		temperature = 0;
 		potIsFull = true;
 	}
 	

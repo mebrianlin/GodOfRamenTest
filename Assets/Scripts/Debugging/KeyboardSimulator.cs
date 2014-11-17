@@ -24,6 +24,8 @@ public class KeyboardSimulator : MonoBehaviour {
     KeyCode[] _moveHandRightCode  = new KeyCode[MAX_TEAM*2] { KeyCode.D, KeyCode.L, KeyCode.RightArrow, KeyCode.Keypad6 };
 
 
+
+
 	void Start () {
         if (Teams.Length > MAX_TEAM)
             Debug.LogError("Too many teams");
@@ -64,6 +66,14 @@ public class KeyboardSimulator : MonoBehaviour {
                 if (Input.GetKeyDown(_grabIngredientCode[i]))
                     Teams[i].GrabIngredient();
             }
+
+			if(Input.GetMouseButtonDown(0)){
+				Teams[0].GrabIngredient();
+			}
+
+			if(Input.GetMouseButtonDown(1)){
+				Teams[1].GrabIngredient();
+			}
 
             for (int i = 0; i < 2 * MAX_TEAM && i < 2 * Teams.Length; ++i)
             {
