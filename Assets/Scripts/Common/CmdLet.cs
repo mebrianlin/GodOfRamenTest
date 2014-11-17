@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+
 public abstract class CmdLet
 {
     int _numParam;
@@ -18,6 +19,20 @@ public abstract class CmdLet
     }
 
     protected abstract string execute(string[] parameters);
+}
+
+
+public class RestartCmdLet : CmdLet
+{
+    public RestartCmdLet()
+        : base(0)
+    { }
+
+    protected override string execute(string[] parameters)
+    {
+        Application.LoadLevel(Application.loadedLevelName);
+        return "";
+    }
 }
 
 public class GetFloatCmdLet : CmdLet

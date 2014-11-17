@@ -13,6 +13,8 @@ public class DebugWindow : MonoBehaviour {
     List<string> _historyCmd = new List<string>(MAX_HISTORY);
     Dictionary<string, CmdLet> _commands = new Dictionary<string, CmdLet>()
     {
+        { "restart", new RestartCmdLet() },
+
         { "setfloat", new SetFloatCmdLet() },
         { "setbool", new SetBoolCmdLet() },
         { "setint", new SetIntCmdLet() },
