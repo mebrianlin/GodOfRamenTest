@@ -22,8 +22,8 @@ public class ClothRendererTest : MonoBehaviour
 		public GameObject[] rightHand;
 		public GameObject openLeftHand;
 		public GameObject openRightHand;
-        public GameObject perfectText;
-        public GameObject ouchText;
+		public GameObject perfectText;
+		public GameObject ouchText;
 
         
 		public float slope;
@@ -72,7 +72,7 @@ public class ClothRendererTest : MonoBehaviour
 
 				openLeftHand.SetActive (false);
 				openRightHand.SetActive (false);
-                turnOffText();
+				turnOffText ();
 		
 				_renderer = noodles.GetComponent<Renderer> ();
 				topHeight = topBar.GetComponent<Transform> ().position.y;
@@ -81,7 +81,7 @@ public class ClothRendererTest : MonoBehaviour
 				noodleHitCount = 0;
 				slope = 1f;
 				maxNoodleScore = 500f;
-				maxNoodleHitCount = GameSettings.GetInt("MaxNoodleHitCount");
+				maxNoodleHitCount = GameSettings.GetInt ("MaxNoodleHitCount");
 				noodlesfinished = 0;
 				foreach (GameObject trigger in triggers) {
 						trigger.SetActive (false);
@@ -138,8 +138,8 @@ public class ClothRendererTest : MonoBehaviour
 								if (maxRamenHeight > bottomHeight && maxRamenHeight < topHeight) {
 										isRamenWithinRange = true;
 										++noodleHitCount;
-                                        showPerfectText();
-                                        Invoke("turnOffText", 1f);
+										showPerfectText ();
+										Invoke ("turnOffPerfectText", 1f);
 								}
 						}
 
@@ -154,8 +154,8 @@ public class ClothRendererTest : MonoBehaviour
 								if (!mute)
 										SoundManager.instance.playRamenBreak ();
 
-                                showOuchText();
-                                Invoke("turnOffText",1f);
+								showOuchText ();
+								Invoke ("turnOffOuchText", 1f);
 						}		
 		
 						if (noodleHitCount >= maxNoodleHitCount) {// noodleScore >= maxNoodleScore) {
@@ -232,24 +232,33 @@ public class ClothRendererTest : MonoBehaviour
 
 
         
-        void showPerfectText()
-        {
-            perfectText.SetActive(true);
-            ouchText.SetActive(false);
-        }
+		void showPerfectText ()
+		{
+				perfectText.SetActive (true);
+				ouchText.SetActive (false);
+		}
 
-        void showOuchText()
-        {
-            ouchText.SetActive(true);
-            perfectText.SetActive(false);
-        }
+		void showOuchText ()
+		{
+				ouchText.SetActive (true);
+				perfectText.SetActive (false);
+		}
 
-        void turnOffText()
-        {
-            ouchText.SetActive(false);
-            perfectText.SetActive(false);
-            //yield return new WaitForSeconds(1f);
-        }
+		void turnOffText ()
+		{
+				ouchText.SetActive (false);
+				perfectText.SetActive (false);
+				//yield return new WaitForSeconds(1f);
+		}
+
+		void turnOffPerfectText ()
+		{
+				perfectText.SetActive (false);
+		}
+		void turnOffOuchText ()
+		{
+				ouchText.SetActive (false);
+		}
 
 		//add to ramen score as a linear function y=kx where y is addOnScore, and x is distance. 
 		//addOnScore is then added onto the noodleScore
