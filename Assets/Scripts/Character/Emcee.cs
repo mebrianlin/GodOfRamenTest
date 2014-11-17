@@ -15,7 +15,7 @@ public class Emcee : MonoBehaviour
 		const int MAX_INGREDIENT = 3;
 		const int COMBINATION_NUM = 3;
 
-		int TIME_PER_ROUnD = GameSettings.GetInt("TimePerRound");
+		int TIME_PER_ROUnD = GameSettings.GetInt ("TimePerRound");
 
 		Timer _timer;
 		FoodFactory _factory;
@@ -30,7 +30,7 @@ public class Emcee : MonoBehaviour
 			new Food[] {Food.Cai,    Food.Eggs,    Food.Meat, Food.Carrot,   Food.Chicken, Food.None},
 			new Food[] {Food.Carrot, Food.Chicken, Food.Pea,  Food.Mushroom, Food.Tomato,  Food.Carrot, Food.Cai, Food.Shrimp, },
 		};
-		public Food[][] RequiredIngredientCombinations= new Food[][]{
+		public Food[][] RequiredIngredientCombinations = new Food[][]{
 			new Food[]{Food.Shrimp},
 			new Food[]{Food.Cai, Food.Eggs, Food.Meat, },
 			new Food[]{Food.Carrot, Food.Chicken, Food.Mushroom, Food.Pea, Food.Tomato}
@@ -85,24 +85,24 @@ public class Emcee : MonoBehaviour
 		{
 		}
 
-        public void Restart()
-        {
-            Application.LoadLevel("Main");
-        }
-    
-		public Food randomFoodInArray(Food[] foods)
+		public void Restart ()
 		{
-			if (foods.Length == 0)
-				return Food.None;
-			return foods[Random.Range(0, foods.Length)];
+				Application.LoadLevel ("Main");
+		}
+    
+		public Food randomFoodInArray (Food[] foods)
+		{
+				if (foods.Length == 0)
+						return Food.None;
+				return foods [Random.Range (0, foods.Length)];
 		}
 
 		IEnumerator generateFood ()
 		{
 				while (true) {
-						Food food = randomFoodInArray(_foodsOnBeltInRounds[_round]);
+						Food food = randomFoodInArray (_foodsOnBeltInRounds [_round]);
 						foreach (var c in _conveyorBelts)
-							c.GenerateFood (food);
+								c.GenerateFood (food);
 						float _generateFoodSpeed = 9.5f * Time.fixedDeltaTime / _conveyorBelts [0].Speed.x;
 						yield return new WaitForSeconds (_generateFoodSpeed);
 				}
@@ -181,77 +181,81 @@ public class Emcee : MonoBehaviour
 		void timeUp (GameObject sender)
 		{
 				
-				StartCoroutine(WaitAndPlayTransitionAnimation());
+				StartCoroutine (WaitAndPlayTransitionAnimation ());
 				
 		}
 
 		void endGame ()
 		{
 
-            if (GameSettings.GetBool("DebugMode"))
-				_teamScores = new int[] { Random.Range (1, 100), Random.Range (1, 100) };
+				if (GameSettings.GetBool ("DebugMode"))
+						_teamScores = new int[] { Random.Range (1, 100), Random.Range (1, 100) };
 
-        // if the game has ended
-        LeaderboardEntry[] entries = _teams
-            .OrderBy(x => x.Value) // order by team id
-            .Select((x, i) => new LeaderboardEntry { Player1Name = x.Key.Player1Name, Player2Name = x.Key.Player2Name, Score = _teamScores[i] })
-            .ToArray();
-        //LeaderboardEntry[] entries = _teamScores
-        //     .Select(x => new LeaderboardEntry { Player1Name = "", Player2Name = "", Score = x })
-        //    .ToArray();
-        _insertResults = _leaderboard.AddEntries(entries);
+				// if the game has ended
+				LeaderboardEntry[] entries = _teams
+            .OrderBy (x => x.Value) // order by team id
+            .Select ((x, i) => new LeaderboardEntry { Player1Name = x.Key.Player1Name, Player2Name = x.Key.Player2Name, Score = _teamScores[i] })
+            .ToArray ();
+				//LeaderboardEntry[] entries = _teamScores
+				//     .Select(x => new LeaderboardEntry { Player1Name = "", Player2Name = "", Score = x })
+				//    .ToArray();
+				_insertResults = _leaderboard.AddEntries (entries);
 
-        foreach (var t in _teams)
-            t.Key.ShowLeaderboard(_insertResults[t.Value]);
-    }
-
-	void ChangeNewBowlOfRamen(){
-		Debug.Log("Round = " + _round + ". Change new bowl of Ramen");
-		if(_round<= RequiredIngredientCombinations.GetLength(0)){
-			RequiredIngredient= RequiredIngredientCombinations[_round];
-		}
-		foreach (var t in _teams){
-			t.Key.ChangeIngredientAfterOneRound(_round);
-		}		
-	}
-
-	public int GetRoundNum(){
-		return _round;
-	}
-
-
-	IEnumerator WaitAndPlayTransitionAnimation(){
-
-
-
-		Debug.Log("wait transition animation 000000000");
-
-		++_round;
-
-		for(int i = 0 ; i < TOTAL_ROUND; i ++){
-			transitions1[i].SetActive (false);
-			transitions2[i].SetActive (false);
-			if(i == _round){
-				transitions1[i].SetActive(true);
-				transitions2[i].SetActive(true);
-			}
-		}
-		yield return  new WaitForSeconds(5f);
-		for(int i = 0 ; i < TOTAL_ROUND; i ++){
-			transitions1[i].SetActive (false);
-			transitions2[i].SetActive (false);
+				foreach (var t in _teams)
+						t.Key.ShowLeaderboard (_insertResults [t.Value]);
 		}
 
-		if (_round >= TOTAL_ROUND) {
-			_round = 0;
-			endGame ();
-		} else {
-			ChangeNewBowlOfRamen ();
-			_timer.StartTimer ();
+		void ChangeNewBowlOfRamen ()
+		{
+				Debug.Log ("Round = " + _round + ". Change new bowl of Ramen");
+				if (_round <= RequiredIngredientCombinations.GetLength (0)) {
+						RequiredIngredient = RequiredIngredientCombinations [_round];
+				}
+				foreach (var t in _teams) {
+						t.Key.ChangeIngredientAfterOneRound (_round);
+				}		
 		}
-		Debug.Log("wait transition animation 11111111111");
 
-	}
+		public int GetRoundNum ()
+		{
+				return _round;
+		}
+
+
+		IEnumerator WaitAndPlayTransitionAnimation ()
+		{
+
+
+
+				Debug.Log ("wait transition animation 000000000");
+
+				++_round;
+
+				for (int i = 0; i < TOTAL_ROUND; i ++) {
+						transitions1 [i].SetActive (false);
+						transitions2 [i].SetActive (false);
+						if (i == _round) {
+								transitions1 [i].SetActive (true);
+								transitions2 [i].SetActive (true);
+						}
+				}
+
+				yield return  new WaitForSeconds (5f);
+				for (int i = 0; i < TOTAL_ROUND; i ++) {
+						transitions1 [i].SetActive (false);
+						transitions2 [i].SetActive (false);
+				}
+
+				if (_round >= TOTAL_ROUND) {
+						_round = 0;
+						endGame ();
+				} else {
+						ChangeNewBowlOfRamen ();
+						_timer.StartTimer ();
+				}
+				Debug.Log ("wait transition animation 11111111111");
+
+		}
 
 
 
