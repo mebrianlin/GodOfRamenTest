@@ -56,19 +56,19 @@ public class PSMoveExampleX : MonoBehaviour
 						Vector3 gemPos, handlePos;
 						MoveData moveData = PSMoveInput.MoveControllers [controllerNumber].Data;
 						gemPos = moveData.Position;
-						handlePos = new Vector3 (processX (moveData.HandlePosition.x), processY (moveData.HandlePosition.y), handle.transform.position.z);//moveData.HandlePosition;
+						handlePos = new Vector3 (handle.transform.position.x, processY (moveData.HandlePosition.y), handle.transform.position.z);//moveData.HandlePosition;
 
 						if (isMirror) {
 								gem.transform.localPosition = gemPos;
 								handle.transform.position = handlePos;
-								handle.transform.localRotation = Quaternion.Euler (moveData.Orientation);
+//								handle.transform.localRotation = Quaternion.Euler (moveData.Orientation);
 						} else {
 								gemPos.z = -gemPos.z + zOffset;
 								handlePos.z = -handlePos.z + zOffset;
 								gem.transform.localPosition = gemPos;
 								handle.transform.position = handlePos;
-								handle.transform.localRotation = Quaternion.LookRotation (gemPos - handlePos);
-								handle.transform.Rotate (new Vector3 (0, 0, moveData.Orientation.z));
+//								handle.transform.localRotation = Quaternion.LookRotation (gemPos - handlePos);
+//								handle.transform.Rotate (new Vector3 (0, 0, moveData.Orientation.z));
 				
 								/* using quaternion rotation directly
 			 * the rotations on the x and y axes are inverted - i.e. left shows up as right, and right shows up as left. This code fixes this in case 
@@ -76,10 +76,10 @@ public class PSMoveExampleX : MonoBehaviour
 			 * 
 			 * Add by Karthik Krishnamurthy*/
 				
-								temp = moveData.QOrientation;
-								temp.x = -moveData.QOrientation.x;
-								temp.y = -moveData.QOrientation.y;
-								handle.transform.localRotation = temp;
+//								temp = moveData.QOrientation;
+//								temp.x = -moveData.QOrientation.x;
+//								temp.y = -moveData.QOrientation.y;
+//								handle.transform.localRotation = temp;
 				
 						}
 				}
@@ -98,9 +98,9 @@ public class PSMoveExampleX : MonoBehaviour
 						if (GUI.Button (new Rect (300, 40, 100, 35), "Connect")) {
 								PSMoveInput.Connect (ipAddress, int.Parse (port));
 						}
-                        //Time.timeScale = 0f;
+						//Time.timeScale = 0f;
 				} else {
-                    //Time.timeScale = 1f;
+						//Time.timeScale = 1f;
 					
 //						if (GUI.Button (new Rect (20, 40, 100, 35), "Disconnect")) {
 //								PSMoveInput.Disconnect ();
