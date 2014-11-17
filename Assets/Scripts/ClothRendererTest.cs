@@ -24,7 +24,9 @@ public class ClothRendererTest : MonoBehaviour
 		public GameObject openRightHand;
 		public GameObject perfectText;
 		public GameObject ouchText;
-
+		public GameObject ramenBar1;
+		public GameObject ramenBar2;
+		public GameObject ramenBar3;
         
 		public float slope;
 
@@ -37,11 +39,13 @@ public class ClothRendererTest : MonoBehaviour
 		private int maxNoodleHitCount;
 		private float centerRamenHeight;
 		private int noodlesfinished;
-
+		private int roundNumber;
 		private bool attachedToHands = true;
 		private bool ramenUpPlayed = false;
 		private bool ramenDownPlayed = false;
 		private bool isRamenWithinRange = false;
+
+		private Emcee _emcee;
 		// Use this for initialization
 		void Start ()
 		{
@@ -61,6 +65,8 @@ public class ClothRendererTest : MonoBehaviour
 				leftHandle = GameObject.FindGameObjectWithTag ("LeftHandle");
 				triggers = GameObject.FindGameObjectsWithTag ("TableTrigger");	
 				*/
+
+				_emcee = GameObject.FindGameObjectWithTag ("Emcee").GetComponent<Emcee> ();
 				leftHandle = this.gameObject.FindObjectWithTagInChildren ("LeftHandle");
 				rightHandle = this.gameObject.FindObjectWithTagInChildren ("RightHandle");
 
@@ -87,19 +93,19 @@ public class ClothRendererTest : MonoBehaviour
 						trigger.SetActive (false);
 				}
 				noodles.GetComponent<InteractiveCloth> ().useGravity = true;
+				roundNumber = -1;
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-//				Debug.Log (string.Format ("({0},{1})", _renderer.bounds.center.y - _renderer.bounds.extents.y, _renderer.bounds.center.y + _renderer.bounds.extents.y));
+
+				setUpBars ();
 				if (attachedToHands) {
 						maxRamenHeight = _renderer.bounds.max.y;
 						
 						centerRamenHeight = _renderer.bounds.center.y;
-						
-//						bottomBar.transform.position = new Vector3 (bottomBar.transform.position.x, centerRamenHeight, bottomBar.transform.position.z);
-
+		
 						if (leftHandle.transform.position.y < centerRamenHeight && rightHandle.transform.position.y < centerRamenHeight) {
 								if (!ramenUpPlayed) {
 										Debug.Log ("playin' up sound");
@@ -189,19 +195,61 @@ public class ClothRendererTest : MonoBehaviour
 		
 				ramenCountText.GetComponent<TextMesh> ().text = "Score: " + ((int)noodleScore).ToString ();
 		}
-	
+
+		void setUpBars ()
+		{
+				int emceeRound = _emcee.GetRoundNum ();
+				if (roundNumber != emceeRound) {
+						roundNumber = emceeRound;
+						Transform text;
+
+						switch (emceeRound) {
+						case 0:
+								ramenBar1.SetActive (true);
+								ramenBar2.SetActive (false);
+								ramenBar3.SetActive (false);
+								text = ramenBar1.transform.Find ("text");
+								turnOffText ();
+								perfectText = text.transform.Find ("perfect").gameObject;
+								ouchText = text.transform.Find ("ouch").gameObject;
+								turnOffText ();
+								topHeight = ramenBar1.transform.Find ("barTop").position.y;
+								bottomHeight = ramenBar1.transform.Find ("barBottom").position.y;
+								break;
+						case 1:
+								ramenBar1.SetActive (false);
+								ramenBar2.SetActive (true);
+								ramenBar3.SetActive (false);
+								text = ramenBar2.transform.Find ("text");
+								turnOffText ();
+								perfectText = text.transform.Find ("perfect").gameObject;
+								ouchText = text.transform.Find ("ouch").gameObject;
+								turnOffText ();
+								topHeight = ramenBar2.transform.Find ("barTop").position.y;
+								bottomHeight = ramenBar2.transform.Find ("barBottom").position.y;
+								break;
+						case 2:
+								ramenBar1.SetActive (false);
+								ramenBar2.SetActive (false);
+								ramenBar3.SetActive (true);
+								text = ramenBar2.transform.Find ("text");
+								turnOffText ();
+								perfectText = text.transform.Find ("perfect").gameObject;
+								ouchText = text.transform.Find ("ouch").gameObject;
+								turnOffText ();
+								topHeight = ramenBar3.transform.Find ("barTop").position.y;
+								bottomHeight = ramenBar3.transform.Find ("barBottom").position.y;
+								break;
+						}
+				}
+		}
 		void resetNoodles ()
 		{
 				Destroy (noodles.gameObject);
-
 				foreach (GameObject trigger in triggers) {
 						trigger.SetActive (true);
 				}
-
 				noodles = (GameObject)Instantiate (Resources.Load ("Prefabs/Noodles", typeof(GameObject)), new Vector3 (noodles.transform.position.x, table.GetComponent<Transform> ().position.y + .1f, 0), noodles.transform.rotation);
-				//noodles are reset so no longer attached to hands
-//				leftHandle.GetComponent<AttachNoodleScript> ().unAttach ();
-//				rightHandle.GetComponent<AttachNoodleScript> ().unAttach ();
 				_renderer = noodles.GetComponent<Renderer> ();		
 				openHands ();
 		}
@@ -248,13 +296,13 @@ public class ClothRendererTest : MonoBehaviour
 		{
 				ouchText.SetActive (false);
 				perfectText.SetActive (false);
-				//yield return new WaitForSeconds(1f);
 		}
 
 		void turnOffPerfectText ()
 		{
 				perfectText.SetActive (false);
 		}
+
 		void turnOffOuchText ()
 		{
 				ouchText.SetActive (false);
