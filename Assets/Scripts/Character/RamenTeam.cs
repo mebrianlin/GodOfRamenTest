@@ -32,7 +32,12 @@ public class RamenTeam : MonoBehaviour {
 	List<GameObject> _ramenBowl = new List<GameObject>();
 
     TextMesh _scoreText;
+
+
+	//instructor
+	Vector3 instructorOriginPos;
 	
+
 	void Start () {
         if (GameSettings.GetBool("DebugMode"))
         {
@@ -77,6 +82,8 @@ public class RamenTeam : MonoBehaviour {
 
 
 		StartCoroutine(movingIngredients());
+
+		instructorOriginPos = delicious.transform.position;
 	}
 	
 	void apprentice_OnNoodleReady()
@@ -86,17 +93,21 @@ public class RamenTeam : MonoBehaviour {
 
 	void helper_OnNoodleCooked()
 	{
-		Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(0, _ramenBowl.Count*8, 0 );;
+		if(_ramenBowl.Count < 6){
+			Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(0, _ramenBowl.Count*8, 0 );;
 
-		string prefabPath = "Prefabs/RamenIngredient" + _emcee.GetRoundNum().ToString();
-		GameObject boiledRamenObject = 
-			Instantiate(Resources.Load(prefabPath, typeof(GameObject)) as GameObject, 
-			            boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
-		RamenBowl bowl = boiledRamenObject.GetComponent<RamenBowl>();
-		if (bowl == null)
-			Debug.LogError("Cannot find RAMENNNN AAAAAAAAAAAAAAA");
-		bowl.SetRequiredIngredients(_emcee.RequiredIngredient);
-		_ramenBowl.Add(boiledRamenObject);
+			string prefabPath = "Prefabs/RamenIngredient" + _emcee.GetRoundNum().ToString();
+			GameObject boiledRamenObject = 
+				Instantiate(Resources.Load(prefabPath, typeof(GameObject)) as GameObject, 
+				            boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
+			RamenBowl bowl = boiledRamenObject.GetComponent<RamenBowl>();
+			if (bowl == null)
+				Debug.LogError("Cannot find RAMENNNN AAAAAAAAAAAAAAA");
+			bowl.SetRequiredIngredients(_emcee.RequiredIngredient);
+			_ramenBowl.Add(boiledRamenObject);
+		}else{
+			Debug.Log("Bar is full. No place to put boiled ramen!");
+		}
 	}
 
 	IEnumerator movingIngredients() {
@@ -160,9 +171,12 @@ public class RamenTeam : MonoBehaviour {
 					// destroy the complete ramen
 					_ramenBowl.RemoveAt(i);
 					//Destroy(g);
-					StartCoroutine(WaitAndDestroy(g));
-
-
+					//StartCoroutine(WaitAndDestroy(g));
+					StartCoroutine(InstructorMoving());
+					Destroy(g);
+					foreach(var ramenB in _ramenBowl){
+						ramenB.transform.position += new Vector3(0f, 8f,0f);
+					}
 					_emcee.CompleteRamen(this);
 				}
 				break;
@@ -174,10 +188,10 @@ public class RamenTeam : MonoBehaviour {
 
 	IEnumerator WaitAndDestroy(GameObject g){
 
-		Vector3 originPos = delicious.transform.position;
+		Vector3 originPos = instructorOriginPos;
 		Vector3 targetPos = originPos + new Vector3(0, 47.5f, 0);
 
-		float moveTime = 1f;
+		float moveTime = 0.7f;
 		float currentTime = moveTime;
 	
 		while (currentTime>=0) {
@@ -190,7 +204,7 @@ public class RamenTeam : MonoBehaviour {
 
 		yield return new WaitForSeconds(1f);
 
-		while (currentTime>=-1 && currentTime<0) {
+		while (currentTime>=-0.7f && currentTime<0) {
 			currentTime -= 0.01f;
 			yield return new WaitForSeconds(0.01f);
 			delicious.transform.position = Vector3.Lerp( targetPos, originPos,-currentTime/moveTime);
@@ -203,6 +217,33 @@ public class RamenTeam : MonoBehaviour {
 		}
 	}
 
+
+	IEnumerator InstructorMoving(){
+		Vector3 originPos = delicious.transform.position;
+		Vector3 targetPos = originPos + new Vector3(0, 47.5f, 0);
+		
+		float moveTime = 0.7f;
+		float currentTime = moveTime;
+		
+		while (currentTime>=0) {
+			currentTime -= 0.01f;
+			yield return new WaitForSeconds(0.01f);
+			delicious.transform.position = Vector3.Lerp( originPos,targetPos, 1-currentTime/moveTime);
+		}
+		
+		delicious.GetComponent<Animator>().SetBool("praise", true);
+		
+		yield return new WaitForSeconds(1f);
+		
+		while (currentTime>=-0.7f && currentTime<0) {
+			currentTime -= 0.01f;
+			yield return new WaitForSeconds(0.01f);
+			delicious.transform.position = Vector3.Lerp( targetPos, originPos,-currentTime/moveTime);
+		}
+		delicious.GetComponent<Animator>().SetBool("praise", false);
+
+	}
+
     public void ShowLeaderboard(LeaderboardInsertResult rank) {
         _leaderboard.Show(rank);
     }
@@ -213,7 +254,17 @@ public class RamenTeam : MonoBehaviour {
 
 	public void ChangeIngredientAfterOneRound( int round){
 
-		_ingredients.Clear();
+		delicious.transform.position = instructorOriginPos;
+		delicious.GetComponent<Animator>().SetBool("praise", false);
+
+
+		while (!_ingredients.Empty()) {
+			GameObject top = _ingredients.Peek();
+			_ingredients.Dequeue();
+			Destroy(top);
+		}
+		//_ingredients.Clear();
+
 		int currentBoiledRamenNum = _ramenBowl.Count;
 		for(int i = 0 ; i< _ramenBowl.Count; i++){
 			GameObject g = _ramenBowl[i];
@@ -241,6 +292,12 @@ public class RamenTeam : MonoBehaviour {
 		GameObject s = Instantiate(Resources.Load(samplePrefabPath, typeof(GameObject)) as GameObject,
 		                           samplePos.transform.position, Quaternion.identity) as GameObject;
 		s.transform.parent = this.gameObject.transform;
+
+
+	}
+	
+
+	public void Reset(){
 
 	}
 }
