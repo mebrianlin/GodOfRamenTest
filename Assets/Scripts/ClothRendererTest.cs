@@ -94,12 +94,13 @@ public class ClothRendererTest : MonoBehaviour
 				}
 				noodles.GetComponent<InteractiveCloth> ().useGravity = true;
 				roundNumber = -1;
+				resetNoodles ();
+				attachedToHands = false;
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-
 				setUpBars ();
 				if (attachedToHands) {
 						maxRamenHeight = _renderer.bounds.max.y;
@@ -232,7 +233,7 @@ public class ClothRendererTest : MonoBehaviour
 								ramenBar1.SetActive (false);
 								ramenBar2.SetActive (false);
 								ramenBar3.SetActive (true);
-								text = ramenBar2.transform.Find ("text");
+								text = ramenBar3.transform.Find ("text");
 								turnOffText ();
 								perfectText = text.transform.Find ("perfect").gameObject;
 								ouchText = text.transform.Find ("ouch").gameObject;
