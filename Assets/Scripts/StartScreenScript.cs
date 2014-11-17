@@ -20,6 +20,8 @@ public class StartScreenScript : MonoBehaviour
 				rightButtonDown = this.transform.Find ("right_2").gameObject;
 				rightButtonDown.SetActive (false);
 				leftButtonDown.SetActive (false);
+                rightButton.SetActive(true);
+                leftButton.SetActive(true);
 		}
 	
 		// Update is called once per frame
