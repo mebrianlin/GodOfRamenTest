@@ -18,7 +18,7 @@ public class Timer : MonoBehaviour
     private AudioSource _audioSource;
     */
 
-    public double RemainingTime
+    public float RemainingTime
     {
         get;
         private set;
@@ -27,14 +27,14 @@ public class Timer : MonoBehaviour
     //public bool Alarm = true;
     public bool Enabled = false;
 
-    double _interval;
-    public double Interval
+    float _interval;
+    public float Interval
     {
         get { return _interval; }
         set
         {
             if (value <= 0)
-                _interval = 0.1;
+                _interval = 0.1f;
             else if (value > System.Int32.MaxValue)
                 _interval = System.Int32.MaxValue;
             else
@@ -47,7 +47,7 @@ public class Timer : MonoBehaviour
     void Awake()
     {
         this.Enabled = false;
-        this.Interval = 0.1;
+        this.Interval = 0.1f;
         this.RemainingTime = this.Interval;
        // this.Alarm = true;
     }
@@ -78,14 +78,14 @@ public class Timer : MonoBehaviour
             renderer.material.SetFloat("_Cutoff", ratio);
 
 			foreach (var t in _timerTexts)
-				t.text = ((int)this.RemainingTime).ToString();
+				t.text = (Mathf.CeilToInt(this.RemainingTime)).ToString();
 
             if (this.RemainingTime <= 0.0)
             {
                 StopTimer();
 
 				foreach (var t in _timerTexts)
-					t.text = "";
+					t.text = "0";
 
                 this.RemainingTime = this.Interval;
                 

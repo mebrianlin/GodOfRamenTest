@@ -115,6 +115,13 @@ public class BlowFire : MonoBehaviour {
 			if(ramenToBeBoiled.Count > 0){
 				ThrowRawRamenToPot();
 			}else{
+                if (temperature > 0)
+                {
+                    temperature -= coolSpeed * Time.deltaTime;
+                }
+                if (temperature >= perfectTemprature) {
+                    temperature = perfectTemprature;
+                }
 				if(temperature<=0){
 					extraFire.SetActive(false);
 					fire.GetComponent<MeshRenderer>().materials[0].SetTexture("_MainTex", fireTexture[0]);

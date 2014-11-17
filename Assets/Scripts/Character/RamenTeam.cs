@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 using ExtensionMethods;
 
-public class RamenTeam : MonoBehaviour {
-	public GameObject delicious;
-	public GameObject samplePos;
+public class RamenTeam : MonoBehaviour
+{
+    public GameObject delicious;
+    public GameObject samplePos;
+    public GameObject[] transitions;
 
     public string Player1Name
     {
@@ -21,26 +23,27 @@ public class RamenTeam : MonoBehaviour {
     }
 
     int _id;
-	Vector3 _ingredientTargetPos;
+    Vector3 _ingredientTargetPos;
     Helper _helper;
     Apprentice _apprentice;
-	Emcee _emcee;
+    Emcee _emcee;
     LeaderboardForTeam _leaderboard;
 
     int _numRamen;
-	Queue<GameObject> _ingredients = new Queue<GameObject>();
-	List<GameObject> _ramenBowl = new List<GameObject>();
+    Queue<GameObject> _ingredients = new Queue<GameObject>();
+    List<GameObject> _ramenBowl = new List<GameObject>();
 
     TextMesh _scoreText;
 
 
-	//instructor
-	Vector3 instructorOriginPos;
-	bool instructorIsMoving = false;
+    //instructor
+    Vector3 instructorOriginPos;
+    bool instructorIsMoving = false;
 
-	
 
-	void Start () {
+
+    void Awake()
+    {
         if (GameSettings.GetBool("DebugMode"))
         {
             int length = Random.Range(3, 5);
@@ -58,41 +61,14 @@ public class RamenTeam : MonoBehaviour {
             SetPlayerNames("", "");
         }
 
-        GameSettings.OnStringValueChange += (string name, string value) =>
-        {
-            switch (name)
-            {
-                case "Player1Name":
-                    if (_id == 1)
-                        Player1Name = value;
-                    break;
-                case "Player2Name":
-                    if (_id == 1)
-                        Player2Name = value;
-                    break;
-                case "Player3Name":
-                    if (_id == 0)
-                        Player1Name = value;
-                    break;
-                case "Player4Name":
-                    if (_id == 0)
-                        Player1Name = value;
-                    break;
-
-                default:
-                    break;
-            }
-        };
-
-
         _apprentice = GetComponentInChildren<Apprentice>();
         _helper = GetComponentInChildren<Helper>();
         _leaderboard = GetComponentInChildren<LeaderboardForTeam>();
 
         GameObject obj = GameObject.FindGameObjectWithTag("Emcee");
-		if (obj == null)
-			Debug.LogError("Cannot find Emcee object.");
-		_emcee = obj.GetComponent<Emcee>();
+        if (obj == null)
+            Debug.LogError("Cannot find Emcee object.");
+        _emcee = obj.GetComponent<Emcee>();
         _id = _emcee.GetTeamId(this);
 
         obj = this.gameObject.FindObjectWithTagInChildren("ScoreText");
@@ -100,65 +76,72 @@ public class RamenTeam : MonoBehaviour {
             Debug.LogError("Cannot find ScoreText.");
         _scoreText = obj.GetComponent<TextMesh>();
 
-		_ingredientTargetPos = this.gameObject.FindObjectWithTagInChildren("BowlPosition").transform.position;
+        _ingredientTargetPos = this.gameObject.FindObjectWithTagInChildren("BowlPosition").transform.position;
 
         if (_apprentice == null)
             Debug.LogError("Cannot find Apprentice.");
         if (_helper == null)
             Debug.LogError("Cannot find Helper.");
-		_apprentice.OnNoodleReady += apprentice_OnNoodleReady;
-		_helper.OnNoodleCooked += helper_OnNoodleCooked;
+        _apprentice.OnNoodleReady += apprentice_OnNoodleReady;
+        _helper.OnNoodleCooked += helper_OnNoodleCooked;
 
 
-		StartCoroutine(movingIngredients());
+        StartCoroutine(movingIngredients());
 
-		instructorOriginPos = delicious.transform.position;
-	}
-	
-	void apprentice_OnNoodleReady()
-    {
-		_helper.AddNewRamen(_id);
+        instructorOriginPos = delicious.transform.position;
     }
 
-	void helper_OnNoodleCooked()
-	{
-		if(_ramenBowl.Count < 5){
-			Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(0, _ramenBowl.Count*8, 0 );;
+    void apprentice_OnNoodleReady()
+    {
+        _helper.AddNewRamen(_id);
+    }
 
-			string prefabPath = "Prefabs/RamenIngredient" + _emcee.GetRoundNum().ToString();
-			GameObject boiledRamenObject = 
-				Instantiate(Resources.Load(prefabPath, typeof(GameObject)) as GameObject, 
-				            boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
-			RamenBowl bowl = boiledRamenObject.GetComponent<RamenBowl>();
-			if (bowl == null)
-				Debug.LogError("Cannot find RAMENNNN AAAAAAAAAAAAAAA");
-			bowl.SetRequiredIngredients(_emcee.RequiredIngredient);
-			_ramenBowl.Add(boiledRamenObject);
-		}else{
-			Debug.Log("Bar is full. No place to put boiled ramen!");
-		}
-	}
+    void helper_OnNoodleCooked()
+    {
+        if (_ramenBowl.Count < 5)
+        {
+            Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(0, _ramenBowl.Count * 8, 0); ;
 
-	IEnumerator movingIngredients() {
-		while (true) {
-			yield return new WaitForFixedUpdate();
-			
-            while (!_ingredients.Empty()) {
-            //if (!_ingredients.Empty()) {
-			    GameObject top = _ingredients.Peek();
+            string prefabPath = "Prefabs/RamenIngredient" + _emcee.GetRoundNum().ToString();
+            GameObject boiledRamenObject =
+                Instantiate(Resources.Load(prefabPath, typeof(GameObject)) as GameObject,
+                            boiledRamenPos, Quaternion.Euler(90, -180, 0)) as GameObject;
+            RamenBowl bowl = boiledRamenObject.GetComponent<RamenBowl>();
+            if (bowl == null)
+                Debug.LogError("Cannot find RAMENNNN AAAAAAAAAAAAAAA");
+            bowl.SetRequiredIngredients(_emcee.RequiredIngredient);
+            _ramenBowl.Add(boiledRamenObject);
+        }
+        else
+        {
+            Debug.Log("Bar is full. No place to put boiled ramen!");
+        }
+    }
 
-                if ((top.transform.position - _ingredientTargetPos).sqrMagnitude < 0.5f) {
+    IEnumerator movingIngredients()
+    {
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+
+            while (!_ingredients.Empty())
+            {
+                //if (!_ingredients.Empty()) {
+                GameObject top = _ingredients.Peek();
+
+                if ((top.transform.position - _ingredientTargetPos).sqrMagnitude < 0.5f)
+                {
                     _ingredients.Dequeue();
                     Destroy(top);
                 }
                 else
                     break;
             }
-			
-			foreach (var i in _ingredients)
-				i.transform.position = Vector3.Lerp(i.transform.position, _ingredientTargetPos, 0.05f);
-		}
-	}
+
+            foreach (var i in _ingredients)
+                i.transform.position = Vector3.Lerp(i.transform.position, _ingredientTargetPos, 0.05f);
+        }
+    }
 
     public void SetPlayerNames(string name1, string name2)
     {
@@ -166,176 +149,226 @@ public class RamenTeam : MonoBehaviour {
         this.Player2Name = name2;
     }
 
-    public void GrabIngredient() {
+    public void GrabIngredient()
+    {
         GameObject ingredient = _emcee.GrabIngredient(this);
 
         // did not get the ingredient
         if (ingredient == null)
             return;
 
-		FoodScript script = ingredient.GetComponent<FoodScript>();
+        FoodScript script = ingredient.GetComponent<FoodScript>();
         if (script == null)
             return;
 
         FoodInfo info = script.Info;
         FoodType type = info.Type;
         float value = info.Value;
-		Food food = info.Food;
+        Food food = info.Food;
 
-		_ingredients.Enqueue(ingredient);
+        _ingredients.Enqueue(ingredient);
 
         // TODO: xiaoxin zhao
 
-		for (int i = 0; i < _ramenBowl.Count; ) {
-			GameObject g = _ramenBowl[i];			
-			var r = g.GetComponent<RamenBowl>();
-			if (r.AddIngredient(food)) {
-				// if a bowl of ramen is completed (ingredients + noodles)
-				r.ChangeRamenTexture(_emcee.GetRoundNum());
-				if (r.IsBowlComplete()) {
+        for (int i = 0; i < _ramenBowl.Count; )
+        {
+            GameObject g = _ramenBowl[i];
+            var r = g.GetComponent<RamenBowl>();
+            if (r.AddIngredient(food))
+            {
+                // if a bowl of ramen is completed (ingredients + noodles)
+                r.ChangeRamenTexture(_emcee.GetRoundNum());
+                if (r.IsBowlComplete())
+                {
 
-					++_numRamen;
+                    ++_numRamen;
                     _scoreText.text = _numRamen.ToString();
-					// TODO:
-					// destroy the complete ramen
-					_ramenBowl.RemoveAt(i);
-					//Destroy(g);
-					//StartCoroutine(WaitAndDestroy(g));
-					StartCoroutine(InstructorMoving());
-					Destroy(g);
-					foreach(var ramenB in _ramenBowl){
-						ramenB.transform.position += new Vector3(0f, 8f,0f);
-					}
-					_emcee.CompleteRamen(this);
-					delicious.transform.position = instructorOriginPos;
-				}
-				break;
-			}
-			else
-				++i;
-		}
+                    // TODO:
+                    // destroy the complete ramen
+                    _ramenBowl.RemoveAt(i);
+                    //Destroy(g);
+                    //StartCoroutine(WaitAndDestroy(g));
+                    StartCoroutine(InstructorMoving());
+                    Destroy(g);
+                    foreach (var ramenB in _ramenBowl)
+                    {
+                        ramenB.transform.position += new Vector3(0f, 8f, 0f);
+                    }
+                    _emcee.CompleteRamen(this);
+                    delicious.transform.position = instructorOriginPos;
+                }
+                break;
+            }
+            else
+                ++i;
+        }
     }
 
-	IEnumerator WaitAndDestroy(GameObject g){
+    IEnumerator WaitAndDestroy(GameObject g)
+    {
 
-		Vector3 originPos = instructorOriginPos;
-		Vector3 targetPos = originPos + new Vector3(0, 47.5f, 0);
+        Vector3 originPos = instructorOriginPos;
+        Vector3 targetPos = originPos + new Vector3(0, 47.5f, 0);
 
-		float moveTime = 0.7f;
-		float currentTime = moveTime;
-	
-		while (currentTime>=0) {
-			currentTime -= 0.01f;
-			yield return new WaitForSeconds(0.01f);
-			delicious.transform.position = Vector3.Lerp( originPos,targetPos, 1-currentTime/moveTime);
-		}
+        float moveTime = 0.7f;
+        float currentTime = moveTime;
 
-		delicious.GetComponent<Animator>().SetBool("praise", true);
+        while (currentTime >= 0)
+        {
+            currentTime -= 0.01f;
+            yield return new WaitForSeconds(0.01f);
+            delicious.transform.position = Vector3.Lerp(originPos, targetPos, 1 - currentTime / moveTime);
+        }
 
-		yield return new WaitForSeconds(1f);
+        delicious.GetComponent<Animator>().SetBool("praise", true);
 
-		while (currentTime>=-0.7f && currentTime<0) {
-			currentTime -= 0.01f;
-			yield return new WaitForSeconds(0.01f);
-			delicious.transform.position = Vector3.Lerp( targetPos, originPos,-currentTime/moveTime);
-		}
+        yield return new WaitForSeconds(1f);
 
-		Destroy(g);
-		delicious.GetComponent<Animator>().SetBool("praise", false);
-		foreach(var ramenB in _ramenBowl){
-			ramenB.transform.position += new Vector3(0f, 8f,0f);
-		}
-	}
+        while (currentTime >= -0.7f && currentTime < 0)
+        {
+            currentTime -= 0.01f;
+            yield return new WaitForSeconds(0.01f);
+            delicious.transform.position = Vector3.Lerp(targetPos, originPos, -currentTime / moveTime);
+        }
+
+        Destroy(g);
+        delicious.GetComponent<Animator>().SetBool("praise", false);
+        foreach (var ramenB in _ramenBowl)
+        {
+            ramenB.transform.position += new Vector3(0f, 8f, 0f);
+        }
+    }
 
 
-	IEnumerator InstructorMoving(){
-		Vector3 originPos = instructorOriginPos;
-		Vector3 targetPos = originPos + new Vector3(0, 47.5f, 0);
-		
-		float moveTime = 0.7f;
-		float currentTime = moveTime;
-		
-		while (currentTime>=0) {
-			currentTime -= 0.01f;
-			yield return new WaitForSeconds(0.01f);
-			delicious.transform.position = Vector3.Lerp( originPos,targetPos, 1-currentTime/moveTime);
-		}
-		
-		delicious.GetComponent<Animator>().SetBool("praise", true);
-		
-		yield return new WaitForSeconds(1f);
-		
-		while (currentTime>=-0.7f && currentTime<0) {
-			currentTime -= 0.01f;
-			yield return new WaitForSeconds(0.01f);
-			delicious.transform.position = Vector3.Lerp( targetPos, originPos,-currentTime/moveTime);
-		}
-		delicious.GetComponent<Animator>().SetBool("praise", false);
+    IEnumerator InstructorMoving()
+    {
+        Vector3 originPos = instructorOriginPos;
+        Vector3 targetPos = originPos + new Vector3(0, 47.5f, 0);
 
-	}
+        float moveTime = 0.7f;
+        float currentTime = moveTime;
 
-    public void ShowLeaderboard(LeaderboardInsertResult rank) {
+        while (currentTime >= 0)
+        {
+            currentTime -= 0.01f;
+            yield return new WaitForSeconds(0.01f);
+            delicious.transform.position = Vector3.Lerp(originPos, targetPos, 1 - currentTime / moveTime);
+        }
+
+        delicious.GetComponent<Animator>().SetBool("praise", true);
+
+        yield return new WaitForSeconds(1f);
+
+        while (currentTime >= -0.7f && currentTime < 0)
+        {
+            currentTime -= 0.01f;
+            yield return new WaitForSeconds(0.01f);
+            delicious.transform.position = Vector3.Lerp(targetPos, originPos, -currentTime / moveTime);
+        }
+        delicious.GetComponent<Animator>().SetBool("praise", false);
+
+    }
+
+    public void ShowLeaderboard(LeaderboardInsertResult rank)
+    {
         _leaderboard.Show(rank);
     }
 
-    public void HideLeaderboard() {
+    public void HideLeaderboard()
+    {
         _leaderboard.Hide();
     }
 
-	public void ChangeIngredientAfterOneRound( int round){
+    
 
-		delicious.transform.position = instructorOriginPos;
-		delicious.GetComponent<Animator>().SetBool("praise", false);
+    public void ShowSampleRamen()
+    {
+        int round = _emcee.GetRoundNum();
+        for (int i = 0; i < transitions.Length; i++)
+        {
+            transitions[i].SetActive(i == round);
+        }
+    }
 
+    public void HideSampleRamen()
+    {
+        int round = _emcee.GetRoundNum();
+        if (0 <= round && round < transitions.Length)
+            moveTransitionToSample(transitions[round]);
 
-		while (!_ingredients.Empty()) {
-			GameObject top = _ingredients.Peek();
-			_ingredients.Dequeue();
-			Destroy(top);
-		}
-		//_ingredients.Clear();
+        for (int i = 0; i < transitions.Length; i++)
+        {
+            transitions[i].SetActive(false);
+        }
+    }
 
-		int currentBoiledRamenNum = _ramenBowl.Count;
-		for(int i = 0 ; i< _ramenBowl.Count; i++){
-			GameObject g = _ramenBowl[i];
-			Destroy(g);
-		}
+    IEnumerator moveTransitionToSample(GameObject transition)
+    {
 
-		_ramenBowl.Clear();
+        yield return null;
+    }
 
-		string ingredientPrefabPath = "Prefabs/RamenIngredient" + round.ToString();
-
-		for(int i = 0; i< currentBoiledRamenNum; i++){
-			Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(0,i*8, 0 );;
-			GameObject g = Instantiate(Resources.Load(ingredientPrefabPath, typeof(GameObject)) as GameObject, 
-			                boiledRamenPos ,  Quaternion.Euler(90, -180, 0) ) as GameObject;
-			g.GetComponent<RamenBowl>().SetRequiredIngredients (_emcee.RequiredIngredient);
-			_ramenBowl.Add(g);
-		}
-
-		//change sample
-		GameObject sampleRamen = this.gameObject.FindObjectWithTagInChildren("SampleRamen");
-		if(sampleRamen!= null){
-			Destroy(sampleRamen);
-		}
-		string samplePrefabPath = "Prefabs/FinishedRamenSample" + round.ToString();
-		GameObject s = Instantiate(Resources.Load(samplePrefabPath, typeof(GameObject)) as GameObject,
-		                           samplePos.transform.position, Quaternion.identity) as GameObject;
-		s.transform.parent = this.gameObject.transform;
+    public void ChangeIngredientAfterOneRound(int round)
+    {
+        delicious.transform.position = instructorOriginPos;
+        delicious.GetComponent<Animator>().SetBool("praise", false);
 
 
-	}
-	
+        while (!_ingredients.Empty())
+        {
+            GameObject top = _ingredients.Peek();
+            _ingredients.Dequeue();
+            Destroy(top);
+        }
+        //_ingredients.Clear();
 
-	public void Reset(){
+        int currentBoiledRamenNum = _ramenBowl.Count;
+        for (int i = 0; i < _ramenBowl.Count; i++)
+        {
+            GameObject g = _ramenBowl[i];
+            Destroy(g);
+        }
 
-	}
+        _ramenBowl.Clear();
+
+        string ingredientPrefabPath = "Prefabs/RamenIngredient" + round.ToString();
+
+        for (int i = 0; i < currentBoiledRamenNum; i++)
+        {
+            Vector3 boiledRamenPos = _ingredientTargetPos - new Vector3(0, i * 8, 0); ;
+            GameObject g = Instantiate(Resources.Load(ingredientPrefabPath, typeof(GameObject)) as GameObject,
+                            boiledRamenPos, Quaternion.Euler(90, -180, 0)) as GameObject;
+            g.GetComponent<RamenBowl>().SetRequiredIngredients(_emcee.RequiredIngredient);
+            _ramenBowl.Add(g);
+        }
+
+        //change sample
+        GameObject sampleRamen = this.gameObject.FindObjectWithTagInChildren("SampleRamen");
+        if (sampleRamen != null)
+        {
+            Destroy(sampleRamen);
+        }
+        string samplePrefabPath = "Prefabs/FinishedRamenSample" + round.ToString();
+        GameObject s = Instantiate(Resources.Load(samplePrefabPath, typeof(GameObject)) as GameObject,
+                                   samplePos.transform.position, Quaternion.identity) as GameObject;
+        s.transform.parent = this.gameObject.transform;
+
+
+    }
+
+
+    public void Reset()
+    {
+
+    }
 
 
     GUIStyle customTextStyle;
     string p1 = "Your Name";
     string p2 = "Your Name";
-    void OnGUI() {
+    void OnGUI()
+    {
+        /*
         if (customTextStyle == null)
         {
             customTextStyle = new GUIStyle(GUI.skin.textField);
@@ -345,10 +378,9 @@ public class RamenTeam : MonoBehaviour {
         }
         float x = transform.position.x / 100 * Screen.width / 2 + Screen.width / 8;
         float y = Screen.height / 2;
-        Debug.Log(Screen.width);
         p1 = GUI.TextField(new Rect(x, y - 30, Screen.width / 4, 50), p1, customTextStyle);
         p2 = GUI.TextField(new Rect(x, y + 30, Screen.width / 4, 50), p2, customTextStyle);
-
+        */
     }
 
 }

@@ -18,11 +18,26 @@ public class ConveyorBelt : MonoBehaviour {
     bool ChuanGeMode = false;
     bool 川哥 = false;
 
-    public Vector3 Speed = new Vector3(0.15f, 0, 0);
+    Vector3[] _speeds = {
+        new Vector3(0.3f, 0, 0),
+        new Vector3(0.4f, 0, 0),
+        new Vector3(0.5f, 0, 0),
+    };
+
+    public float Speed
+    {
+        get { return _speed.x; }
+    }
+
+    Vector3 _speed = new Vector3(0.3f, 0, 0);
+    Vector3 _targetSpeed = new Vector3(0.3f, 0, 0);
 
 	void Start () {
         _factory = new FoodFactory();
 		_foodOnBelt = new Queue<GameObject>();
+
+        this._speed = _speeds[0];
+        this._targetSpeed = this._speed;
 
         _leftMaskPos = LeftMask.renderer.bounds.center - new Vector3(LeftMask.renderer.bounds.extents.x, 0, -0.1f);
         _rightMaskPos = RightMask.renderer.bounds.center + new Vector3(RightMask.renderer.bounds.extents.x, 0, -0.1f);
@@ -38,20 +53,25 @@ public class ConveyorBelt : MonoBehaviour {
 
         food.transform.position = pos;
         _foodOnBelt.Enqueue(food);
+        food.transform.parent = this.transform;
         
         for (; pos.x >= _leftMaskPos.x; ) {
             food = _factory.CreateFood(Food.None);
             food.transform.position = pos;
             _foodOnBelt.Enqueue(food);
+            food.transform.parent = this.transform;
             pos -= new Vector3(_foodSize, 0, 0);
         }
 	}
 
 	void FixedUpdate () {
+        float step = 0.02f;
+        _speed = Vector3.MoveTowards(_speed, _targetSpeed, step);
+
         _activeObject = null;
 
 		foreach (GameObject obj in _foodOnBelt) {
-			obj.transform.position += Speed;
+			obj.transform.position += _speed;
 
 			FoodOnPlateScript foodOnPlate = obj.GetComponent<FoodOnPlateScript>();
             if (foodOnPlate != null && obj.transform.position.x > transform.position.x - 5 && obj.transform.position.x < transform.position.x + 5)
@@ -73,6 +93,7 @@ public class ConveyorBelt : MonoBehaviour {
         GameObject foodObj = _factory.CreateFood(food);
         foodObj.transform.position = _leftMaskPos;
         _foodOnBelt.Enqueue(foodObj);
+        foodObj.transform.parent = this.transform;
     }
 
     public GameObject GrabIngredient() {
@@ -100,5 +121,11 @@ public class ConveyorBelt : MonoBehaviour {
 
 
         return food;
+    }
+
+    public void ChangeSpeed(int level)
+    {
+        if (0 <= level && level < _speeds.Length)
+            _targetSpeed = _speeds[level];
     }
 }
