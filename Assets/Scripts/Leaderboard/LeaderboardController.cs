@@ -57,8 +57,10 @@ public sealed class Leaderboard {
         get 
         {
 			if (string.IsNullOrEmpty(FILE_DIR)) {
-				FILE_DIR = Application.persistentDataPath;;
+                FILE_DIR = "C:/Desktop";
+				//FILE_DIR = Application.persistentDataPath;
 				_filePath = Path.Combine(FILE_DIR, FILE_NAME);
+                Debug.Log(FILE_DIR);
 			}
 			if (_instance == null)
 				_instance = new Leaderboard();

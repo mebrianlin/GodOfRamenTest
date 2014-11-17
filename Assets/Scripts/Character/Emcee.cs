@@ -15,7 +15,7 @@ public class Emcee : MonoBehaviour
     const int MAX_INGREDIENT = 3;
     const int COMBINATION_NUM = 3;
 
-    int TIME_PER_ROUnD = GameSettings.GetInt("TimePerRound");
+    int TIME_PER_ROUND = GameSettings.GetInt("TimePerRound");
 
     Timer _timer;
     FoodFactory _factory;
@@ -54,26 +54,48 @@ public class Emcee : MonoBehaviour
 
     void Awake()
     {
-        GameSettings.OnBoolValueChange += GameSettings_OnBoolValueChange;   
+        _timer = GetComponentInChildren<Timer>();
+        _timer.OnTimeElpased += timeUp;
+        _timer.Interval = TIME_PER_ROUND;
+        _timer.StartTimer();
+
+        GameSettings.OnBoolValueChange += GameSettings_OnBoolValueChange;
+        GameSettings.OnIntValueChange += GameSettings_OnIntValueChange;
+        GameSettings.OnFloatValueChange += GameSettings_OnFloatValueChange;
+    }
+
+    void GameSettings_OnFloatValueChange(string name, float f)
+    {
+        if (name == "RemainingTime")
+        {
+            _timer.StopTimer();
+            _timer.Interval = f;
+            _timer.StartTimer();
+        }
+    }
+
+    void GameSettings_OnIntValueChange(string name, int i)
+    {
+        if (name == "TimePerRound")
+            TIME_PER_ROUND = i;
     }
 
     void GameSettings_OnBoolValueChange(string name, bool b)
     {
         if (name == "Pause")
         {
-            if (b)
-                _timer.StopTimer();
-            else
-                _timer.StartTimer();
+            if (_timer)
+            {
+                if (b)
+                    _timer.StopTimer();
+                else
+                    _timer.StartTimer();
+            }
         }
     }
 
     void Start()
     {
-        _timer = GetComponentInChildren<Timer>();
-        _timer.OnTimeElpased += timeUp;
-        _timer.Interval = TIME_PER_ROUnD;
-        _timer.StartTimer();
 
         _factory = new FoodFactory();
 

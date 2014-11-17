@@ -21,36 +21,36 @@ public abstract class CmdLet
     protected abstract string execute(string[] parameters);
 }
 
-
-public class TimeScaleCmdLet : CmdLet
+public abstract class BuiltInCmdLet : CmdLet
 {
-    public TimeScaleCmdLet()
-        : base(1)
+    public BuiltInCmdLet()
+        : base(0)
     { }
+}
 
+public class RestartCmdLet : BuiltInCmdLet
+{
     protected override string execute(string[] parameters)
     {
-        try
-        {
-            Time.timeScale =  System.Convert.ToSingle(parameters[1]);
-        }
-        catch (System.Exception e)
-        {
-            //
-        }
+        Application.LoadLevel(Application.loadedLevelName);
         return "";
     }
 }
 
-public class RestartCmdLet : CmdLet
+public class PauseCmdLet : BuiltInCmdLet
 {
-    public RestartCmdLet()
-        : base(0)
-    { }
-
     protected override string execute(string[] parameters)
     {
-        Application.LoadLevel(Application.loadedLevelName);
+        GameSettings.SetBool("Pause", true);
+        return "";
+    }
+}
+
+public class ResumeCmdLet : BuiltInCmdLet
+{
+    protected override string execute(string[] parameters)
+    {
+        GameSettings.SetBool("Pause", false);
         return "";
     }
 }

@@ -12,81 +12,51 @@ Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\A
 Loading F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\Phidget21.NET.dll (this message is harmless)
 Loading F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\Phidget21.NET.dll into Unity Child Domain
-- Completed reload, in  0.034 seconds
+- Completed reload, in  0.035 seconds
 <RI> Initializing input.
 <RI> Input initialized.
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\System.dll (this message is harmless)
 Platform assembly: F:\Workspace\Unity\GodOfRamenTest\Interim1test_Data\Managed\System.Core.dll (this message is harmless)
-UnloadTime: 0.789981 ms
+UnloadTime: 0.865448 ms
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 168.
-Total: 5.774988 ms (FindLiveObjects: 0.026866 ms CreateObjectMapping: 0.023847 ms MarkObjects: 0.151234 ms  DeleteObjects: 4.389727 ms)
+Unloading 10 unused Assets to reduce memory usage. Loaded Objects now: 181.
+Total: 14.868987 ms (FindLiveObjects: 0.038940 ms CreateObjectMapping: 0.023545 ms MarkObjects: 0.189571 ms  DeleteObjects: 12.549454 ms)
 
-UnloadTime: 0.662896 ms
+UnloadTime: 0.798736 ms
 Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 168.
-Total: 1.297417 ms (FindLiveObjects: 0.026262 ms CreateObjectMapping: 0.022639 ms MarkObjects: 0.140367 ms  DeleteObjects: 0.007848 ms)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 181.
+Total: 1.956993 ms (FindLiveObjects: 0.022941 ms CreateObjectMapping: 0.022639 ms MarkObjects: 0.147008 ms  DeleteObjects: 0.007848 ms)
 
-UnloadTime: 0.529472 ms
-Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
-
-Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 168.
-Total: 1.035700 ms (FindLiveObjects: 0.017206 ms CreateObjectMapping: 0.017810 ms MarkObjects: 0.116218 ms  DeleteObjects: 0.005433 ms)
-
-UnloadTime: 0.671046 ms
-Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
-
-Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 168.
-Total: 1.281418 ms (FindLiveObjects: 0.024149 ms CreateObjectMapping: 0.022338 ms MarkObjects: 0.139159 ms  DeleteObjects: 0.007848 ms)
-
-C:/Users/pohengl/AppData/LocalLow/DefaultCompany/GodOfRamenTest\leaderboard.bin
+Initial recieve buffer size: 8192
+Expanded recieve buffer size: 655360
+Connect
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-UnloadTime: 0.194099 ms
+C:/Users/pohengl
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+C:/Users/pohengl\leaderboard.bin
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+UnloadTime: 0.205570 ms
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 873.
-Total: 0.500492 ms (FindLiveObjects: 0.025054 ms CreateObjectMapping: 0.009961 ms MarkObjects: 0.135537 ms  DeleteObjects: 0.022338 ms)
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 883.
+Total: 0.673461 ms (FindLiveObjects: 0.028979 ms CreateObjectMapping: 0.009357 ms MarkObjects: 0.179308 ms  DeleteObjects: 0.014489 ms)
 
-UnloadTime: 2.455977 ms
+UnloadTime: 0.650520 ms
 Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 849.
-Total: 1.333641 ms (FindLiveObjects: 0.071843 ms CreateObjectMapping: 0.031394 ms MarkObjects: 0.308506 ms  DeleteObjects: 0.009659 ms)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 859.
+Total: 0.615503 ms (FindLiveObjects: 0.022036 ms CreateObjectMapping: 0.009055 ms MarkObjects: 0.172968 ms  DeleteObjects: 0.002716 ms)
 
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
+Round = 0. Change new bowl of Ramen
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
@@ -94,71 +64,57 @@ playin' down sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
+playin' up sound
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
 playin' down sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-1920
+playin' up sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-1920
+playin' down sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-1920
+playin' up sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-1920
+playin' down sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-1920
+playin' up sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-1920
+playin' down sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-1920
+playin' up sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-1920
+playin' down sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-1920
+playin' up sound
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+UnloadTime: 0.801452 ms
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+Unloading 109 unused Assets to reduce memory usage. Loaded Objects now: 886.
+Total: 1.328208 ms (FindLiveObjects: 0.028979 ms CreateObjectMapping: 0.013885 ms MarkObjects: 0.254774 ms  DeleteObjects: 0.555734 ms)
 
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
- 
-(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
-
-1920
+Disconnect
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 

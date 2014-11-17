@@ -16,6 +16,7 @@ public static class GameSettings
 
     static Dictionary<string, float> _floatTable = new Dictionary<string, float>()
     {
+        { "RemainingTime", 30 },
     };
     static Dictionary<string, bool> _boolTable = new Dictionary<string, bool>()
     {
@@ -26,13 +27,10 @@ public static class GameSettings
     };
     static Dictionary<string, int> _intTable = new Dictionary<string, int>()
     { 
-        { "TimePerRound", 5 },
+        { "TimePerRound", 60 },
         { "MaxNoodleHitCount", 4 },
     };
     static Dictionary<string, string> _stringTable = new Dictionary<string, string>();
-
-
-
 
     public static bool GetBool(string s)
     {

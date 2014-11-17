@@ -14,7 +14,8 @@ public class DebugWindow : MonoBehaviour {
     Dictionary<string, CmdLet> _commands = new Dictionary<string, CmdLet>()
     {
         { "restart", new RestartCmdLet() },
-        { "timescale", new TimeScaleCmdLet() },
+        { "pause", new PauseCmdLet() },
+        { "resume", new ResumeCmdLet() },
 
         { "setfloat", new SetFloatCmdLet() },
         { "setbool", new SetBoolCmdLet() },
