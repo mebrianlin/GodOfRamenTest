@@ -294,18 +294,20 @@ public class RamenTeam : MonoBehaviour
     {
         int round = _emcee.GetRoundNum();
         if (0 <= round && round < transitions.Length)
-            moveTransitionToSample(transitions[round]);
-
-        for (int i = 0; i < transitions.Length; i++)
-        {
-            transitions[i].SetActive(false);
-        }
+            StartCoroutine(moveTransitionToSample(transitions[round]));
     }
 
     IEnumerator moveTransitionToSample(GameObject transition)
     {
-
-        yield return null;
+        int step = 20;
+        float distance = (transition.transform.position - samplePos.transform.position).magnitude / step;
+        float scaleStep = (transition.transform.localScale - samplePos.transform.localScale).magnitude / step;
+        while (transition.transform.position != samplePos.transform.position)
+        {
+            transition.transform.position = Vector3.MoveTowards(transition.transform.position, samplePos.transform.position, distance);
+            transition.transform.localScale = Vector3.MoveTowards(transition.transform.localScale, samplePos.transform.localScale, scaleStep);
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     public void ChangeIngredientAfterOneRound(int round)
