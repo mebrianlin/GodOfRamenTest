@@ -22,13 +22,17 @@ public class Emcee : MonoBehaviour
 		Dictionary<RamenTeam, int> _teams = new Dictionary<RamenTeam, int> ();
 		List<ConveyorBelt> _conveyorBelts;
 
-		float _generateFoodSpeed = 1.0f;
-
 		public Food[] RequiredIngredient;
-
-		public Food[][] RequiredIngredientCombinations= new Food[][]{ new Food[]{Food.Shrimp},
-																	  new Food[]{Food.Eggs, Food.Meat, Food.Cai},
-																      new Food[]{Food.Carrot, Food.Chicken, Food.Pea, Food.Mushroom, Food.Tomato}}; 
+		Food[][] _foodsOnBeltInRounds = {
+			new Food[] {Food.Cai,    Food.Shrimp,  Food.Eggs, Food.None },
+			new Food[] {Food.Cai,    Food.Eggs,    Food.Meat, Food.Carrot,   Food.Chicken, Food.None},
+			new Food[] {Food.Carrot, Food.Chicken, Food.Pea,  Food.Mushroom, Food.Tomato,  Food.Carrot, Food.Cai, Food.Shrimp, },
+		};
+		public Food[][] RequiredIngredientCombinations= new Food[][]{
+			new Food[]{Food.Shrimp},
+			new Food[]{Food.Cai, Food.Eggs, Food.Meat, },
+			new Food[]{Food.Carrot, Food.Chicken, Food.Mushroom, Food.Pea, Food.Tomato}
+		}; 
 
 
 
@@ -68,9 +72,6 @@ public class Emcee : MonoBehaviour
 				if (_conveyorBelts.Count != MAX_TEAM)
 						Debug.LogError (string.Format ("Number of ConveroyBelt({0}) does not equal to MAX_TEAM({1}).", _conveyorBelts.Count, MAX_TEAM));
 
-
-				_generateFoodSpeed = 9.5f * Time.fixedDeltaTime / _conveyorBelts [0].Speed.x;
-
 				Reset ();
 				RequiredIngredient = RequiredIngredientCombinations [_round];
 
@@ -87,12 +88,20 @@ public class Emcee : MonoBehaviour
             Application.LoadLevel("Main");
         }
     
+		public Food randomFoodInArray(Food[] foods)
+		{
+			if (foods.Length == 0)
+				return Food.None;
+			return foods[Random.Range(0, foods.Length)];
+		}
+
 		IEnumerator generateFood ()
 		{
 				while (true) {
-						Food food = _factory.GetRandomFood ();
+						Food food = randomFoodInArray(_foodsOnBeltInRounds[_round]);
 						foreach (var c in _conveyorBelts)
-								c.GenerateFood (food);
+							c.GenerateFood (food);
+						float _generateFoodSpeed = 9.5f * Time.fixedDeltaTime / _conveyorBelts [0].Speed.x;
 						yield return new WaitForSeconds (_generateFoodSpeed);
 				}
 		}
@@ -212,6 +221,8 @@ public class Emcee : MonoBehaviour
 	public int GetRoundNum(){
 		return _round;
 	}
+
+
 
 
 }
