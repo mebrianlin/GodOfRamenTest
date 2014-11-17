@@ -19,13 +19,13 @@ public static class GameSettings
     };
     static Dictionary<string, bool> _boolTable = new Dictionary<string, bool>()
     {
-        { "DebugMode", true },
+        { "DebugMode", false },
         { "UseKeyboard", true },
         { "UsePhidget", false },
     };
     static Dictionary<string, int> _intTable = new Dictionary<string, int>()
     { 
-        { "TimePerRound", 30 },
+        { "TimePerRound", 5 },
         { "MaxNoodleHitCount", 4 },
     };
     static Dictionary<string, string> _stringTable = new Dictionary<string, string>();
@@ -70,7 +70,6 @@ public static class GameSettings
         if (_floatTable.ContainsKey(s))
             return _floatTable[s];
 
-        throw new KeyNotFoundException("Cannot find variable \"" + s + "\"");
         Debug.LogError("Cannot find variable \"" + s + "\"");
         return 0;
     }
