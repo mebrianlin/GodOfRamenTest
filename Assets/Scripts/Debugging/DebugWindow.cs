@@ -14,13 +14,16 @@ public class DebugWindow : MonoBehaviour {
     Dictionary<string, CmdLet> _commands = new Dictionary<string, CmdLet>()
     {
         { "restart", new RestartCmdLet() },
+        { "timescale", new TimeScaleCmdLet() },
 
         { "setfloat", new SetFloatCmdLet() },
         { "setbool", new SetBoolCmdLet() },
         { "setint", new SetIntCmdLet() },
+        { "setstring", new SetStringCmdLet() },
         { "getfloat", new GetFloatCmdLet() },
         { "getbool", new GetBoolCmdLet() },
         { "getint", new GetIntCmdLet() },
+        { "getstring", new GetStringCmdLet() },
     };
 
     bool _showCursor = false;
@@ -158,7 +161,7 @@ public class DebugWindow : MonoBehaviour {
         //doWindow0 = GUI.Toggle(windowRect, doWindow0, "Window 0");
         if (_isWindowShown)
         {
-            windowRect = GUI.Window(0, windowRect, DoWindow, "Basic Window");
+            windowRect = GUI.Window(0, windowRect, DoWindow, "Debug Window");
             for (int i = 0; i < _outputs.Count; ++i)
             {
                 GUI.Label(new Rect(10, 20*i, 1000, 50), _outputs[i], customLabelStyle);

@@ -22,6 +22,26 @@ public abstract class CmdLet
 }
 
 
+public class TimeScaleCmdLet : CmdLet
+{
+    public TimeScaleCmdLet()
+        : base(1)
+    { }
+
+    protected override string execute(string[] parameters)
+    {
+        try
+        {
+            Time.timeScale =  System.Convert.ToSingle(parameters[1]);
+        }
+        catch (System.Exception e)
+        {
+            //
+        }
+        return "";
+    }
+}
+
 public class RestartCmdLet : CmdLet
 {
     public RestartCmdLet()

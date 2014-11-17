@@ -98,9 +98,9 @@ public class PSMoveExampleX : MonoBehaviour
 						if (GUI.Button (new Rect (300, 40, 100, 35), "Connect")) {
 								PSMoveInput.Connect (ipAddress, int.Parse (port));
 						}
-					
+                        //Time.timeScale = 0f;
 				} else {
-					
+                    //Time.timeScale = 1f;
 					
 //						if (GUI.Button (new Rect (20, 40, 100, 35), "Disconnect")) {
 //								PSMoveInput.Disconnect ();

@@ -56,6 +56,33 @@ public class RamenTeam : MonoBehaviour {
             SetPlayerNames("", "");
         }
 
+        GameSettings.OnStringValueChange += (string name, string value) =>
+        {
+            switch (name)
+            {
+                case "Player1Name":
+                    if (_id == 1)
+                        Player1Name = value;
+                    break;
+                case "Player2Name":
+                    if (_id == 1)
+                        Player2Name = value;
+                    break;
+                case "Player3Name":
+                    if (_id == 0)
+                        Player1Name = value;
+                    break;
+                case "Player4Name":
+                    if (_id == 0)
+                        Player1Name = value;
+                    break;
+
+                default:
+                    break;
+            }
+        };
+
+
         _apprentice = GetComponentInChildren<Apprentice>();
         _helper = GetComponentInChildren<Helper>();
         _leaderboard = GetComponentInChildren<LeaderboardForTeam>();
@@ -301,12 +328,23 @@ public class RamenTeam : MonoBehaviour {
 
 	}
 
+
+    GUIStyle customTextStyle;
+    string p1 = "Your Name";
+    string p2 = "Your Name";
     void OnGUI() {
-
-        string s = "SSSSSSSSSS";
-        s = GUI.TextField(new Rect(/*60*/transform.position.x + 1020, 45, 120, 25), s);
-
-        //string port = GUI.TextField(new Rect(230, 45, 50, 25), port);
+        if (customTextStyle == null)
+        {
+            customTextStyle = new GUIStyle(GUI.skin.textField);
+            customTextStyle.fontSize = 36;
+            customTextStyle.normal.textColor = Color.white;
+            customTextStyle.alignment = TextAnchor.MiddleLeft;
+        }
+        float x = transform.position.x / 100 * Screen.width / 2 + Screen.width / 8;
+        float y = Screen.height / 2;
+        Debug.Log(Screen.width);
+        p1 = GUI.TextField(new Rect(x, y - 30, Screen.width / 4, 50), p1, customTextStyle);
+        p2 = GUI.TextField(new Rect(x, y + 30, Screen.width / 4, 50), p2, customTextStyle);
 
     }
 
