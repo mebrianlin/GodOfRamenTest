@@ -79,8 +79,10 @@ public class Emcee : MonoBehaviour
 
 
 				StartCoroutine (generateFood ());
-		}
+				StartCoroutine(WaitAndPlayTransitionAnimation());
 
+	}
+	
 		void Update ()
 		{
 		}
@@ -180,7 +182,7 @@ public class Emcee : MonoBehaviour
 
 		void timeUp (GameObject sender)
 		{
-				
+				++_round;
 				StartCoroutine(WaitAndPlayTransitionAnimation());
 				
 		}
@@ -223,10 +225,7 @@ public class Emcee : MonoBehaviour
 	IEnumerator WaitAndPlayTransitionAnimation(){
 
 
-
-		Debug.Log("wait transition animation 000000000");
-
-		++_round;
+		Time.timeScale = 0;
 
 		for(int i = 0 ; i < TOTAL_ROUND; i ++){
 			transitions1[i].SetActive (false);
@@ -236,7 +235,14 @@ public class Emcee : MonoBehaviour
 				transitions2[i].SetActive(true);
 			}
 		}
-		yield return  new WaitForSeconds(5f);
+
+		//wait 5 seconds
+		float start = Time.realtimeSinceStartup;
+		while (Time.realtimeSinceStartup < start + 5f) {
+			yield return null;
+		}
+		
+		
 		for(int i = 0 ; i < TOTAL_ROUND; i ++){
 			transitions1[i].SetActive (false);
 			transitions2[i].SetActive (false);
@@ -249,10 +255,9 @@ public class Emcee : MonoBehaviour
 			ChangeNewBowlOfRamen ();
 			_timer.StartTimer ();
 		}
-		Debug.Log("wait transition animation 11111111111");
 
+		Time.timeScale = 1;
 	}
 
-
-
+	
 }

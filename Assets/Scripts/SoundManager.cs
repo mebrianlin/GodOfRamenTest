@@ -11,10 +11,12 @@ public class SoundManager : MonoBehaviour
         AudioSource _ramenAudio;
         
         string _ramenPath =  "Sounds/RamenFeedback/";
+	string _transitionPath = "Sounds/Transition";
 
         string[] _upSounds = { "Up1", "Up2", "Up3", "Up4", };
         string[] _downSounds = { "Down1", "Down2", "Down3", "Down4", };
         string _finishSound = "RamenFinish";
+		string[] _transitionSounds = {"Transition0","Transition1","Transition2"};
 
 		// Use this for initialization
 		void Start ()
@@ -75,6 +77,9 @@ public class SoundManager : MonoBehaviour
             _ramenAudio.clip = newClip;
             _ramenAudio.Play();
         }
+
+
+
 
     /*
         IEnumerator fadingBGM()
