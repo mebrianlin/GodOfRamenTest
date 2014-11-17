@@ -300,4 +300,14 @@ public class RamenTeam : MonoBehaviour {
 	public void Reset(){
 
 	}
+
+    void OnGUI() {
+
+        string s = "SSSSSSSSSS";
+        s = GUI.TextField(new Rect(/*60*/transform.position.x + 1020, 45, 120, 25), s);
+
+        //string port = GUI.TextField(new Rect(230, 45, 50, 25), port);
+
+    }
+
 }
