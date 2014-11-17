@@ -20,14 +20,14 @@ public class StartScreenScript : MonoBehaviour
 				rightButtonDown = this.transform.Find ("right_2").gameObject;
 				rightButtonDown.SetActive (false);
 				leftButtonDown.SetActive (false);
-                rightButton.SetActive(true);
-                leftButton.SetActive(true);
+				rightButton.SetActive (true);
+				leftButton.SetActive (true);
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-				if (leftButtonClicked && rightButtonClicked)
+				if (leftButtonClicked && rightButtonClicked && PSMoveInput.IsConnected)
 						Application.LoadLevel (Application.loadedLevel + 1);
 
 				if (Input.GetMouseButtonDown (0)) {
