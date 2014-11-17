@@ -40,7 +40,9 @@ public class RamenTeam : MonoBehaviour
     Vector3 instructorOriginPos;
     bool instructorIsMoving = false;
 
-
+    string[] randomNames = new string[] {
+        "Xin", "Eric", "Chuan", "Jialin", "Brian", "Martin"
+    };
 
     void Awake()
     {
@@ -53,12 +55,13 @@ public class RamenTeam : MonoBehaviour
                 s1 += (char)((int)'A' + Random.Range(0, 26));
                 s2 += (char)((int)'A' + Random.Range(0, 26));
             }
-            SetPlayerNames(s1, s2);
         }
         else
         {
             // set default player names
-            SetPlayerNames("", "");
+            string s1 = randomNames[Random.Range(0, randomNames.Length)];
+            string s2 = randomNames[Random.Range(0, randomNames.Length)];
+            SetPlayerNames(s1, s2);
         }
 
         _apprentice = GetComponentInChildren<Apprentice>();

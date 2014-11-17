@@ -13,7 +13,7 @@ public class ConveyorBelt : MonoBehaviour {
 
     Vector3 _leftMaskPos;
     Vector3 _rightMaskPos;
-    float _foodSize;
+    float _foodSize = 1f;
 
     bool ChuanGeMode = false;
     bool 川哥 = false;
@@ -28,6 +28,13 @@ public class ConveyorBelt : MonoBehaviour {
     {
         get { return _speed.x; }
     }
+
+    /*
+    public float NextGenerateTime
+    {
+        get { return _foodSize / Speed * Time.fixedDeltaTime; }
+    }
+    */
 
     Vector3 _speed = new Vector3(0.3f, 0, 0);
     Vector3 _targetSpeed = new Vector3(0.3f, 0, 0);

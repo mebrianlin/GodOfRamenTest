@@ -195,8 +195,8 @@ public class Emcee : MonoBehaviour
         }
         else
         {
-            foreach (var conveyorBelt in _conveyorBelts)
-                conveyorBelt.ChangeSpeed(_round);
+            //foreach (var conveyorBelt in _conveyorBelts)
+            //    conveyorBelt.ChangeSpeed(_round);
 
             StartCoroutine(WaitAndPlayTransitionAnimation());
         }
@@ -243,10 +243,8 @@ public class Emcee : MonoBehaviour
 
     IEnumerator WaitAndPlayTransitionAnimation()
     {
-
-        //<<<<<<< HEAD
-        StopCoroutine("generateFood");
-        Time.timeScale = 0.0001f;
+        //StopCoroutine("generateFood");
+        Time.timeScale = 0.00001f;
 
         float audioLength = SoundManager.instance.PlayerTransitionSound(_round);
         
@@ -272,7 +270,7 @@ public class Emcee : MonoBehaviour
         }*/
 
         Time.timeScale = 1;
-        StartCoroutine("generateFood");
+        //StartCoroutine("generateFood");
 
         if (_round >= TOTAL_ROUND)
         {
