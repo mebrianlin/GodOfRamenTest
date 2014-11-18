@@ -54,11 +54,6 @@ public class Emcee : MonoBehaviour
 
     void Awake()
     {
-        _timer = GetComponentInChildren<Timer>();
-        _timer.OnTimeElpased += timeUp;
-        _timer.Interval = TIME_PER_ROUND;
-        _timer.StartTimer();
-
         GameSettings.OnBoolValueChange += GameSettings_OnBoolValueChange;
         GameSettings.OnIntValueChange += GameSettings_OnIntValueChange;
         GameSettings.OnFloatValueChange += GameSettings_OnFloatValueChange;
@@ -68,9 +63,9 @@ public class Emcee : MonoBehaviour
     {
         if (name == "RemainingTime")
         {
-            _timer.StopTimer();
+            //_timer.StopTimer();
             _timer.Interval = f;
-            _timer.StartTimer();
+            //_timer.StartTimer();
         }
     }
 
@@ -96,6 +91,11 @@ public class Emcee : MonoBehaviour
 
     void Start()
     {
+
+        _timer = GetComponentInChildren<Timer>();
+        _timer.OnTimeElpased += timeUp;
+        _timer.Interval = TIME_PER_ROUND;
+        _timer.StartTimer();
 
         _factory = new FoodFactory();
 

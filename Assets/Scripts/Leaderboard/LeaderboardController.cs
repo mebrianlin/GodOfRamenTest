@@ -179,6 +179,7 @@ public sealed class Leaderboard {
 
     void saveFile()
     {
+        /*
         try
         {
             using (Stream stream = File.Open(_filePath, FileMode.Create))
@@ -190,10 +191,12 @@ public sealed class Leaderboard {
         catch (IOException)
         {
         }
+        */
     }
 
     void readFile()
     {
+        /*
         try
         {
             using (Stream stream = File.Open(_filePath, FileMode.Open))
@@ -205,5 +208,6 @@ public sealed class Leaderboard {
         catch (IOException)
         {
         }
+        */
     }
 }

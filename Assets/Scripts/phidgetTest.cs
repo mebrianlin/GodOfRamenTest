@@ -13,11 +13,29 @@ public class phidgetTest : MonoBehaviour
     void Start()
     {
         if (GameSettings.GetBool("UsePhidget"))
-        {
             //Declare an spatial object
             spatial = new Spatial();
-        }
+        else
+            GameSettings.OnBoolValueChange += GameSettings_OnBoolValueChange;
 
+        connectPhidget();
+    }
+
+    void GameSettings_OnBoolValueChange(string name, bool b)
+    {
+        if (name == "UsePhidget")
+        {
+            if (b && spatial == null)
+            {
+                spatial = new Spatial();
+
+                connectPhidget();
+            }
+        }
+    }
+
+    void connectPhidget()
+    {
         if (spatial != null)
         {
             //Hook the basic event handlers
