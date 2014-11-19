@@ -67,15 +67,17 @@ public class Timer : MonoBehaviour
             float ratio = 1 - Mathf.Max(0.0001f, (float)(this.RemainingTime / this.Interval));
             renderer.material.SetFloat("_Cutoff", ratio);
 
+            int displayInt = Mathf.CeilToInt(this.RemainingTime);
+            string displayText = displayInt == 0 ? "" : displayInt.ToString();
 			foreach (var t in _timerTexts)
-				t.text = (Mathf.CeilToInt(this.RemainingTime)).ToString();
+                t.text = displayText;
 
             if (this.RemainingTime <= 0.0)
             {
                 StopTimer();
 
 				foreach (var t in _timerTexts)
-					t.text = "0";
+					t.text = "";
 
                 this.RemainingTime = this.Interval;
                 
@@ -86,6 +88,9 @@ public class Timer : MonoBehaviour
                     OnTimeElpased(this.gameObject);
             }
         }
+        else
+            foreach (var t in _timerTexts)
+                t.text = "";
     }
 
     public void StartTimer()

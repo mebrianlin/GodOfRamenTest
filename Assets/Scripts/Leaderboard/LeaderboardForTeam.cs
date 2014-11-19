@@ -25,6 +25,7 @@ public class LeaderboardForTeam : MonoBehaviour {
         if (highlightIndex >= entry.Length)
             highlightIndex = entry.Length - 1;
 
+
         string prefabFilePath = "Prefabs/LeaderboardEntry";
         for (int i = 0; i < NUM_SHOWN && i < entry.Length; ++i)
         {
@@ -55,7 +56,13 @@ public class LeaderboardForTeam : MonoBehaviour {
             entryObject.transform.localPosition = new Vector3(0, -itemHeight * i, -1);
         }
 
-        this.gameObject.FindObjectWithTagInChildren("Leaderboard").GetComponent<SpriteRenderer>().enabled = true;
+        GameObject creditScene = this.gameObject.FindObjectWithTagInChildren("Leaderboard");
+        creditScene.GetComponent<MeshRenderer>().enabled = true;
+        CreditControl creditControl = creditScene.GetComponent<CreditControl>();
+        creditControl.PlayCredit();
+        //this.gameObject.FindObjectWithTagInChildren("Leaderboard").GetComponent<SpriteRenderer>().enabled = true;
+
+
     }
 
     public void Hide()

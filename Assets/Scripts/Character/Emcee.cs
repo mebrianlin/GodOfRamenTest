@@ -232,7 +232,7 @@ public class Emcee : MonoBehaviour
         ++_round;
         if (_round >= TOTAL_ROUND)
         {
-            _round = 0;
+            _round = TOTAL_ROUND - 1;
             endGame();
         }
         else
@@ -246,7 +246,7 @@ public class Emcee : MonoBehaviour
 
     void endGame()
     {
-
+        SoundManager.instance.FadeOutBGM();
         if (GameSettings.GetBool("DebugMode"))
             _teamScores = new int[] { Random.Range(1, 100), Random.Range(1, 100) };
 

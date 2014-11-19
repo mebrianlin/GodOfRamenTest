@@ -172,13 +172,15 @@ public class RamenTeam : MonoBehaviour
         _ingredients.Enqueue(ingredient);
 
         // TODO: xiaoxin zhao
-
+        bool isIngredientCorrect = false;
         for (int i = 0; i < _ramenBowl.Count; )
         {
             GameObject g = _ramenBowl[i];
             var r = g.GetComponent<RamenBowl>();
             if (r.AddIngredient(food))
             {
+                isIngredientCorrect = true;
+
                 // if a bowl of ramen is completed (ingredients + noodles)
                 r.ChangeRamenTexture(_emcee.GetRoundNum());
                 if (r.IsBowlComplete())
@@ -191,6 +193,8 @@ public class RamenTeam : MonoBehaviour
                     _ramenBowl.RemoveAt(i);
                     //Destroy(g);
                     //StartCoroutine(WaitAndDestroy(g));
+
+                    SoundManager.instance.PlayDelicious();
                     StartCoroutine(InstructorMoving());
                     Destroy(g);
                     foreach (var ramenB in _ramenBowl)
@@ -205,6 +209,8 @@ public class RamenTeam : MonoBehaviour
             else
                 ++i;
         }
+        if (!isIngredientCorrect)
+            SoundManager.instance.PlayWarning();
     }
 
     IEnumerator WaitAndDestroy(GameObject g)
@@ -274,6 +280,7 @@ public class RamenTeam : MonoBehaviour
 
     public void ShowLeaderboard(LeaderboardInsertResult rank)
     {
+        _scoreText.text = "";
         _leaderboard.Show(rank);
     }
 

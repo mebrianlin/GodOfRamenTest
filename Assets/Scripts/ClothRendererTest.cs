@@ -174,7 +174,8 @@ public class ClothRendererTest : MonoBehaviour
 								noodleScore = 0f;
 								noodleHitCount = 0;
 								noodlesfinished++;
-								SoundManager.instance.PlayRamenFinishSound ();
+                                if (!mute)
+								    SoundManager.instance.PlayRamenFinishSound ();
 								Invoke ("resetNoodles", 0f);
 								attachedToHands = false;
 						}
