@@ -213,48 +213,21 @@ public class RamenTeam : MonoBehaviour
             SoundManager.instance.PlayWarning();
     }
 
-    IEnumerator WaitAndDestroy(GameObject g)
-    {
-
-        Vector3 originPos = instructorOriginPos;
-        Vector3 targetPos = originPos + new Vector3(0, 47.5f, 0);
-
-        float moveTime = 0.7f;
-        float currentTime = moveTime;
-
-        while (currentTime >= 0)
-        {
-            currentTime -= 0.01f;
-            yield return new WaitForSeconds(0.01f);
-            delicious.transform.position = Vector3.Lerp(originPos, targetPos, 1 - currentTime / moveTime);
-        }
-
-        delicious.GetComponent<Animator>().SetBool("praise", true);
-
-        yield return new WaitForSeconds(1f);
-
-        while (currentTime >= -0.7f && currentTime < 0)
-        {
-            currentTime -= 0.01f;
-            yield return new WaitForSeconds(0.01f);
-            delicious.transform.position = Vector3.Lerp(targetPos, originPos, -currentTime / moveTime);
-        }
-
-        Destroy(g);
-        delicious.GetComponent<Animator>().SetBool("praise", false);
-        foreach (var ramenB in _ramenBowl)
-        {
-            ramenB.transform.position += new Vector3(0f, 8f, 0f);
-        }
-    }
-
-
     IEnumerator InstructorMoving()
     {
         Vector3 originPos = instructorOriginPos;
         Vector3 targetPos = originPos + new Vector3(0, 47.5f, 0);
 
-        float moveTime = 0.7f;
+		switch(_id){
+		case 0:
+			targetPos = originPos + new Vector3(40, 0, 0);
+			break;
+		case 1:
+			targetPos = originPos - new Vector3(40, 0, 0);
+			break;
+		}
+
+        float moveTime = 0.3f;
         float currentTime = moveTime;
 
         while (currentTime >= 0)
@@ -268,7 +241,7 @@ public class RamenTeam : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        while (currentTime >= -0.7f && currentTime < 0)
+        while (currentTime >= -moveTime && currentTime < 0)
         {
             currentTime -= 0.01f;
             yield return new WaitForSeconds(0.01f);

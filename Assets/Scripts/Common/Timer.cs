@@ -70,7 +70,7 @@ public class Timer : MonoBehaviour
             int displayInt = Mathf.CeilToInt(this.RemainingTime);
             string displayText = displayInt == 0 ? "" : displayInt.ToString();
 			foreach (var t in _timerTexts)
-                t.text = displayText;
+                t.text = displayText + "s";
 
             if (this.RemainingTime <= 0.0)
             {
