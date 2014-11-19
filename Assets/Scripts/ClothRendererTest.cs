@@ -174,8 +174,8 @@ public class ClothRendererTest : MonoBehaviour
 								noodleScore = 0f;
 								noodleHitCount = 0;
 								noodlesfinished++;
-                                if (!mute)
-								    SoundManager.instance.PlayRamenFinishSound ();
+								if (!mute)
+										SoundManager.instance.PlayRamenFinishSound ();
 								Invoke ("resetNoodles", 0f);
 								attachedToHands = false;
 						}
@@ -217,6 +217,8 @@ public class ClothRendererTest : MonoBehaviour
 								turnOffText ();
 								topHeight = ramenBar1.transform.Find ("barTop").position.y;
 								bottomHeight = ramenBar1.transform.Find ("barBottom").position.y;
+								resetNoodles ();
+								attachedToHands = false;
 								break;
 						case 1:
 								ramenBar1.SetActive (false);
@@ -229,6 +231,8 @@ public class ClothRendererTest : MonoBehaviour
 								turnOffText ();
 								topHeight = ramenBar2.transform.Find ("barTop").position.y;
 								bottomHeight = ramenBar2.transform.Find ("barBottom").position.y;
+								resetNoodles ();
+								attachedToHands = false;
 								break;
 						case 2:
 								ramenBar1.SetActive (false);
@@ -241,6 +245,8 @@ public class ClothRendererTest : MonoBehaviour
 								turnOffText ();
 								topHeight = ramenBar3.transform.Find ("barTop").position.y;
 								bottomHeight = ramenBar3.transform.Find ("barBottom").position.y;
+								resetNoodles ();	
+								attachedToHands = false;
 								break;
 						}
 				}
