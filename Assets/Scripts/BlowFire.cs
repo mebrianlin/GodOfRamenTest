@@ -45,6 +45,7 @@ public class BlowFire : MonoBehaviour {
 
 	private int rawRamenCount = 0;
 
+    public GameObject rawRamenStartPos;
 	public GameObject rawRamenSpawnPos;
 
 	private Animator waterAnim;
@@ -127,7 +128,8 @@ public class BlowFire : MonoBehaviour {
 
 		}else{
 			ramenInPot.SetActive(false);
-			if(ramenToBeBoiled.Count > 0){
+            if (ramenToBeBoiled.Count > 0 && !isThrowingRamen)
+            {
 				ThrowRawRamenToPot();
 			}else{
                 if (temperature > 0)
@@ -162,23 +164,71 @@ public class BlowFire : MonoBehaviour {
 	public void AddNewRamen(){
 		if(ramenToBeBoiled.Count<5){
 			rawRamenCount++;
-			Vector3 rawRamenPos =   rawRamenSpawnPos.transform.position - new Vector3(ramenToBeBoiled.Count*8, 0, 0 );;;
-			GameObject rawRamen = Instantiate(Resources.Load("Prefabs/RawRamen", typeof(GameObject)) as GameObject, 
-			                                  rawRamenPos ,   Quaternion.identity) as GameObject;
+            Vector3 rawRamenPos = rawRamenSpawnPos.transform.position - new Vector3(ramenToBeBoiled.Count * 8, 0, 0);
+            Vector3 rawRamenStart = rawRamenStartPos.transform.position;
+			GameObject rawRamen = Instantiate(Resources.Load("Prefabs/RawRamen", typeof(GameObject)) as GameObject,
+                                              rawRamenStart, Quaternion.identity) as GameObject;
+
+            if (!potIsFull)
+            {
+                rawRamen.transform.position = rawRamenPos;
+            }
+            else
+            {
+                StartCoroutine(moveRawRamenToTable(rawRamen, rawRamenPos));
+            }
 			ramenToBeBoiled.Enqueue(rawRamen);
 		}else{
 			Debug.Log("table is full!");
 		}
-
 	}
+
+    bool isThrowingRamen = false;
+    bool isMovingRamenOnTable = false;
+    IEnumerator moveRawRamenToTable(GameObject rawRamen, Vector3 targetPos)
+    {
+        while (isMovingRamenOnTable)
+            yield return null;
+
+        isThrowingRamen = true;
+        int step = 10;
+        float stepDistance = Vector3.Distance(rawRamen.transform.position, targetPos) / step;
+        for (int i = 0; i < step; ++i)
+        {
+            rawRamen.transform.position = Vector3.MoveTowards(rawRamen.transform.position, targetPos, stepDistance);
+            yield return new WaitForSeconds(0.01f);
+        }
+        isThrowingRamen = false;
+    }
+
+
+    IEnumerator moveRamenOnTable()
+    {
+        isMovingRamenOnTable = true;
+        float step = 10f;
+        float stepDistance = 8f / step;
+        for (int i = 0; i < step; ++i)
+        {
+            foreach (var ramenR in ramenToBeBoiled)
+            {
+                ramenR.transform.position += new Vector3(stepDistance, 0f, 0f);
+                //ramenR.transform.position += new Vector3(8f, 0f, 0f);
+            }
+            yield return new WaitForSeconds(0.01f);
+        }
+        isMovingRamenOnTable = false;
+    }
 
 	void ThrowRawRamenToPot(){
 		ramenInThePot.Enqueue(ramenToBeBoiled.Peek());
 		ramenToBeBoiled.Dequeue();
 
+        /*
 		foreach(var ramenR in ramenToBeBoiled){
 			ramenR.transform.position += new Vector3(8f,0f,0f);
 		}
+        */
+        StartCoroutine(moveRamenOnTable());
 
 		foreach(var ramenP in ramenInThePot){
 			ramenP.transform.position += new Vector3(0,0,30f);
@@ -209,3 +259,4 @@ public class BlowFire : MonoBehaviour {
 		extraFire.SetActive(false);
 	}
 }
+
